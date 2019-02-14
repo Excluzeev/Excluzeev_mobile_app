@@ -1,0 +1,13 @@
+{
+  "@@last_modified": "2019-02-07T14:57:16.411961",
+  "loading": "Loading...",
+  "@loading": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "login": "Log In",
+  "@login": {
+    "type": "text",
+    "placeholders": {}
+  }
+}

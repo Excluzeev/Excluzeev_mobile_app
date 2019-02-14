@@ -1,0 +1,80 @@
+name: trenstop
+description: TrenStop
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.1.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  cupertino_icons: ^0.1.2
+  shared_preferences: ^0.4.3
+  timeago: ^2.0.8
+  device_info: ^0.3.0
+  rxdart: ^0.20.0
+  rounded_modal: ^1.0.0
+  flutter_advanced_networkimage: ^0.3.9
+  flutter_cache_manager: ^0.3.0-alpha.2
+  flutter_native_image:
+    git: https://github.com/btastic/flutter_native_image.git
+  firebase_messaging: ^2.1.0
+  firebase_analytics: ^1.0.4
+  firebase_storage: ^1.0.4
+  firebase_database: ^1.0.5
+  image_picker: 0.4.12+1
+  image_cropper: ^0.0.9
+  firebase_auth: ^0.6.2+1
+  uuid: ^1.0.3
+  cloud_firestore: ^0.8.2+3
+  firestore_ui: ^1.1.1
+  built_value: ^6.3.0
+
+dev_dependencies:
+  build_runner: ^0.10.3
+  built_value_generator: ^6.1.4
+  intl: ^0.15.7
+  intl_translation: ^0.17.1
+  flutter_launcher_icons: "^0.7.0"
+
+# flutter packages pub run flutter_launcher_icons:main
+flutter_icons:
+  ios: true
+  android: "ic_launcher"
+  image_path: "res/icons/logo/logo.png"
+
+flutter:
+  uses-material-design: true
+
+  assets:
+  - res/icons/logo/
+  - res/
+  - res/icons/
+
+  fonts:
+#  - family: AppIcon
+#    fonts:
+#    - asset: res/fonts/AppIcon.ttf
+  - family: Montserrat
+    fonts:
+    - asset: res/fonts/Montserrat-Regular.ttf
+    - asset: res/fonts/Montserrat-Italic.ttf
+      style: italic
+    - asset: res/fonts/Montserrat-SemiBoldItalic.ttf
+      style: italic
+      weight: 500
+    - asset: res/fonts/Montserrat-BoldItalic.ttf
+      style: italic
+      weight: 600
+    - asset: res/fonts/Montserrat-ExtraBoldItalic.ttf
+      style: italic
+      weight: 600
+    - asset: res/fonts/Montserrat-SemiBold.ttf
+      weight: 500
+    - asset: res/fonts/Montserrat-Bold.ttf
+      weight: 600
+    - asset: res/fonts/Montserrat-ExtraBold.ttf
+      weight: 600
