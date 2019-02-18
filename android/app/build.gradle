@@ -51,7 +51,7 @@ android {
 
     signingConfigs {
         config {
-            keyAlias 'ghm'
+            keyAlias 'vjpranay'
             keyPassword 'J35u5777#'
             storeFile file('key.jks')
             storePassword 'J35u5777#'
