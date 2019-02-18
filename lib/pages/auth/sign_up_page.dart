@@ -12,6 +12,7 @@ import 'package:trenstop/pages/bloc_provider.dart';
 import 'package:trenstop/pages/home/feed.dart';
 import 'package:trenstop/widgets/custom_text_field.dart';
 import 'package:trenstop/widgets/full_app_logo.dart';
+import 'package:trenstop/widgets/rounded_border.dart';
 import 'package:trenstop/widgets/rounded_button.dart';
 import 'package:trenstop/widgets/white_app_bar.dart';
 
@@ -84,12 +85,20 @@ class _SignUpPageState extends State<SignUpPage> {
     if (snapshot.hasError) {
       _showSnackBar(translation.errorUpdateUser);
     } else {
-      Navigator.of(context).pushAndRemoveUntil(
-        CupertinoPageRoute(
-            settings: RouteSettings(name: FeedPage.TAG),
-            builder: (context) => FeedPage()),
-            (route) => false,
+      Future.delayed(
+        Duration(
+          seconds: 1,
+        ),
+          () {
+            Navigator.of(context).pushAndRemoveUntil(
+              CupertinoPageRoute(
+                  settings: RouteSettings(name: FeedPage.TAG),
+                  builder: (context) => FeedPage()),
+                  (route) => false,
+            );
+          }
       );
+
     }
   }
 
@@ -115,10 +124,14 @@ class _SignUpPageState extends State<SignUpPage> {
         body: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-                child: Image.asset("res/icons/logo/logo_side_name.png"),
+              SizedAppLogo(
+                showTitle: false,
+                size: 100.0,
               ),
+//              Padding(
+//                padding: const EdgeInsets.only(left: 20.0, right: 20.0),
+//                child: Image.asset("res/icons/logo/logo_side_name.png"),
+//              ),
               SizedBox(height: 24.0),
               _loading
                   ? Center(
@@ -133,64 +146,85 @@ class _SignUpPageState extends State<SignUpPage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: <Widget>[
                     SizedBox(height: 24.0),
-                    StreamBuilder(
-                      stream: bloc.firstName,
-                      builder: (context, snapshot) => CustomTextField(
-                        enabled: !_loading,
-                        controller: _firstNameController,
-                        errorText: snapshot.error,
-                        label: translation.firstNameLabel,
-                        onChanged: bloc.updateFirstName,
-                        inputFormatters: [
-                          LengthLimitingTextInputFormatter(32)
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 8.0),
-                    StreamBuilder(
-                      stream: bloc.lastName,
-                      builder: (context, snapshot) => CustomTextField(
-                        enabled: !_loading,
-                        controller: _lastNameController,
-                        errorText: snapshot.error,
-                        label: translation.lastNameLabel,
-                        onChanged: bloc.updateLastName,
-                        inputFormatters: [
-                          LengthLimitingTextInputFormatter(32)
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 8.0),
-                    StreamBuilder(
-                      stream: bloc.email,
-                      builder: (context, snapshot) => CustomTextField(
-                        enabled: !_loading,
-                        controller: _emailTextController,
-                        errorText: snapshot.error,
-                        label: translation.emailHint,
-                        onChanged: bloc.updateEmail,
-                      ),
-                    ),
-                    StreamBuilder(
-                      stream: bloc.password,
-                      builder: (context, snapshot) => CustomTextField(
-                        enabled: !_loading,
-                        controller: _passwordTextController,
-                        obscureText: true,
-                        errorText: snapshot.error,
-                        label: translation.passwordHint,
-                        onChanged: bloc.updatePassword,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
+                    RoundedBorder(
                       child: StreamBuilder(
-                        stream: bloc.submitValid,
-                        builder: (context, snapshot) => RoundedButton(
-                          enabled: snapshot.hasData,
-                          text: translation.signUp.toUpperCase(),
-                          onPressed: () => snapshot.hasData ?  _emailSignUpConnect() : _showSnackBar(translation.errorFields),
+                        stream: bloc.firstName,
+                        builder: (context, snapshot) => TextField(
+                          controller: _firstNameController,
+                          onChanged: bloc.updateFirstName,
+                          decoration: InputDecoration(
+                            fillColor: Colors.white,
+                            contentPadding: EdgeInsets.zero,
+                            filled: true,
+                            border: InputBorder.none,
+                            errorText: snapshot.error,
+                            hintText: translation.firstNameLabel,
+                          ),
                         ),
+                      ),
+                    ),
+                    SizedBox(height: 16.0),
+                    RoundedBorder(
+                      child: StreamBuilder(
+                        stream: bloc.lastName,
+                        builder: (context, snapshot) => TextField(
+                          controller: _lastNameController,
+                          onChanged: bloc.updateLastName,
+                          decoration: InputDecoration(
+                            fillColor: Colors.white,
+                            contentPadding: EdgeInsets.zero,
+                            filled: true,
+                            border: InputBorder.none,
+                            errorText: snapshot.error,
+                            hintText: translation.lastNameLabel,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 16.0),
+                    RoundedBorder(
+                      child: StreamBuilder(
+                        stream: bloc.email,
+                        builder: (context, snapshot) => TextField(
+                          controller: _emailTextController,
+                          onChanged: bloc.updateEmail,
+                          decoration: InputDecoration(
+                            fillColor: Colors.white,
+                            contentPadding: EdgeInsets.zero,
+                            filled: true,
+                            border: InputBorder.none,
+                            errorText: snapshot.error,
+                            hintText: translation.emailHint,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 16.0),
+                    RoundedBorder(
+                      child: StreamBuilder(
+                        stream: bloc.password,
+                        builder: (context, snapshot) => TextField(
+                          controller: _passwordTextController,
+                          obscureText: true,
+                          onChanged: bloc.updatePassword,
+                          decoration: InputDecoration(
+                            fillColor: Colors.white,
+                            contentPadding: EdgeInsets.zero,
+                            filled: true,
+                            border: InputBorder.none,
+                            errorText: snapshot.error,
+                            hintText: translation.passwordHint,
+                          ),
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 16.0),
+                    StreamBuilder(
+                      stream: bloc.submitValid,
+                      builder: (context, snapshot) => RoundedButton(
+                        enabled: snapshot.hasData,
+                        text: translation.signUp.toUpperCase(),
+                        onPressed: () => snapshot.hasData ?  _emailSignUpConnect() : _showSnackBar(translation.errorFields),
                       ),
                     ),
                     SizedBox(height: 24.0),

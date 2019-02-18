@@ -77,6 +77,31 @@ abstract class User implements Built<User, UserBuilder> {
   }
 
 
+  factory User.fromMap(Map<String, dynamic> data) {
+    if (data == null || data.isEmpty)
+      return null;
+    try {
+      final builder = UserBuilder()
+        ..firstName = data['firstName'] ?? ''
+        ..lastName = data['lastName'] ?? ''
+        ..uid = data['uid'] ?? ''
+        ..email = data['email'] ?? ''
+        ..userPhoto = data['userPhoto'] ?? ''
+        ..isContentCreator = data['isContentCreator'] ?? false
+        ..paypalEmail = data['paypalEmail'] ?? ''
+        ..subscribedChannels = ListBuilder<String>(
+          data['subscribed_channels'] != null
+              ? List<String>.from(data['subscribedChannels'])
+              : [],
+        );
+      return builder.build();
+    } catch (error) {
+      Logger.log(TAG, message: "Couldn't build user object, error: $error");
+      return null;
+    }
+  }
+
+
   Map<String, dynamic> get toMap => {
     "firstName": this.firstName,
     "lastName": this.lastName,

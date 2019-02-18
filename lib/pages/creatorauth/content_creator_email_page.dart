@@ -63,7 +63,12 @@ class _ContentCreatorEmailPageState extends State<ContentCreatorEmailPage> {
       if(snapshot.error != null) {
         _showSnackBar("Paypal Email Update failed.");
       } else {
-        WidgetUtils.proceedToAuth(context, replaceAll: true);
+        Future.delayed(
+          Duration(seconds: 1),
+            () {
+              WidgetUtils.proceedToAuth(context, replaceAll: true);
+            }
+        );
       }
     }
   }
@@ -78,7 +83,12 @@ class _ContentCreatorEmailPageState extends State<ContentCreatorEmailPage> {
       key: _scaffoldKey,
       backgroundColor: Colors.white,
       appBar: WhiteAppBar(),
-      body: SingleChildScrollView(
+      body: isLoading ?
+      Center(
+        child: CircularProgressIndicator(),
+      )
+      :
+      SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.all(16.0),
           child: Column(
@@ -88,8 +98,8 @@ class _ContentCreatorEmailPageState extends State<ContentCreatorEmailPage> {
               TextField(
                 controller: _emailController,
                 decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: translation.paypalEmail,
+                  border: OutlineInputBorder(),
+                  hintText: translation.paypalEmail,
                   errorText: error,
                 ),
               ),

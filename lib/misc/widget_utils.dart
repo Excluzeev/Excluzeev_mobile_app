@@ -4,11 +4,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:trenstop/i18n/translation.dart';
 import 'package:trenstop/managers/auth_manager.dart';
+import 'package:trenstop/models/channel.dart';
+import 'package:trenstop/models/trailer.dart';
 import 'package:trenstop/pages/auth/sign_in_page.dart';
+import 'package:trenstop/pages/channel/add_trailer.dart';
 import 'package:trenstop/pages/channel/new_channel.dart';
 import 'package:trenstop/pages/creatorauth/content_creator_email_page.dart';
 import 'package:trenstop/pages/creatorauth/content_creator_signup_page.dart';
 import 'package:trenstop/pages/home/feed.dart';
+import 'package:trenstop/pages/trailer/trailer_detail.dart';
 
 class WidgetUtils {
   static const String TAG = "WIDGET_UTILS";
@@ -24,7 +28,7 @@ class WidgetUtils {
     // final bool finishedTeaser =
     //    await Prefs.getBool(PreferenceKey.finishedTeaser, defaultValue: false);
 
-    final user = await AuthManager.instance.getUser();
+    final user = await AuthManager.instance.getUser(force: true);
 
     final bool loggedIn = user != null;
 
@@ -91,7 +95,31 @@ class WidgetUtils {
       settings: RouteSettings(name: tag),
       builder: (context) => page,
     );
-    bool isDone = await Navigator.of(context).push(route);
+    Navigator.of(context).push(route);
+  }
+
+  static void showCreateTrailerPage(BuildContext context, Channel channel) async {
+    String tag = AddTrailerPage.TAG;
+    Widget page = AddTrailerPage(channel);
+
+    final route = CupertinoPageRoute<bool>(
+      maintainState: true,
+      settings: RouteSettings(name: tag),
+      builder: (context) => page,
+    );
+    Navigator.of(context).push(route);
+  }
+
+  static void showTrailerDetails(BuildContext context, Trailer trailer) async {
+    String tag = TrailerDetailPage.TAG;
+    Widget page = TrailerDetailPage(trailer);
+
+    final route = CupertinoPageRoute<bool>(
+      maintainState: true,
+      settings: RouteSettings(name: tag),
+      builder: (context) => page,
+    );
+    Navigator.of(context).push(route);
   }
 
 

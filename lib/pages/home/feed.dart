@@ -1,8 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:trenstop/i18n/translation.dart';
 import 'package:trenstop/managers/auth_manager.dart';
+import 'package:trenstop/misc/prefs.dart';
 import 'package:trenstop/misc/widget_utils.dart';
 import 'package:trenstop/models/user.dart';
+import 'package:trenstop/pages/home/home.dart';
 import 'package:trenstop/widgets/white_app_bar.dart';
 
 class FeedPage extends StatefulWidget {
@@ -72,6 +75,13 @@ class _FeedPageState extends State<FeedPage> {
         Container();
   }
 
+  _logout() async {
+    FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    await firebaseAuth.signOut();
+    await Prefs.clear();
+    WidgetUtils.proceedToAuth(context, replaceAll: true);
+  }
+
   _drawerWidget() {
     return Drawer(
       child: user != null ?
@@ -83,6 +93,12 @@ class _FeedPageState extends State<FeedPage> {
             Text(user.displayName),
             _contentCreatorMenu(),
             _createChannelMenu(),
+            FlatButton(
+              onPressed: _logout,
+              child: Text(
+                translation.logout
+              )
+            ),
           ],
         ),
       )
@@ -104,6 +120,7 @@ class _FeedPageState extends State<FeedPage> {
         title: Text(translation.appName),
       ),
       drawer: _drawerWidget(),
+      body: HomePage(user),
     );
   }
 }

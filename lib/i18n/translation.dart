@@ -45,11 +45,11 @@ class Translation {
   String get hintSmsCode => '------';
 
   String get emailHint => Intl.message(
-    "Enter email",
+    "Email",
     name: "emailHint"
   );
   String get passwordHint => Intl.message(
-      "Enter password",
+      "Password",
       name: "passwordHint"
   );
 
@@ -65,8 +65,13 @@ class Translation {
     name: "login",
   );
 
+  String get logout => Intl.message(
+    "Log out",
+    name: "logout",
+  );
+
   String get forgotLoginDetail => Intl.message(
-    "Forgot your login details? Please",
+    "Forgot your password? Please",
     name: "forgotLoginDetail",
   );
 
@@ -173,7 +178,7 @@ class Translation {
   );
 
   String get contentCreatorAuthSave => Intl.message(
-    "Update",
+    "Next",
     name: 'contentCreatorAuthSave',
   );
   String get paypalEmail => Intl.message(
@@ -183,6 +188,86 @@ class Translation {
   String get createChannel => Intl.message(
     "Create Channel",
     name: 'createChannel',
+  );
+  String get cannotBeEmpty => Intl.message(
+    "Field cannot be empty",
+    name: 'cannotBeEmpty',
+  );
+  String get categoryNameLabel => Intl.message(
+    "Category",
+    name: 'categoryNameLabel',
+  );
+  String get channelTypeLabel => Intl.message(
+    "Channel Type",
+    name: 'channelTypeLabel',
+  );
+  String get titleLabel => Intl.message(
+    "Title",
+    name: 'titleLabel',
+  );
+  String get descriptionLabel => Intl.message(
+    "Description",
+    name: 'descriptionLabel',
+  );
+  String get thumbnailLabel => Intl.message(
+    "Thumbnail",
+    name: 'thumbnailLabel',
+  );
+  String get videoLabel => Intl.message(
+    "Add Video",
+    name: 'videoLabel',
+  );
+  String get coverImageLabel => Intl.message(
+    "Cover Image",
+    name: 'coverImageLabel',
+  );
+  String get priceLabel => Intl.message(
+    "Price",
+    name: 'priceLabel',
+  );
+  String get targetFundLabel => Intl.message(
+    "Target Fund",
+    name: 'targetFundLabel',
+  );
+  String get addPhoto => Intl.message(
+    "Add Photo",
+    name: 'addPhoto',
+  );
+  String get errorCropPhoto => Intl.message(
+    "Unable to crop photo",
+    name: 'errorCropPhoto',
+  );
+  String get addChannel => Intl.message(
+    "Add Channel",
+    name: 'addChannel',
+  );
+  String get trailerTitle => Intl.message(
+    "Add a trailer",
+    name: 'trailerTitle',
+  );
+  String get addTrailer => Intl.message(
+    "Add Trailer",
+    name: 'addTrailer',
+  );
+  String get errorLoadTrailers => Intl.message(
+    "Loading Trailer Filed",
+    name: 'errorLoadTrailers',
+  );
+  String get errorEmptyTrailers => Intl.message(
+    "No Trailers found",
+    name: 'errorEmptyTrailers',
+  );
+  String get addCommentLabel => Intl.message(
+    "Add Comment",
+    name: 'addCommentLabel',
+  );
+  String get commentEmpty => Intl.message(
+    "Invalid Comment",
+    name: 'commentEmpty',
+  );
+  String get errorLoadComments => Intl.message(
+    "Loading Comments Failed",
+    name: 'errorLoadComments',
   );
 }
 

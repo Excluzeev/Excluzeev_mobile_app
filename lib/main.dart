@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -13,6 +14,15 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+
+  @override
+  void initState() {
+    super.initState();
+    Firestore.instance.settings(
+      timestampsInSnapshotsEnabled: true,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

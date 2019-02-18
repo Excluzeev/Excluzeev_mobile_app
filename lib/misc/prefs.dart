@@ -26,10 +26,18 @@ import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PreferenceKey {
+
+  static const String lastFetched = 'lastFetched';
+  static const String user = 'user';
+
   // User data
   static const String username = 'username';
   static const String firstName = 'firstName';
   static const String lastName = 'lastName';
+  static const String isContentCreator = 'isContentCreator';
+  static const String subscribedChannels = 'subscribedChannels';
+  static const String uid = 'uid';
+
 
   // Notification
   static const String notificationCount = "notification_count";
@@ -39,19 +47,9 @@ class PreferenceKey {
   static const String phoneVerified = "phoneVerified";
   static const String phone = "phone";
 
-  // Auth
-  static const String finishedTeaser = "finishedTeaser";
-  static const String finishedStyleDna = "finishedStyleDna";
-  static const String inviteCode = "inviteCode";
-
   // Login data
   static const String email = 'email';
-  static const String password = 'password';
   static const String loginType = 'loginType';
-  static const String accessToken = 'accessToken';
-  static const String idToken = 'idToken';
-  static const String phoneVerificationId = 'phoneVerificationId';
-  static const String phoneSmsCode = 'phoneSmsCode';
   static const String expireDate = 'expireDate';
   static const String loggedIn = 'loggedIn';
 }

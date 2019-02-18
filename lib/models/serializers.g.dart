@@ -21,6 +21,9 @@ part of 'serializers.dart';
 
 Serializers _$serializers = (new Serializers().toBuilder()
       ..add(Category.serializer)
+      ..add(Channel.serializer)
+      ..add(Comments.serializer)
+      ..add(Trailer.serializer)
       ..add(User.serializer)
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(String)]),

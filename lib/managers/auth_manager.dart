@@ -1,12 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
 import 'package:trenstop/i18n/translation.dart';
 import 'package:trenstop/managers/snapshot.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:trenstop/misc/logger.dart';
+import 'package:trenstop/misc/prefs.dart';
 import 'package:trenstop/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -41,10 +43,31 @@ class AuthManager {
 
   Future<FirebaseUser> get currentUser async => await _auth.currentUser();
 
-  // TODO optimize this to only get user once every 5 minutes
-  Future<User> getUser({FirebaseUser firebaseUser, bool force}) async {
+
+  Future<User> getUser({FirebaseUser firebaseUser, bool force = false}) async {
     if (firebaseUser == null) firebaseUser = await currentUser;
     if (firebaseUser == null) return null;
+
+    int lastFetched = await Prefs.getInt(PreferenceKey.lastFetched);
+    Logger.log(TAG, message: "lastFetched $lastFetched");
+    if(lastFetched != 0 && force != true) {
+      lastFetched = lastFetched + 60 * 60 * 1000;
+      print(lastFetched);
+      Logger.log(TAG, message: "again lastFetched $lastFetched");
+      if (lastFetched > DateTime
+          .now()
+          .millisecondsSinceEpoch) {
+
+        String userData = await Prefs.getString(PreferenceKey.user);
+        Uint8List data = base64Decode(userData);
+        print(String.fromCharCodes(data));
+        Map<String, dynamic> jsonData = json.decode(String.fromCharCodes(data));
+        User user = User.fromMap(jsonData);
+
+        return user;
+      }
+    }
+
     final DocumentSnapshot snapshot = await collection
         .document(firebaseUser.uid)
         .get()
@@ -52,10 +75,18 @@ class AuthManager {
       Logger.log(TAG, message: "Couldn't receive document: $exception");
     });
     User user;
-    if (snapshot == null || !snapshot.exists || snapshot.data.isEmpty)
+    if (snapshot == null || !snapshot.exists || snapshot.data.isEmpty) {
       user = null;
-    else
+      Logger.log(TAG, message: "Snapshot is null");
+    } else {
+
+      Logger.log(TAG, message: "Snapshot exsits");
       user = User.fromDocumentSnapshot(snapshot);
+
+      List<int> encoded = Utf8Encoder().convert(json.encode(user.toMap));
+      Prefs.setString(PreferenceKey.user, base64Encode(encoded));
+      Prefs.setInt(PreferenceKey.lastFetched, DateTime.now().millisecondsSinceEpoch);
+    }
     Logger.log(TAG, message: "Received user data: ${user != null}");
     return user;
   }

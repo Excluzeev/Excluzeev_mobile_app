@@ -39,7 +39,6 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.trenstop.mobile"
         minSdkVersion 16
         targetSdkVersion 27
@@ -50,11 +49,22 @@ android {
         multiDexEnabled true
     }
 
+    signingConfigs {
+        config {
+            keyAlias 'ghm'
+            keyPassword 'J35u5777#'
+            storeFile file('key.jks')
+            storePassword 'J35u5777#'
+        }
+    }
+
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.debug
+            minifyEnabled true
+            shrinkResources false
+            useProguard true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
 }

@@ -12,6 +12,7 @@ class CustomTextField extends StatefulWidget {
   final Function(String) onChanged;
   final List<TextInputFormatter> inputFormatters;
   final bool obscureText;
+  final int maxLines;
 
   const CustomTextField({
     Key key,
@@ -25,6 +26,7 @@ class CustomTextField extends StatefulWidget {
     this.inputFormatters = const [],
     this.enabled = true,
     this.keyboardType,
+    this.maxLines,
   }) : super(key: key);
 
   @override
@@ -46,6 +48,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
         keyboardType: widget.keyboardType,
         inputFormatters: widget.inputFormatters,
         textInputAction: TextInputAction.done,
+        maxLines: widget.maxLines,
         obscureText: widget.obscureText != null ? true : false,
         decoration: InputDecoration(
           labelText: widget.label,

@@ -1,9 +1,15 @@
 
+import 'dart:typed_data';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:trenstop/managers/auth_manager.dart';
 import 'package:trenstop/managers/snapshot.dart';
 import 'package:trenstop/misc/logger.dart';
+import 'package:trenstop/misc/prefs.dart';
 import 'package:trenstop/models/user.dart';
+
+import 'dart:convert';
 
 class UserManager {
   static UserManager _instance;
@@ -13,6 +19,7 @@ class UserManager {
     return _instance;
   }
 
+  final AuthManager _authManager = AuthManager.instance;
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final Firestore _store = Firestore.instance;
 
@@ -21,28 +28,10 @@ class UserManager {
 
   CollectionReference get collection => _store.collection(COLLECTION_TAG);
 
-  getUser() async {
-    FirebaseUser firebaseUser = await _auth.currentUser();
-    if (firebaseUser == null) return null;
-    final DocumentSnapshot snapshot = await collection
-        .document(firebaseUser.uid)
-        .get()
-        .catchError((exception, stacktrace) {
-      Logger.log(TAG, message: "Couldn't receive document: $exception");
-    });
-    User user;
-    if (snapshot == null || !snapshot.exists || snapshot.data.isEmpty)
-      user = null;
-    else
-      user = User.fromDocumentSnapshot(snapshot);
-    Logger.log(TAG, message: "Received user data: ${user != null}");
-    return user;
-  }
-
   setUserPayPalEmail(String email) async {
     String error;
 
-    User user = await getUser();
+    User user = await _authManager.getUser();
     if(user == null) return null;
     final reference = collection.document(user.uid);
     Logger.log(TAG, message: "Trying to retrieve ${reference.path}");
