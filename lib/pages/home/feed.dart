@@ -2,10 +2,12 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:trenstop/i18n/translation.dart';
 import 'package:trenstop/managers/auth_manager.dart';
+import 'package:trenstop/misc/palette.dart';
 import 'package:trenstop/misc/prefs.dart';
 import 'package:trenstop/misc/widget_utils.dart';
 import 'package:trenstop/models/user.dart';
 import 'package:trenstop/pages/home/home.dart';
+import 'package:trenstop/widgets/full_app_logo.dart';
 import 'package:trenstop/widgets/white_app_bar.dart';
 
 class FeedPage extends StatefulWidget {
@@ -21,6 +23,10 @@ class FeedPage extends StatefulWidget {
 class _FeedPageState extends State<FeedPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final AuthManager _authManager = AuthManager();
+  TextStyle drawerItemTextStyle = TextStyle(
+    fontWeight: FontWeight.bold,
+    fontSize: 16.0
+  );
 
   Translation translation;
   User user;
@@ -45,34 +51,68 @@ class _FeedPageState extends State<FeedPage> {
   }
 
   _createChannel() async {
-    Navigator.pop(context);
-    WidgetUtils.showCreateChannelPage(context);
+    if(user.isContentCreator) {
+      Navigator.pop(context);
+      WidgetUtils.showCreateChannelPage(context);
+    } else {
+      _contentCreator();
+    }
   }
 
   _contentCreatorMenu() {
     return user.isContentCreator ?
     Container()
         :
-    Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: FlatButton(
-        onPressed: _contentCreator,
-        child: Text("Sign Up for Content Creator"),
+    FlatButton(
+      onPressed: _contentCreator,
+      child: Text(
+        translation.signUpContentCreator,
+        style: drawerItemTextStyle,
       ),
     );
   }
 
-  _createChannelMenu() {
-    return user.isContentCreator ?
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: FlatButton(
-            onPressed: _createChannel,
-            child: Text(translation.createChannel),
+  _myChannels() {
+    if(user.isContentCreator) {
+      Navigator.pop(context);
+      WidgetUtils.showChannels(context, user);
+    } else {
+      _contentCreator();
+    }
+  }
+
+  _mySubscriptions() {
+    Navigator.pop(context);
+    WidgetUtils.showSubscriptions(context, user);
+  }
+
+  _createMenu() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        FlatButton(
+          onPressed: _myChannels,
+          child: Text(
+            translation.myChannels,
+            style: drawerItemTextStyle,
+          ),
+        ),
+        FlatButton(
+          onPressed: _mySubscriptions,
+          child: Text(
+            translation.mySubscriptions,
+            style: drawerItemTextStyle,
+          ),
+        ),
+        FlatButton(
+          onPressed: _createChannel,
+          child: Text(
+            translation.createChannel,
+            style: drawerItemTextStyle,
           ),
         )
-        :
-        Container();
+      ],
+    );
   }
 
   _logout() async {
@@ -86,19 +126,43 @@ class _FeedPageState extends State<FeedPage> {
     return Drawer(
       child: user != null ?
       Container(
+        padding: const EdgeInsets.only(left: 16.0),
         color: Colors.white,
-        child: Column(
+        child: Stack(
           children: <Widget>[
-            SizedBox(height: 24.0,),
-            Text(user.displayName),
-            _contentCreatorMenu(),
-            _createChannelMenu(),
-            FlatButton(
-              onPressed: _logout,
-              child: Text(
-                translation.logout
-              )
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                SizedBox(height: 32.0,),
+                SizedAppLogo(),
+                SizedBox(height: 14.0,),
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  color: Palette.primary,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      user.displayName.toUpperCase(),
+                      style: TextStyle(
+                        color: Colors.white
+                      ),
+                    ),
+                  ),
+                ),
+                _contentCreatorMenu(),
+                _createMenu(),
+              ],
             ),
+            Positioned(
+              bottom: 20.0,
+              child: FlatButton(
+                  onPressed: _logout,
+                  child: Text(
+                    translation.logout,
+                    style: drawerItemTextStyle,
+                  )
+              ),
+            )
           ],
         ),
       )
@@ -117,7 +181,7 @@ class _FeedPageState extends State<FeedPage> {
       backgroundColor: Colors.white,
       appBar: WhiteAppBar(
         centerTitle: true,
-        title: Text(translation.appName),
+        title: Text(translation.appNameTrailers),
       ),
       drawer: _drawerWidget(),
       body: HomePage(user),

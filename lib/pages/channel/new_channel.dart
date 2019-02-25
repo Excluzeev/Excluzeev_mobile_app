@@ -49,7 +49,7 @@ class _NewChannelPageState extends State<NewChannelPage> {
   TextEditingController _targetFundController = TextEditingController();
 
   Category selectedCategory;
-  String selectedType;
+  String selectedType = "VOD";
 
   bool _isLoading = false;
 
@@ -128,7 +128,7 @@ class _NewChannelPageState extends State<NewChannelPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            translation.descriptionLabel,
+            translation.channelTypeLabel,
             style: TextStyle(
               fontSize: 14.0,
               fontWeight: FontWeight.bold
@@ -331,6 +331,14 @@ class _NewChannelPageState extends State<NewChannelPage> {
       return;
     }
 
+    double targetFund = 0.0;
+    try {
+      targetFund =  double.parse(_targetFundController.text);
+    } catch(err) {
+      targetFund =  0.0;
+    }
+
+
     ChannelBuilder channelBuilder = ChannelBuilder()
         ..channelId = channelId
         ..categoryName = selectedCategory.name
@@ -344,8 +352,8 @@ class _NewChannelPageState extends State<NewChannelPage> {
         ..coverImage = coverImage.data
         ..createdDate = Timestamp.fromDate(DateTime.now())
         ..subscriberCount = 0
-        ..price = int.parse(_priceController.text) ?? 0
-        ..targetFund = int.parse(_targetFundController.text) ?? 0
+        ..price = double.parse(_priceController.text) ?? 0.0
+        ..targetFund = targetFund
         ..currentFund = 0
         ..percentage = 0.0;
 
@@ -357,7 +365,7 @@ class _NewChannelPageState extends State<NewChannelPage> {
     }
 
     WidgetUtils.showCreateTrailerPage(context, snapshot.data);
-//    Navigator.of()
+
   }
 
   @override
@@ -371,7 +379,11 @@ class _NewChannelPageState extends State<NewChannelPage> {
       child: Scaffold(
         backgroundColor: Colors.white,
         key: _scaffoldKey,
-        appBar: WhiteAppBar(),
+        appBar: WhiteAppBar(
+          title: Text(
+              translation.addChannel,
+          ),
+        ),
         body: _isLoading
         ?
             Center(
@@ -385,7 +397,10 @@ class _NewChannelPageState extends State<NewChannelPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     _buildCategoryDropDown(),
-                    _buildTypeDropDown(),
+                    selectedCategory != null && selectedCategory.name == "Causes" ?
+                    _buildTypeDropDown()
+                    :
+                    Container(),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: RoundedBorder(
@@ -433,6 +448,7 @@ class _NewChannelPageState extends State<NewChannelPage> {
                         ),
                       ),
                     ),
+                    selectedType != "CrowdFunding" ?
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: RoundedBorder(
@@ -440,7 +456,7 @@ class _NewChannelPageState extends State<NewChannelPage> {
                           stream: bloc.price,
                           builder: (context, snapshot) => TextField(
                             controller: _priceController,
-                            onChanged: (p) => bloc.updatePrice(int.parse(p)),
+                            onChanged: (p) => bloc.updatePrice(double.parse(p)),
                             maxLines: 1,
                             decoration: InputDecoration(
                               fillColor: Colors.white,
@@ -454,15 +470,18 @@ class _NewChannelPageState extends State<NewChannelPage> {
                           ),
                         ),
                       ),
-                    ),
-                    Padding(
+                    )
+                    :
+                    Container(),
+                    selectedType == "CrowdFunding" ?
+                    Padding (
                       padding: const EdgeInsets.all(8.0),
                       child: RoundedBorder(
                         child: StreamBuilder(
                           stream: bloc.targetFund,
                           builder: (context, snapshot) => TextField(
                             controller: _targetFundController,
-                            onChanged: (p) => bloc.updateTargetFund(int.parse(p)),
+                            onChanged: (p) => bloc.updateTargetFund(double.parse(p)),
                             maxLines: 1,
                             decoration: InputDecoration(
                               fillColor: Colors.white,
@@ -476,7 +495,9 @@ class _NewChannelPageState extends State<NewChannelPage> {
                           ),
                         ),
                       ),
-                    ),
+                    )
+                    :
+                    Container(),
                     Padding(
                       padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                       child: Text(

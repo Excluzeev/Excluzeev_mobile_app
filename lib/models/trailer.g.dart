@@ -61,10 +61,25 @@ class _$TrailerSerializer implements StructuredSerializer<Trailer> {
       'videoUrl',
       serializers.serialize(object.videoUrl,
           specifiedType: const FullType(String)),
+      'channelType',
+      serializers.serialize(object.channelType,
+          specifiedType: const FullType(String)),
       'createdDate',
       serializers.serialize(object.createdDate,
           specifiedType: const FullType(Timestamp)),
     ];
+    if (object.originalUrl != null) {
+      result
+        ..add('originalUrl')
+        ..add(serializers.serialize(object.originalUrl,
+            specifiedType: const FullType(String)));
+    }
+    if (object.playbackId != null) {
+      result
+        ..add('playbackId')
+        ..add(serializers.serialize(object.playbackId,
+            specifiedType: const FullType(String)));
+    }
     if (object.image != null) {
       result
         ..add('image')
@@ -75,18 +90,6 @@ class _$TrailerSerializer implements StructuredSerializer<Trailer> {
       result
         ..add('channelImage')
         ..add(serializers.serialize(object.channelImage,
-            specifiedType: const FullType(String)));
-    }
-    if (object.video360 != null) {
-      result
-        ..add('video360')
-        ..add(serializers.serialize(object.video360,
-            specifiedType: const FullType(String)));
-    }
-    if (object.video720 != null) {
-      result
-        ..add('video720')
-        ..add(serializers.serialize(object.video720,
             specifiedType: const FullType(String)));
     }
 
@@ -144,20 +147,24 @@ class _$TrailerSerializer implements StructuredSerializer<Trailer> {
           result.videoUrl = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'channelType':
+          result.channelType = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'originalUrl':
+          result.originalUrl = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'playbackId':
+          result.playbackId = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
         case 'image':
           result.image = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
         case 'channelImage':
           result.channelImage = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
-          break;
-        case 'video360':
-          result.video360 = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
-          break;
-        case 'video720':
-          result.video720 = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
         case 'createdDate':
@@ -193,13 +200,15 @@ class _$Trailer extends Trailer {
   @override
   final String videoUrl;
   @override
+  final String channelType;
+  @override
+  final String originalUrl;
+  @override
+  final String playbackId;
+  @override
   final String image;
   @override
   final String channelImage;
-  @override
-  final String video360;
-  @override
-  final String video720;
   @override
   final Timestamp createdDate;
 
@@ -217,10 +226,11 @@ class _$Trailer extends Trailer {
       this.title,
       this.description,
       this.videoUrl,
+      this.channelType,
+      this.originalUrl,
+      this.playbackId,
       this.image,
       this.channelImage,
-      this.video360,
-      this.video720,
       this.createdDate})
       : super._() {
     if (userId == null) {
@@ -253,6 +263,9 @@ class _$Trailer extends Trailer {
     if (videoUrl == null) {
       throw new BuiltValueNullFieldError('Trailer', 'videoUrl');
     }
+    if (channelType == null) {
+      throw new BuiltValueNullFieldError('Trailer', 'channelType');
+    }
     if (createdDate == null) {
       throw new BuiltValueNullFieldError('Trailer', 'createdDate');
     }
@@ -279,10 +292,11 @@ class _$Trailer extends Trailer {
         title == other.title &&
         description == other.description &&
         videoUrl == other.videoUrl &&
+        channelType == other.channelType &&
+        originalUrl == other.originalUrl &&
+        playbackId == other.playbackId &&
         image == other.image &&
         channelImage == other.channelImage &&
-        video360 == other.video360 &&
-        video720 == other.video720 &&
         createdDate == other.createdDate;
   }
 
@@ -303,22 +317,25 @@ class _$Trailer extends Trailer {
                                                     $jc(
                                                         $jc(
                                                             $jc(
-                                                                0,
-                                                                userId
+                                                                $jc(
+                                                                    0,
+                                                                    userId
+                                                                        .hashCode),
+                                                                trailerId
                                                                     .hashCode),
-                                                            trailerId.hashCode),
-                                                        channelId.hashCode),
-                                                    channelName.hashCode),
-                                                categoryId.hashCode),
-                                            categoryName.hashCode),
-                                        createdBy.hashCode),
-                                    title.hashCode),
-                                description.hashCode),
-                            videoUrl.hashCode),
-                        image.hashCode),
-                    channelImage.hashCode),
-                video360.hashCode),
-            video720.hashCode),
+                                                            channelId.hashCode),
+                                                        channelName.hashCode),
+                                                    categoryId.hashCode),
+                                                categoryName.hashCode),
+                                            createdBy.hashCode),
+                                        title.hashCode),
+                                    description.hashCode),
+                                videoUrl.hashCode),
+                            channelType.hashCode),
+                        originalUrl.hashCode),
+                    playbackId.hashCode),
+                image.hashCode),
+            channelImage.hashCode),
         createdDate.hashCode));
   }
 
@@ -335,10 +352,11 @@ class _$Trailer extends Trailer {
           ..add('title', title)
           ..add('description', description)
           ..add('videoUrl', videoUrl)
+          ..add('channelType', channelType)
+          ..add('originalUrl', originalUrl)
+          ..add('playbackId', playbackId)
           ..add('image', image)
           ..add('channelImage', channelImage)
-          ..add('video360', video360)
-          ..add('video720', video720)
           ..add('createdDate', createdDate))
         .toString();
   }
@@ -387,6 +405,18 @@ class TrailerBuilder implements Builder<Trailer, TrailerBuilder> {
   String get videoUrl => _$this._videoUrl;
   set videoUrl(String videoUrl) => _$this._videoUrl = videoUrl;
 
+  String _channelType;
+  String get channelType => _$this._channelType;
+  set channelType(String channelType) => _$this._channelType = channelType;
+
+  String _originalUrl;
+  String get originalUrl => _$this._originalUrl;
+  set originalUrl(String originalUrl) => _$this._originalUrl = originalUrl;
+
+  String _playbackId;
+  String get playbackId => _$this._playbackId;
+  set playbackId(String playbackId) => _$this._playbackId = playbackId;
+
   String _image;
   String get image => _$this._image;
   set image(String image) => _$this._image = image;
@@ -394,14 +424,6 @@ class TrailerBuilder implements Builder<Trailer, TrailerBuilder> {
   String _channelImage;
   String get channelImage => _$this._channelImage;
   set channelImage(String channelImage) => _$this._channelImage = channelImage;
-
-  String _video360;
-  String get video360 => _$this._video360;
-  set video360(String video360) => _$this._video360 = video360;
-
-  String _video720;
-  String get video720 => _$this._video720;
-  set video720(String video720) => _$this._video720 = video720;
 
   Timestamp _createdDate;
   Timestamp get createdDate => _$this._createdDate;
@@ -421,10 +443,11 @@ class TrailerBuilder implements Builder<Trailer, TrailerBuilder> {
       _title = _$v.title;
       _description = _$v.description;
       _videoUrl = _$v.videoUrl;
+      _channelType = _$v.channelType;
+      _originalUrl = _$v.originalUrl;
+      _playbackId = _$v.playbackId;
       _image = _$v.image;
       _channelImage = _$v.channelImage;
-      _video360 = _$v.video360;
-      _video720 = _$v.video720;
       _createdDate = _$v.createdDate;
       _$v = null;
     }
@@ -458,10 +481,11 @@ class TrailerBuilder implements Builder<Trailer, TrailerBuilder> {
             title: title,
             description: description,
             videoUrl: videoUrl,
+            channelType: channelType,
+            originalUrl: originalUrl,
+            playbackId: playbackId,
             image: image,
             channelImage: channelImage,
-            video360: video360,
-            video720: video720,
             createdDate: createdDate);
     replace(_$result);
     return _$result;

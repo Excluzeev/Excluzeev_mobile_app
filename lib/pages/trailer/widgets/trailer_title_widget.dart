@@ -45,7 +45,7 @@ class TrailerTitleWidget extends StatelessWidget {
                     height: 4.0,
                   ),
                   Text(
-                    trailer.channelName,
+                    "${trailer.channelName} ${trailer.channelType == "CrowdFunding" ?  '- ' + trailer.channelType : ''}",
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.subtitle.copyWith(

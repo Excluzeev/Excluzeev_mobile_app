@@ -32,10 +32,10 @@ abstract class Channel implements Built<Channel, ChannelBuilder> {
   @nullable
   int get subscriberCount;
 
-  int get price;
+  double get price;
 
   @nullable
-  int get targetFund;
+  double get targetFund;
 
   @nullable
   int get currentFund;
@@ -66,8 +66,8 @@ abstract class Channel implements Built<Channel, ChannelBuilder> {
         ..coverImage = data['coverImage'] ?? ''
         ..createdDate = data['createdDate'] ?? null
         ..subscriberCount = data['subscriberCount'] ?? 0
-        ..price = data['price'] ?? 0
-        ..targetFund = data['targetFund'] ?? 0
+        ..price = double.parse(data['price'].toString()) ?? 0.0
+        ..targetFund = double.parse(data['targetFund'].toString()) ?? 0.0
         ..currentFund = data['currentFund'] ?? 0
         ..percentage = data['percentage'] ?? 0.0;
       return builder.build();

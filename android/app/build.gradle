@@ -28,7 +28,7 @@ apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 apply plugin: 'com.google.gms.google-services'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -36,15 +36,21 @@ android {
 
     lintOptions {
         disable 'InvalidPackage'
+        abortOnError false
     }
 
     defaultConfig {
         applicationId "com.trenstop.mobile"
-        minSdkVersion 16
-        targetSdkVersion 27
+        minSdkVersion 21
+        targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        ndk {
+            abiFilters "armeabi-v7a"
+//            abiFilters "armeabi-v7a", "arm64-v8a", "x86"
+        }
 
         multiDexEnabled true
     }
@@ -60,12 +66,21 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             shrinkResources false
             useProguard true
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.config
         }
+    }
+}
+
+configurations.all {
+    resolutionStrategy {
+        force 'android.arch.lifecycle:viewmodel:1.1.1'
+        force 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0-rc01'
+//        force 'com.android.support:support-core-utils:28.0.0'
+//        force 'com.android.support:support-fragment:28.0.0'
     }
 }
 

@@ -30,7 +30,11 @@ class StorageManager {
   static const int SQUARE_SIZE = 512;
   static const int DEFAULT_SIZE = 683;
 
-  FirebaseStorage _storage = FirebaseStorage(storageBucket: "gs://trenstop-public");
+  FirebaseStorage _storage =
+      FirebaseStorage(storageBucket: "gs://trenstop-public");
+
+  FirebaseStorage _storageVideos =
+  FirebaseStorage(storageBucket: "gs://trenstop-videos");
 
   StorageUploadTask _uploadTask;
   StorageFileDownloadTask _downloadTask;
@@ -47,7 +51,7 @@ class StorageManager {
     await _downloadTask.future.catchError((exception, stacktrace) {
       Logger.log(TAG,
           message:
-          "Couldn't get download url for this file, error: $exception");
+              "Couldn't get download url for this file, error: $exception");
       error = exception.toString();
     }).then((value) {
       Logger.log(TAG,
@@ -73,7 +77,7 @@ class StorageManager {
     await _downloadTask.future.catchError((exception, stacktrace) {
       Logger.log(TAG,
           message:
-          "Couldn't get download url for this file, error: $exception");
+              "Couldn't get download url for this file, error: $exception");
       error = exception.toString();
     }).then((value) {
       Logger.log(TAG,
@@ -101,7 +105,7 @@ class StorageManager {
     await reference.getDownloadURL().catchError((exception, stacktrace) {
       Logger.log(TAG,
           message:
-          "Couldn't get download url for this file, error: $exception");
+              "Couldn't get download url for this file, error: $exception");
       error = exception.toString();
     }).then((value) {
       if (value != null) url = value.toString();
@@ -129,7 +133,7 @@ class StorageManager {
       );
 
       final snapshot =
-      await _uploadTask.onComplete.catchError((exception, stacktrace) {
+          await _uploadTask.onComplete.catchError((exception, stacktrace) {
         Logger.log(TAG,
             message: "Couldn't upload file to Storage, error: $exception");
         error = exception.toString();
@@ -201,9 +205,10 @@ class StorageManager {
 
   StorageReference getChannelTrailerReference() =>
       _storage.ref().child("trailers");
+  StorageReference getVideosReference() =>
+      _storageVideos.ref().child("videos");
 
-  StorageReference getChannelsReference() =>
-      _storage.ref().child("channels");
+  StorageReference getChannelsReference() => _storage.ref().child("channels");
 
 //  StorageReference getPollListReference(String userUid) =>
 //      _storage.ref().child("$USERS/$userUid/$POLLS");
@@ -226,7 +231,8 @@ class StorageManager {
       String userUid, String channelId, String trailerId, File image) async {
     String error;
 
-    final reference = getChannelTrailerReference().child(channelId).child(trailerId);
+    final reference =
+        getChannelTrailerReference().child(channelId).child(trailerId);
     final List<StorageUploadTask> uploadTasks = [];
 
     final id = IUID.string;
@@ -243,9 +249,9 @@ class StorageManager {
     String error;
     String url;
 
-    final reference = getChannelsReference().child(channelId).child("$filename.jpg");
+    final reference =
+        getChannelsReference().child(channelId).child("$filename.jpg");
     StorageUploadTask uploadTasks;
-
 
     if (image == null) {
       error = "Received file is null";
@@ -258,7 +264,7 @@ class StorageManager {
       );
 
       final snapshot =
-      await _uploadTask.onComplete.catchError((exception, stacktrace) {
+          await _uploadTask.onComplete.catchError((exception, stacktrace) {
         Logger.log(TAG,
             message: "Couldn't upload file to Storage, error: $exception");
         error = exception.toString();
@@ -285,9 +291,11 @@ class StorageManager {
     String error;
     String url;
 
-    final reference = getChannelTrailerReference().child(channelId).child(trailerId).child('original');
+    final reference = getChannelTrailerReference()
+        .child(channelId)
+        .child(trailerId)
+        .child('original');
     StorageUploadTask uploadTasks;
-
 
     if (video == null) {
       error = "Received file is null";
@@ -301,7 +309,7 @@ class StorageManager {
       );
 
       final snapshot =
-      await _uploadTask.onComplete.catchError((exception, stacktrace) {
+          await _uploadTask.onComplete.catchError((exception, stacktrace) {
         Logger.log(TAG,
             message: "Couldn't upload file to Storage, error: $exception");
         error = exception.toString();
@@ -323,6 +331,50 @@ class StorageManager {
     );
   }
 
+  uploadVideoVideo(String uid, String videoId, File videoFile) async {
+    String error;
+    String url;
+
+    final reference = getVideosReference()
+        .child(videoId)
+        .child('original');
+    StorageUploadTask uploadTasks;
+
+    if (videoFile == null) {
+      error = "Received file is null";
+    } else {
+      _uploadTask = reference.putFile(
+        videoFile,
+        StorageMetadata(
+          contentType: 'video/mp4',
+          customMetadata: <String, String>{'uid': uid},
+        ),
+      );
+
+      final snapshot =
+          await _uploadTask.onComplete.catchError((exception, stacktrace) {
+        Logger.log(TAG,
+            message: "Couldn't upload file to Storage, error: $exception");
+        error = exception.toString();
+      });
+
+      if (snapshot != null) {
+        Logger.log(TAG,
+            message: "Snapshot returned: $snapshot, error: ${snapshot.error}");
+        final urlSnapshot = await getURL(reference);
+        if (urlSnapshot.success) {
+          url = urlSnapshot.data;
+        }
+      }
+    }
+
+    return Snapshot<String>(
+      data: url,
+      error: error,
+    );
+
+  }
+
   deleteProfilePicture(String uid) async {
     getUserReference(uid).delete().catchError((exception, stacktrace) =>
         Logger.log(TAG,
@@ -332,7 +384,7 @@ class StorageManager {
   delete(StorageReference reference) async => await reference
       .delete()
       .catchError((exception, stacktrace) =>
-      Logger.log(TAG, message: "Couldn't delete file, error: $exception"))
+          Logger.log(TAG, message: "Couldn't delete file, error: $exception"))
       .then((value) => Logger.log(TAG,
-      message: "Deleted file ${reference.path} successfully!"));
+          message: "Deleted file ${reference.path} successfully!"));
 }

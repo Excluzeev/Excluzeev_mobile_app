@@ -10,10 +10,10 @@ part 'comments.g.dart';
 
 abstract class Comments implements Built<Comments, CommentsBuilder> {
 
-  static String TAG = "TRAILER_MODEL";
+  static String TAG = "COMMENTS_MODEL";
 
   String get userId;
-  String get trailerId;
+  String get vtId;
   String get channelId;
   String get channelName;
   String get commentId;
@@ -38,7 +38,7 @@ abstract class Comments implements Built<Comments, CommentsBuilder> {
       final data = snapshot.data;
       final builder = CommentsBuilder()
         ..userId = data['userId'] ?? ''
-        ..trailerId = data['trailerId'] ?? ''
+        ..vtId = data['vtId'] ?? ''
         ..channelId = data['channelId'] ?? ''
         ..channelName = data['channelName'] ?? ''
         ..userName = data['userName'] ?? ''
@@ -55,7 +55,7 @@ abstract class Comments implements Built<Comments, CommentsBuilder> {
 
   Map<String, dynamic> get toMap => {
     "userId": this.userId,
-    "trailerId": this.trailerId,
+    "vtId": this.vtId,
     "channelId": this.channelId,
     "channelName": this.channelName,
     "userName": this.userName,

@@ -18,7 +18,7 @@ import 'package:trenstop/models/channel.dart';
 import 'package:trenstop/models/trailer.dart';
 import 'package:trenstop/models/user.dart';
 import 'package:trenstop/pages/bloc_provider.dart';
-import 'package:trenstop/pages/channel/blocs/add_trailer_bloc.dart';
+import 'package:trenstop/pages/trailer/blocs/add_trailer_bloc.dart';
 import 'package:trenstop/widgets/add_photo.dart';
 import 'package:trenstop/widgets/custom_text_field.dart';
 import 'package:trenstop/widgets/rounded_border.dart';
@@ -153,6 +153,7 @@ class _AddTrailerPageState extends State<AddTrailerPage> {
         ..userId = widget.channel.userId
         ..channelId = widget.channel.channelId
         ..channelName = widget.channel.title
+        ..channelType = widget.channel.channelType
         ..title = _titleController.text
         ..description = _descriptionController.text
         ..videoUrl = video.data

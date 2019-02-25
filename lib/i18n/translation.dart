@@ -34,7 +34,8 @@ class Translation {
     return Localizations.of<Translation>(context, Translation);
   }
 
-  String get appName => 'TrenStop';
+  String get appName => 'Excluzeev';
+  String get appNameTrailers => 'Excluzeev Trailers';
 
   String get dot => '•';
 
@@ -83,6 +84,10 @@ class Translation {
   String get signUp => Intl.message(
     "Sign Up",
     name: "signUp",
+  );
+  String get signUpContentCreator => Intl.message(
+    "Sign Up for Content Creator",
+    name: "signUpContentCreator",
   );
   String get resetPassword => Intl.message(
     "Reset Password",
@@ -189,9 +194,17 @@ class Translation {
     "Create Channel",
     name: 'createChannel',
   );
+  String get myChannels => Intl.message(
+    "My Channels",
+    name: 'myChannels',
+  );
   String get cannotBeEmpty => Intl.message(
     "Field cannot be empty",
     name: 'cannotBeEmpty',
+  );
+  String get priceError => Intl.message(
+    "Cannot be greater 10 or Lessthan 2",
+    name: 'targetFundError',
   );
   String get categoryNameLabel => Intl.message(
     "Category",
@@ -245,6 +258,30 @@ class Translation {
     "Add a trailer",
     name: 'trailerTitle',
   );
+  String get trailers => Intl.message(
+    "Trailers",
+    name: 'trailers',
+  );
+  String get videoTitle => Intl.message(
+    "Add a video",
+    name: 'videoTitle',
+  );
+  String get liveTitle => Intl.message(
+    "Start Excluzeev",
+    name: 'liveTitle',
+  );
+  String get next => Intl.message(
+    "Next",
+    name: 'next',
+  );
+  String get videos => Intl.message(
+    "Videos",
+    name: 'videos',
+  );
+  String get addVideo => Intl.message(
+    "Add Video",
+    name: 'addVideo',
+  );
   String get addTrailer => Intl.message(
     "Add Trailer",
     name: 'addTrailer',
@@ -253,8 +290,24 @@ class Translation {
     "Loading Trailer Filed",
     name: 'errorLoadTrailers',
   );
+  String get errorLoadChannels => Intl.message(
+    "Loading Channels Filed",
+    name: 'errorLoadChannels',
+  );
   String get errorEmptyTrailers => Intl.message(
     "No Trailers found",
+    name: 'errorEmptyTrailers',
+  );
+  String get errorLoadVideos => Intl.message(
+    "Loading Videos Filed",
+    name: 'errorLoadVideos',
+  );
+  String get errorEmptyVideos => Intl.message(
+    "No Videos found",
+    name: 'errorEmptyVideos',
+  );
+  String get errorEmptyChannels => Intl.message(
+    "No Channels found",
     name: 'errorEmptyTrailers',
   );
   String get addCommentLabel => Intl.message(
@@ -268,6 +321,78 @@ class Translation {
   String get errorLoadComments => Intl.message(
     "Loading Comments Failed",
     name: 'errorLoadComments',
+  );
+  String get noCommentsYet => Intl.message(
+    "No Comments yet.",
+    name: 'noCommentsYets',
+  );
+  String get subscribe => Intl.message(
+    "Subscribe",
+    name: 'subscribe',
+  );
+  String get donate => Intl.message(
+    "Donate",
+    name: 'donate',
+  );
+  String get paymentPreparing => Intl.message(
+    "Preparing for payment",
+    name: 'paymentPreparing',
+  );
+  String get paymentFailed => Intl.message(
+    "Error Making payment please try again later!",
+    name: 'paymentFailed',
+  );
+  String get paymentFailedLabel => Intl.message(
+    "Payment Failed",
+    name: 'paymentFailedLabel',
+  );
+  String get paymentFailedDialogContent => Intl.message(
+    "Payment Canceled. Please retry the payment after some time.!",
+    name: 'paymentFailedDialogContent',
+  );
+  String get paymentVerifying => Intl.message(
+    "Verifying payment!",
+    name: 'paymentVerifying',
+  );
+  String get startStream => Intl.message(
+    "Start Stream",
+    name: 'startStream',
+  );
+  String get startStreamDialogContent => Intl.message(
+    "Are you sure you want to start Excluzeev Stream",
+    name: 'startStreamDialogContent',
+  );
+  String get start => Intl.message(
+    "Start",
+    name: 'start',
+  );
+  String get cancel => Intl.message(
+    "Cancel",
+    name: 'cancel',
+  );
+  String get now => Intl.message(
+    "Now",
+    name: 'now',
+  );
+  String get schedule => Intl.message(
+    "Schedule",
+    name: 'schedule',
+  );
+  String get selectDate => Intl.message(
+    "Select Date",
+    name: 'selectDate',
+  );
+  String get mySubscriptions => Intl.message(
+    "My Subscriptions",
+    name: 'mySubscriptions',
+  );
+  String get errorEmptySubscriptions => Intl.message(
+    "No Subscriptions Found.",
+    name: 'errorEmptySubscriptions',
+  );
+  String get errorLoadSubscriptions => Intl.message(
+    "Error Loading Subscriptions.",
+    name: 'errorLoadSubscriptions',
   );
 }
 

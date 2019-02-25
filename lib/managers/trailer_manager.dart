@@ -27,6 +27,13 @@ class TrailerManager {
   Query get trailersQuery =>
       trailersCollection.orderBy("createdDate", descending: true);
 
+  Query trailersByUserChannelQuery(String channelId, String userId) {
+    return trailersCollection
+        .where("channelId", isEqualTo: channelId)
+        .where("userId", isEqualTo: userId)
+        .orderBy("createdDate", descending: true);
+  }
+
   Query trailerCommentQuery(String trailerId) {
     return trailersCollection.document(trailerId).collection('comments').orderBy("createdDate", descending: true);
   }
@@ -72,7 +79,7 @@ class TrailerManager {
   Future<Snapshot<Comments>> addComment(Comments comment) async {
     String error;
 
-    DocumentReference reference = trailersCollection.document(comment.trailerId)
+    DocumentReference reference = trailersCollection.document(comment.vtId)
         .collection("comments").document(comment.commentId);
 
     Logger.log(TAG, message: "Trying to retrieve ${reference.documentID}");

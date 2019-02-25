@@ -26,6 +26,11 @@ class ChannelManager {
   CollectionReference get categories => _store.collection(CATEGORY_TAG);
 
 
+  Query myChannelsQuery(String userId) {
+    return channelsCollection
+        .where("userId", isEqualTo: userId)
+        .orderBy("createdDate", descending: true);
+  }
   // Queries
 //  Query getUserChallenges(String userUid) => collection
 //      .where("userUid", isEqualTo: userUid)
@@ -39,6 +44,31 @@ class ChannelManager {
       return listCategories;
     } else
       return null;
+  }
+
+  Future<Snapshot<Channel>> getChannelFromId(String channelId) async {
+
+    String error;
+
+    DocumentReference reference = channelsCollection.document(channelId);
+
+    Logger.log(TAG, message: "Trying to retrieve ${reference.documentID}");
+
+    final errorHandler = (exception, stacktrace) {
+      Logger.log(TAG,
+          message: "Couldn't update user on database, error: $exception");
+      error = "Unknown Error";
+    };
+
+    final snap = await reference.get().catchError(errorHandler);
+
+    Channel channel = Channel.fromDocumentSnapshot(snap);
+
+    return Snapshot<Channel>(
+      data: channel,
+      error: error,
+    );
+
   }
 
   Future<Snapshot<Channel>> addChannel(Channel channel) async {

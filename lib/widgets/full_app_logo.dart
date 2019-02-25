@@ -12,17 +12,20 @@ class FullAppLogo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Hero(
       tag: TAG,
-      child: Material(
-        color: Colors.transparent,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Image.asset("res/icons/logo/logo_transparent.png",),
-              SizedBox(height: 8.0),
-              SloganWidget(),
-            ],
+      child: Container(
+        child: Material(
+          color: Colors.transparent,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Image.asset("res/icons/logo/logo_transparent.png",),
+                SizedBox(height: 16.0),
+                SloganWidget(),
+                SizedBox(height: 8.0,),
+              ],
+            ),
           ),
         ),
       ),
@@ -50,11 +53,10 @@ class SizedAppLogo extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               SizedBox(
-                height: 100.0,
+                height: size,
                   child: Image.asset("res/icons/logo/logo_transparent.png",)
               ),
               SizedBox(height: 8.0),
-              SloganWidget(),
             ],
           ),
         ),

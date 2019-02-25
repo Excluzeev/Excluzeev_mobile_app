@@ -11,12 +11,17 @@ class SloganWidget extends StatelessWidget {
       tag: TAG,
       child: Material(
         color: Colors.transparent,
-        child: Text(
-          Translation.of(context).slogan,
-          style: Theme.of(context).textTheme.subhead.copyWith(
-                color: Palette.darkBlue,
-                fontWeight: FontWeight.bold,
-              ),
+        child: Align(
+          alignment: Alignment.center,
+          child: Text(
+            Translation.of(context).slogan,
+            style: Theme.of(context).textTheme.subhead.copyWith(
+                  color: Palette.darkBlue,
+                  fontWeight: FontWeight.bold,
+              fontSize: 14.0
+                ),
+            textAlign: TextAlign.center,
+          ),
         ),
       ),
     );

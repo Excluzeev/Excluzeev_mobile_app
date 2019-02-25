@@ -34,9 +34,8 @@ class _$CommentsSerializer implements StructuredSerializer<Comments> {
       'userId',
       serializers.serialize(object.userId,
           specifiedType: const FullType(String)),
-      'trailerId',
-      serializers.serialize(object.trailerId,
-          specifiedType: const FullType(String)),
+      'vtId',
+      serializers.serialize(object.vtId, specifiedType: const FullType(String)),
       'channelId',
       serializers.serialize(object.channelId,
           specifiedType: const FullType(String)),
@@ -81,8 +80,8 @@ class _$CommentsSerializer implements StructuredSerializer<Comments> {
           result.userId = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
-        case 'trailerId':
-          result.trailerId = serializers.deserialize(value,
+        case 'vtId':
+          result.vtId = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
         case 'channelId':
@@ -124,7 +123,7 @@ class _$Comments extends Comments {
   @override
   final String userId;
   @override
-  final String trailerId;
+  final String vtId;
   @override
   final String channelId;
   @override
@@ -145,7 +144,7 @@ class _$Comments extends Comments {
 
   _$Comments._(
       {this.userId,
-      this.trailerId,
+      this.vtId,
       this.channelId,
       this.channelName,
       this.commentId,
@@ -157,8 +156,8 @@ class _$Comments extends Comments {
     if (userId == null) {
       throw new BuiltValueNullFieldError('Comments', 'userId');
     }
-    if (trailerId == null) {
-      throw new BuiltValueNullFieldError('Comments', 'trailerId');
+    if (vtId == null) {
+      throw new BuiltValueNullFieldError('Comments', 'vtId');
     }
     if (channelId == null) {
       throw new BuiltValueNullFieldError('Comments', 'channelId');
@@ -192,7 +191,7 @@ class _$Comments extends Comments {
     if (identical(other, this)) return true;
     return other is Comments &&
         userId == other.userId &&
-        trailerId == other.trailerId &&
+        vtId == other.vtId &&
         channelId == other.channelId &&
         channelName == other.channelName &&
         commentId == other.commentId &&
@@ -210,9 +209,7 @@ class _$Comments extends Comments {
                 $jc(
                     $jc(
                         $jc(
-                            $jc(
-                                $jc($jc(0, userId.hashCode),
-                                    trailerId.hashCode),
+                            $jc($jc($jc(0, userId.hashCode), vtId.hashCode),
                                 channelId.hashCode),
                             channelName.hashCode),
                         commentId.hashCode),
@@ -226,7 +223,7 @@ class _$Comments extends Comments {
   String toString() {
     return (newBuiltValueToStringHelper('Comments')
           ..add('userId', userId)
-          ..add('trailerId', trailerId)
+          ..add('vtId', vtId)
           ..add('channelId', channelId)
           ..add('channelName', channelName)
           ..add('commentId', commentId)
@@ -245,9 +242,9 @@ class CommentsBuilder implements Builder<Comments, CommentsBuilder> {
   String get userId => _$this._userId;
   set userId(String userId) => _$this._userId = userId;
 
-  String _trailerId;
-  String get trailerId => _$this._trailerId;
-  set trailerId(String trailerId) => _$this._trailerId = trailerId;
+  String _vtId;
+  String get vtId => _$this._vtId;
+  set vtId(String vtId) => _$this._vtId = vtId;
 
   String _channelId;
   String get channelId => _$this._channelId;
@@ -282,7 +279,7 @@ class CommentsBuilder implements Builder<Comments, CommentsBuilder> {
   CommentsBuilder get _$this {
     if (_$v != null) {
       _userId = _$v.userId;
-      _trailerId = _$v.trailerId;
+      _vtId = _$v.vtId;
       _channelId = _$v.channelId;
       _channelName = _$v.channelName;
       _commentId = _$v.commentId;
@@ -313,7 +310,7 @@ class CommentsBuilder implements Builder<Comments, CommentsBuilder> {
     final _$result = _$v ??
         new _$Comments._(
             userId: userId,
-            trailerId: trailerId,
+            vtId: vtId,
             channelId: channelId,
             channelName: channelName,
             commentId: commentId,

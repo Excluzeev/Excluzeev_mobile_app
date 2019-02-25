@@ -53,7 +53,7 @@ abstract class User implements Built<User, UserBuilder> {
         ..isContentCreator = data['isContentCreator'] ?? false
         ..paypalEmail = data['paypalEmail'] ?? ''
         ..subscribedChannels = ListBuilder<String>(
-          data['subscribed_channels'] != null
+          data['subscribedChannels'] != null
               ? List<String>.from(data['subscribedChannels'])
               : [],
         );
@@ -90,7 +90,7 @@ abstract class User implements Built<User, UserBuilder> {
         ..isContentCreator = data['isContentCreator'] ?? false
         ..paypalEmail = data['paypalEmail'] ?? ''
         ..subscribedChannels = ListBuilder<String>(
-          data['subscribed_channels'] != null
+          data['subscribedChannels'] != null
               ? List<String>.from(data['subscribedChannels'])
               : [],
         );

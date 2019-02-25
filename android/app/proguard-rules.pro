@@ -31,3 +31,4 @@
 
 -dontwarn io.flutter.plugin.platform.PlatformPlugin
 -dontwarn io.flutter.view.ResourceExtractor
+-dontwarn com.google.gson.Gson$6

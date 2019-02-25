@@ -116,7 +116,7 @@ class AuthManager {
     };
 
     await _auth
-        .fetchProvidersForEmail(email: email)
+        .fetchSignInMethodsForEmail(email: email)
         .catchError(exceptionHandler)
         .then((providers) async {
       if (providers != null && (providers?.contains("password") ?? false)) {

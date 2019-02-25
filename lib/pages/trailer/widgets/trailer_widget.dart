@@ -31,8 +31,6 @@ class TrailerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-    Logger.log(TAG, message: trailer.channelImage);
     return InkWell(
       onTap: onTap != null ? () => onTap?.call(trailer) : null,
       child: Column(
@@ -48,6 +46,7 @@ class TrailerWidget extends StatelessWidget {
                   child: ImageDisplay(
                     urls: [trailer.image],
                     zoomable: this.zoomable,
+                    key: Key(trailer.trailerId),
                   ),
                 ),
                 showShare ?

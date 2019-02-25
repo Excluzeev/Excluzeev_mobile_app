@@ -93,7 +93,7 @@ class _ContentCreatorEmailPageState extends State<ContentCreatorEmailPage> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: <Widget>[
-              FullAppLogo(),
+              SizedAppLogo(size: 150.0,),
               SizedBox(height: 8.0,),
               TextField(
                 controller: _emailController,

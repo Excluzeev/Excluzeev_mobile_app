@@ -59,7 +59,8 @@ class _$ChannelSerializer implements StructuredSerializer<Channel> {
       serializers.serialize(object.createdDate,
           specifiedType: const FullType(Timestamp)),
       'price',
-      serializers.serialize(object.price, specifiedType: const FullType(int)),
+      serializers.serialize(object.price,
+          specifiedType: const FullType(double)),
     ];
     if (object.image != null) {
       result
@@ -83,7 +84,7 @@ class _$ChannelSerializer implements StructuredSerializer<Channel> {
       result
         ..add('targetFund')
         ..add(serializers.serialize(object.targetFund,
-            specifiedType: const FullType(int)));
+            specifiedType: const FullType(double)));
     }
     if (object.currentFund != null) {
       result
@@ -162,11 +163,11 @@ class _$ChannelSerializer implements StructuredSerializer<Channel> {
           break;
         case 'price':
           result.price = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int;
+              specifiedType: const FullType(double)) as double;
           break;
         case 'targetFund':
           result.targetFund = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int;
+              specifiedType: const FullType(double)) as double;
           break;
         case 'currentFund':
           result.currentFund = serializers.deserialize(value,
@@ -209,9 +210,9 @@ class _$Channel extends Channel {
   @override
   final int subscriberCount;
   @override
-  final int price;
+  final double price;
   @override
-  final int targetFund;
+  final double targetFund;
   @override
   final int currentFund;
   @override
@@ -414,13 +415,13 @@ class ChannelBuilder implements Builder<Channel, ChannelBuilder> {
   set subscriberCount(int subscriberCount) =>
       _$this._subscriberCount = subscriberCount;
 
-  int _price;
-  int get price => _$this._price;
-  set price(int price) => _$this._price = price;
+  double _price;
+  double get price => _$this._price;
+  set price(double price) => _$this._price = price;
 
-  int _targetFund;
-  int get targetFund => _$this._targetFund;
-  set targetFund(int targetFund) => _$this._targetFund = targetFund;
+  double _targetFund;
+  double get targetFund => _$this._targetFund;
+  set targetFund(double targetFund) => _$this._targetFund = targetFund;
 
   int _currentFund;
   int get currentFund => _$this._currentFund;

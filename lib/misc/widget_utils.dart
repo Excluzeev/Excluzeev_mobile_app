@@ -6,13 +6,21 @@ import 'package:trenstop/i18n/translation.dart';
 import 'package:trenstop/managers/auth_manager.dart';
 import 'package:trenstop/models/channel.dart';
 import 'package:trenstop/models/trailer.dart';
+import 'package:trenstop/models/user.dart';
+import 'package:trenstop/models/video.dart';
 import 'package:trenstop/pages/auth/sign_in_page.dart';
-import 'package:trenstop/pages/channel/add_trailer.dart';
+import 'package:trenstop/pages/payment/payment.dart';
+import 'package:trenstop/pages/subscriptions/my_subscriptions.dart';
+import 'package:trenstop/pages/trailer/add_trailer.dart';
+import 'package:trenstop/pages/channel/channel_details.dart';
+import 'package:trenstop/pages/channel/my_channels.dart';
 import 'package:trenstop/pages/channel/new_channel.dart';
 import 'package:trenstop/pages/creatorauth/content_creator_email_page.dart';
 import 'package:trenstop/pages/creatorauth/content_creator_signup_page.dart';
 import 'package:trenstop/pages/home/feed.dart';
 import 'package:trenstop/pages/trailer/trailer_detail.dart';
+import 'package:trenstop/pages/videos/add_video.dart';
+import 'package:trenstop/pages/videos/video_detail.dart';
 
 class WidgetUtils {
   static const String TAG = "WIDGET_UTILS";
@@ -64,7 +72,7 @@ class WidgetUtils {
       settings: RouteSettings(name: tag),
       builder: (context) => page,
     );
-    bool isDone = await Navigator.of(context).push(route);
+    bool isDone = await Navigator.of(context).push(route) ?? false;
 
     if(isDone) {
       await showContentCreatorEmail(context);
@@ -113,6 +121,76 @@ class WidgetUtils {
   static void showTrailerDetails(BuildContext context, Trailer trailer) async {
     String tag = TrailerDetailPage.TAG;
     Widget page = TrailerDetailPage(trailer);
+
+    final route = CupertinoPageRoute<bool>(
+      settings: RouteSettings(name: tag),
+      builder: (context) => page,
+    );
+    Navigator.of(context).push(route);
+  }
+
+  static void showChannels(BuildContext context, User user) async {
+    String tag = MyChannelsPage.TAG;
+    Widget page = MyChannelsPage(user);
+
+    final route = CupertinoPageRoute<bool>(
+      maintainState: true,
+      settings: RouteSettings(name: tag),
+      builder: (context) => page,
+    );
+    Navigator.of(context).push(route);
+  }
+
+  static void showSubscriptions(BuildContext context, User user) async {
+    String tag = MySubscriptionsPage.TAG;
+    Widget page = MySubscriptionsPage(user);
+
+    final route = CupertinoPageRoute<bool>(
+      maintainState: true,
+      settings: RouteSettings(name: tag),
+      builder: (context) => page,
+    );
+    Navigator.of(context).push(route);
+  }
+
+  static void showChannelDetails(BuildContext context, User user, Channel channel) async {
+    String tag = ChannelDetailPage.TAG;
+    Widget page = ChannelDetailPage(channel: channel,user: user);
+
+    final route = CupertinoPageRoute<bool>(
+      maintainState: true,
+      settings: RouteSettings(name: tag),
+      builder: (context) => page,
+    );
+    Navigator.of(context).push(route);
+  }
+
+  static void showAddVideo(BuildContext context, User user, Channel channel, {bool hideVideoUpload = false}) async {
+    String tag = AddVideoPage.TAG;
+    Widget page = AddVideoPage(channel: channel,user: user, hideVideoUpload: hideVideoUpload,);
+
+    final route = CupertinoPageRoute<bool>(
+      maintainState: true,
+      settings: RouteSettings(name: tag),
+      builder: (context) => page,
+    );
+    Navigator.of(context).push(route);
+  }
+
+  static void showVideoDetails(BuildContext context, Video video, User user) async {
+    String tag = VideoDetailPage.TAG;
+    Widget page = VideoDetailPage(video, user);
+
+    final route = CupertinoPageRoute<bool>(
+      settings: RouteSettings(name: tag),
+      builder: (context) => page,
+    );
+    Navigator.of(context).push(route);
+  }
+
+  static void showPaymentScreen(BuildContext context, Trailer trailer, User user) async {
+    String tag = PaymentPage.TAG;
+    Widget page = PaymentPage(trailer, user);
 
     final route = CupertinoPageRoute<bool>(
       maintainState: true,

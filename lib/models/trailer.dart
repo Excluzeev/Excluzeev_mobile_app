@@ -21,18 +21,20 @@ abstract class Trailer implements Built<Trailer, TrailerBuilder> {
   String get createdBy;
   String get title;
   String get description;
+
   String get videoUrl;
+  String get channelType;
+
+  @nullable
+  String get originalUrl;
+  @nullable
+  String get playbackId;
 
   @nullable
   String get image;
 
   @nullable
   String get channelImage;
-
-  @nullable
-  String get video360;
-  @nullable
-  String get video720;
 
   Timestamp get createdDate;
 
@@ -53,14 +55,15 @@ abstract class Trailer implements Built<Trailer, TrailerBuilder> {
         ..channelName = data['channelName'] ?? ''
         ..categoryId = data['categoryId'] ?? ''
         ..categoryName = data['categoryName'] ?? ''
+        ..channelType = data['channelType'] ?? ''
         ..createdBy = data['createdBy'] ?? ''
         ..title = data['title'] ?? ''
         ..description = data['description'] ?? ''
-        ..image = 'https://firebasestorage.googleapis.com/v0/b/trenstop-public/o/trailers%2F${data['channelId']}%2F${data['trailerId']}%2Fthumbnail.jpg?alt=media'
+        ..image = 'https://image.mux.com/${data['playbackId']}/thumbnail.png'
         ..channelImage = 'https://firebasestorage.googleapis.com/v0/b/trenstop-public/o/channels%2F${data['channelId']}%2Fthumbnail.jpg?alt=media'
-        ..video360 = 'https://firebasestorage.googleapis.com/v0/b/trenstop-public/o/trailers%2F${data['channelId']}%2F${data['trailerId']}%2F${data['trailerId']}_360.mp4?alt=media'
-        ..video720 = 'https://firebasestorage.googleapis.com/v0/b/trenstop-public/o/trailers%2F${data['channelId']}%2F${data['trailerId']}%2F${data['trailerId']}_720.mp4?alt=media'
-        ..videoUrl = data['videoUrl'] ?? ''
+        ..videoUrl = "https://stream.mux.com/${data['playbackId']}.m3u8"
+        ..originalUrl = data['videoUrl'] ?? ''
+        ..playbackId = data['playbackId'] ?? ''
         ..createdDate = data['createdDate'] ?? null;
       return builder.build();
     } catch (error) {
@@ -74,6 +77,7 @@ abstract class Trailer implements Built<Trailer, TrailerBuilder> {
     "trailerId": this.trailerId,
     "channelId": this.channelId,
     "channelName": this.channelName,
+    "channelType": this.channelType,
     "categoryId": this.categoryId,
     "categoryName": this.categoryName,
     "createdBy": this.createdBy,
