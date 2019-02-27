@@ -19,6 +19,7 @@ import 'package:trenstop/models/user.dart';
 import 'package:trenstop/pages/home/widgets/information.dart';
 import 'package:trenstop/pages/trailer/widgets/trailer_comments_widget.dart';
 import 'package:trenstop/pages/trailer/widgets/trailer_title_widget.dart';
+import 'package:trenstop/widgets/like_dislike_neutral.dart';
 import 'package:trenstop/widgets/rounded_button.dart';
 import 'package:trenstop/widgets/white_app_bar.dart';
 import 'package:video_player/video_player.dart';
@@ -95,49 +96,30 @@ class _TrailerDetailPageState extends State<TrailerDetailPage> {
     FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
     User user = await _authManager.getUser(firebaseUser: firebaseUser);
 
-    if (user.subscribedChannels.contains(widget.trailer.channelId)) {
-      setState(() {
-        _showSubscribe = false;
-      });
-    }
+    if (user != null) {
+      if (user.subscribedChannels.contains(widget.trailer.channelId)) {
+        setState(() {
+          _showSubscribe = false;
+        });
+      }
 
-    if (widget.trailer.userId == user.uid) {
-      setState(() {
-        _showSubscribe = false;
-      });
+      if (widget.trailer.userId == user.uid) {
+        setState(() {
+          _showSubscribe = false;
+        });
+      }
     }
   }
 
   _startSubscribe() async {
     FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
+
+    if (firebaseUser == null) {
+      WidgetUtils.goToAuth(context, replaceAll: false);
+      return;
+    }
     User user = await _authManager.getUser(firebaseUser: firebaseUser);
     WidgetUtils.showPaymentScreen(context, widget.trailer, user);
-//    FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
-//    var body = {
-//      "channelId": widget.trailer.channelId,
-//      "userId": firebaseUser.uid,
-//      "channelName": widget.trailer.channelName
-//    };
-//
-//    var client = new http.Client();
-//    var response = await client.post(
-//        "https://us-central1-trenstop-2033f.cloudfunctions.net/subscribeToChannel", body: body);
-//
-//    Logger.log(TrailerDetailPage.TAG, message: response.body);
-//    var res = json.decode(response.body);
-//
-//    if(res['error']) {
-//      _showSnackBar(res['message']);
-//    } else {
-//      User user = await _authManager.getUser(firebaseUser: firebaseUser, force: true);
-//
-//      if(user.subscribedChannels.contains(widget.trailer.channelId)) {
-//        setState(() {
-//          _showSubscribe = false;
-//        });
-//      }
-//    }
-//    client.close();
   }
 
   @override
@@ -151,6 +133,12 @@ class _TrailerDetailPageState extends State<TrailerDetailPage> {
   _comment() async {
     String comment = _commentController.text;
 
+    FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
+    if (firebaseUser == null) {
+      WidgetUtils.goToAuth(context, replaceAll: false);
+      return;
+    }
+
     if (comment.isEmpty) {
       _showSnackBar(translation.commentEmpty);
       return;
@@ -160,7 +148,6 @@ class _TrailerDetailPageState extends State<TrailerDetailPage> {
       _publishingComment = true;
     });
 
-    FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
     User user = await _authManager.getUser(firebaseUser: firebaseUser);
 
     String commentId = IUID.string;
@@ -227,7 +214,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage> {
                       strokeWidth: 2.0,
                     ),
                   )
-                : Icon(Icons.add_comment),
+                : Icon(Icons.send),
             tooltip: translation.addCommentLabel,
             onPressed: _comment,
           ),
@@ -239,7 +226,9 @@ class _TrailerDetailPageState extends State<TrailerDetailPage> {
   _subscribeButton() {
     return _showSubscribe
         ? RoundedButton(
-            text: widget.trailer.channelType == "CrowdFunding" ? translation.donate : translation.subscribe,
+            text: widget.trailer.channelType == "CrowdFunding"
+                ? translation.donate
+                : translation.subscribe,
             onPressed: _startSubscribe,
           )
         : Container();
@@ -254,9 +243,9 @@ class _TrailerDetailPageState extends State<TrailerDetailPage> {
       backgroundColor: Colors.white,
       key: _scaffoldKey,
 //      appBar: WhiteAppBar(),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
+      body: CustomScrollView(slivers: <Widget>[
+        SliverToBoxAdapter(
+          child: Column(children: [
             SizedBox(
               height: 24.0,
             ),
@@ -269,11 +258,18 @@ class _TrailerDetailPageState extends State<TrailerDetailPage> {
                 autoPlay: false,
                 looping: false,
                 placeholder: Image.asset('res/icons/thumbnail_placeholder.png'),
-                key: Key(widget.trailer.trailerId),
+                      key: Key(widget.trailer.trailerId),
               ),
             ),
             TrailerTitleWidget(
               trailer: widget.trailer,
+            ),
+            LikeDislikeNeutral(
+              id: widget.trailer.trailerId,
+              type: "t",
+              likes: widget.trailer.likes,
+              dislikes: widget.trailer.dislikes,
+              neutral: widget.trailer.neutral,
             ),
             SizedBox(
               height: 8.0,
@@ -287,35 +283,36 @@ class _TrailerDetailPageState extends State<TrailerDetailPage> {
               ),
             ),
             _buildAddCommentWidget(),
-            Container(
-              child: FirestoreAnimatedList(
-                shrinkWrap: true,
-                query: _trailerManager
-                    .trailerCommentQuery(widget.trailer.trailerId)
-                    .snapshots(),
-                errorChild: InformationWidget(
-                  icon: Icons.error,
-                  subtitle: translation.errorLoadComments,
-                ),
-                emptyChild: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        translation.noCommentsYet,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ],
-                ),
-                itemBuilder: _buildCommentItem,
-              ),
-            ),
-          ],
+          ]),
         ),
-      ),
+        SliverToBoxAdapter(
+          child: FirestoreAnimatedList(
+            primary: false,
+            shrinkWrap: true,
+            query: _trailerManager
+                .trailerCommentQuery(widget.trailer.trailerId)
+                .snapshots(),
+            errorChild: InformationWidget(
+              icon: Icons.error,
+              subtitle: translation.errorLoadComments,
+            ),
+            emptyChild: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
+                    translation.noCommentsYet,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ],
+            ),
+            itemBuilder: _buildCommentItem,
+          ),
+        ),
+      ]),
     );
   }
 }

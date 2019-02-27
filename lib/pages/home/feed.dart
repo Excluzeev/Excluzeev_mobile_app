@@ -119,7 +119,12 @@ class _FeedPageState extends State<FeedPage> {
     FirebaseAuth firebaseAuth = FirebaseAuth.instance;
     await firebaseAuth.signOut();
     await Prefs.clear();
-    WidgetUtils.proceedToAuth(context, replaceAll: true);
+    WidgetUtils.proceedToHome(context, replaceAll: true);
+  }
+
+  _login() async {
+    await Prefs.clear();
+    WidgetUtils.goToAuth(context, replaceAll: false);
   }
 
   _drawerWidget() {
@@ -167,7 +172,20 @@ class _FeedPageState extends State<FeedPage> {
         ),
       )
       :
-          Container(),
+          Column(
+            children: <Widget>[
+              SizedBox(height: 32.0,),
+              Container(
+                child: FlatButton(
+                    onPressed: () => _login(),
+                    child: Text(
+                      translation.login,
+                      style: drawerItemTextStyle,
+                    )
+                ),
+              )
+            ],
+          ),
     );
   }
 
@@ -181,7 +199,12 @@ class _FeedPageState extends State<FeedPage> {
       backgroundColor: Colors.white,
       appBar: WhiteAppBar(
         centerTitle: true,
-        title: Text(translation.appNameTrailers),
+        title: Text(
+            translation.appNameTrailers,
+          style: TextStyle(
+            fontWeight: FontWeight.bold
+          ),
+        ),
       ),
       drawer: _drawerWidget(),
       body: HomePage(user),

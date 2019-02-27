@@ -76,8 +76,7 @@ class _PaymentPageState extends State<PaymentPage> {
 
     FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
     var body = {
-      "channelId": widget.trailer.channelId,
-      "userId": firebaseUser.uid,
+      "channelId": widget.trailer.channelId
     };
 
     Logger.log(PaymentPage.TAG, message: "$body");

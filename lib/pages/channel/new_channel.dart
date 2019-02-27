@@ -76,6 +76,10 @@ class _NewChannelPageState extends State<NewChannelPage> {
     super.initState();
 
     _fetchCategories();
+
+    setState(() {
+      _priceController.text = 1.99.toString();
+    });
   }
 
   _fetchCategories() async {

@@ -204,7 +204,7 @@ class Translation {
   );
   String get priceError => Intl.message(
     "Cannot be greater 10 or Lessthan 2",
-    name: 'targetFundError',
+    name: 'priceError',
   );
   String get categoryNameLabel => Intl.message(
     "Category",
@@ -270,6 +270,10 @@ class Translation {
     "Start Excluzeev",
     name: 'liveTitle',
   );
+  String get excluzeevLive => Intl.message(
+    "Excluzeev Live",
+    name: 'excluzeevLive',
+  );
   String get next => Intl.message(
     "Next",
     name: 'next',
@@ -308,7 +312,7 @@ class Translation {
   );
   String get errorEmptyChannels => Intl.message(
     "No Channels found",
-    name: 'errorEmptyTrailers',
+    name: 'errorEmptyChannels',
   );
   String get addCommentLabel => Intl.message(
     "Add Comment",
@@ -324,7 +328,7 @@ class Translation {
   );
   String get noCommentsYet => Intl.message(
     "No Comments yet.",
-    name: 'noCommentsYets',
+    name: 'noCommentsYet',
   );
   String get subscribe => Intl.message(
     "Subscribe",
@@ -366,6 +370,10 @@ class Translation {
     "Start",
     name: 'start',
   );
+  String get delete => Intl.message(
+    "Delete",
+    name: 'delete',
+  );
   String get cancel => Intl.message(
     "Cancel",
     name: 'cancel',
@@ -394,6 +402,16 @@ class Translation {
     "Error Loading Subscriptions.",
     name: 'errorLoadSubscriptions',
   );
+  String get deleteDialogTitle => Intl.message(
+    "Are you sure to Delete?",
+    name: 'deleteDialogTitle',
+  );
+  String deleteDialogContent(String title) =>
+      Intl.message(
+        'Delete video "$title"',
+        name: 'deleteDialogContent',
+        args: [title],
+      );
 }
 
 class _TranslationDelegate extends LocalizationsDelegate<Translation> {

@@ -162,6 +162,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import com.github.faucamp.simplertmp.RtmpHandler
 import com.seu.magicfilter.utils.MagicFilterType
 import net.ossrs.yasea.SrsCameraView
@@ -175,6 +176,7 @@ import java.util.Random
 class RTMPActivity:AppCompatActivity(), RtmpHandler.RtmpListener, SrsRecordHandler.SrsRecordListener, SrsEncodeHandler.SrsEncodeListener {
     private lateinit var btnPublish: Button
     private lateinit var btnSwitchCamera:ImageView
+    private lateinit var btnBack:ImageView
 //    private lateinit var btnPause:Button
     private lateinit var sp:SharedPreferences
     private var rtmpUrl = "rtmp://live.mux.com/app/22083600-1066-72a9-adf9-704aaf1c42b8"
@@ -196,6 +198,7 @@ class RTMPActivity:AppCompatActivity(), RtmpHandler.RtmpListener, SrsRecordHandl
 
         btnPublish = findViewById<Button>(R.id.publish)
         btnSwitchCamera = findViewById<ImageView>(R.id.swCam)
+        btnBack = findViewById<ImageView>(R.id.backButton)
 //        btnPause = findViewById(R.id.pause) as Button
 //        btnPause.isEnabled = false
         mPublisher = SrsPublisher(findViewById<SrsCameraView>(R.id.glsurfaceview_camera))
@@ -240,6 +243,28 @@ class RTMPActivity:AppCompatActivity(), RtmpHandler.RtmpListener, SrsRecordHandl
 //        }
         btnSwitchCamera.setOnClickListener {
             mPublisher.switchCameraFace((mPublisher.cameraId + 1) % Camera.getNumberOfCameras())
+        }
+
+        btnBack.setOnClickListener {
+            var msg = "";
+            if(btnPublish.text.toString().contains("Stop")) {
+                msg = "Do you want to stop streaming and go back?"
+            } else {
+                msg = "Do you want to go back?"
+            }
+            val alertDialog = AlertDialog.Builder(this)
+                    .setTitle("Warning")
+                    .setMessage(msg)
+                    .setPositiveButton("GO Back") { dialog, which ->
+                        dialog.dismiss()
+                        mPublisher.stopPublish()
+                        this.onBackPressed()
+                    }
+                    .setNegativeButton("Cancel") { dialog, which ->
+                        dialog.cancel()
+                    }
+                    .create()
+            alertDialog.show()
         }
     }
 

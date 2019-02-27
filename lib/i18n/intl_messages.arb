@@ -1,5 +1,15 @@
 {
-  "@@last_modified": "2019-02-07T14:57:16.411961",
+  "@@last_modified": "2019-02-25T12:04:07.369031",
+  "emailHint": "Email",
+  "@emailHint": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "passwordHint": "Password",
+  "@passwordHint": {
+    "type": "text",
+    "placeholders": {}
+  },
   "loading": "Loading...",
   "@loading": {
     "type": "text",
@@ -7,6 +17,391 @@
   },
   "login": "Log In",
   "@login": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "logout": "Log out",
+  "@logout": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "forgotLoginDetail": "Forgot your password? Please",
+  "@forgotLoginDetail": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "tapHere": " tap here!",
+  "@tapHere": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "signUp": "Sign Up",
+  "@signUp": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "signUpContentCreator": "Sign Up for Content Creator",
+  "@signUpContentCreator": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "resetPassword": "Reset Password",
+  "@resetPassword": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "invalidEmail": "Invalid Email",
+  "@invalidEmail": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorEmptyField": "This field can't be empty!",
+  "@errorEmptyField": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorFields": "Invalid login details",
+  "@errorFields": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorEmailFormat": "Invalid e-mail format",
+  "@errorEmailFormat": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorPasswordFormat": "Password should be at least 8 characters long!",
+  "@errorPasswordFormat": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "passwordVerifyHint": "Password confirmation",
+  "@passwordVerifyHint": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorPasswordMatch": "Passwords don't match!",
+  "@errorPasswordMatch": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "cameraLabel": "Take photo",
+  "@cameraLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "galleryLabel": "Pick from gallery",
+  "@galleryLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorUpdateUser": "Unable to update your user information, please try again!",
+  "@errorUpdateUser": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorSignIn": "Couldn't sign in! Please try again.",
+  "@errorSignIn": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "noAccountFound": "No Account Found.",
+  "@noAccountFound": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "unknownError": "Unknown Error",
+  "@unknownError": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "or": "OR",
+  "@or": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "firstNameLabel": "First Name",
+  "@firstNameLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "lastNameLabel": "Last Name",
+  "@lastNameLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "resetEmailSent": "Reset Email Sent Succesfully. Please check your email.",
+  "@resetEmailSent": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "resetEmailFailed": "No Account found with this email",
+  "@resetEmailFailed": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "contentCreatorAuthSave": "Next",
+  "@contentCreatorAuthSave": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "paypalEmail": "Enter Paypal Email",
+  "@paypalEmail": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "createChannel": "Create Channel",
+  "@createChannel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "myChannels": "My Channels",
+  "@myChannels": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "cannotBeEmpty": "Field cannot be empty",
+  "@cannotBeEmpty": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "priceError": "Cannot be greater 10 or Lessthan 2",
+  "@priceError": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "categoryNameLabel": "Category",
+  "@categoryNameLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "channelTypeLabel": "Channel Type",
+  "@channelTypeLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "titleLabel": "Title",
+  "@titleLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "descriptionLabel": "Description",
+  "@descriptionLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "thumbnailLabel": "Thumbnail",
+  "@thumbnailLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "videoLabel": "Add Video",
+  "@videoLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "coverImageLabel": "Cover Image",
+  "@coverImageLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "priceLabel": "Price",
+  "@priceLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "targetFundLabel": "Target Fund",
+  "@targetFundLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addPhoto": "Add Photo",
+  "@addPhoto": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorCropPhoto": "Unable to crop photo",
+  "@errorCropPhoto": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addChannel": "Add Channel",
+  "@addChannel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "trailerTitle": "Add a trailer",
+  "@trailerTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "trailers": "Trailers",
+  "@trailers": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "videoTitle": "Add a video",
+  "@videoTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "liveTitle": "Start Excluzeev",
+  "@liveTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "next": "Next",
+  "@next": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "videos": "Videos",
+  "@videos": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addVideo": "Add Video",
+  "@addVideo": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addTrailer": "Add Trailer",
+  "@addTrailer": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorLoadTrailers": "Loading Trailer Filed",
+  "@errorLoadTrailers": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorLoadChannels": "Loading Channels Filed",
+  "@errorLoadChannels": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorEmptyTrailers": "No Trailers found",
+  "@errorEmptyTrailers": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorLoadVideos": "Loading Videos Filed",
+  "@errorLoadVideos": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorEmptyVideos": "No Videos found",
+  "@errorEmptyVideos": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorEmptyChannels": "No Channels found",
+  "@errorEmptyChannels": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "addCommentLabel": "Add Comment",
+  "@addCommentLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "commentEmpty": "Invalid Comment",
+  "@commentEmpty": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorLoadComments": "Loading Comments Failed",
+  "@errorLoadComments": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "noCommentsYet": "No Comments yet.",
+  "@noCommentsYet": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "subscribe": "Subscribe",
+  "@subscribe": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "donate": "Donate",
+  "@donate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "paymentPreparing": "Preparing for payment",
+  "@paymentPreparing": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "paymentFailed": "Error Making payment please try again later!",
+  "@paymentFailed": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "paymentFailedLabel": "Payment Failed",
+  "@paymentFailedLabel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "paymentFailedDialogContent": "Payment Canceled. Please retry the payment after some time.!",
+  "@paymentFailedDialogContent": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "paymentVerifying": "Verifying payment!",
+  "@paymentVerifying": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "startStream": "Start Stream",
+  "@startStream": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "startStreamDialogContent": "Are you sure you want to start Excluzeev Stream",
+  "@startStreamDialogContent": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "start": "Start",
+  "@start": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "now": "Now",
+  "@now": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "schedule": "Schedule",
+  "@schedule": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "selectDate": "Select Date",
+  "@selectDate": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "mySubscriptions": "My Subscriptions",
+  "@mySubscriptions": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorEmptySubscriptions": "No Subscriptions Found.",
+  "@errorEmptySubscriptions": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "errorLoadSubscriptions": "Error Loading Subscriptions.",
+  "@errorLoadSubscriptions": {
     "type": "text",
     "placeholders": {}
   }

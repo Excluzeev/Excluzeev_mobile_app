@@ -59,9 +59,7 @@ class _HomePageState extends State<HomePage> {
     if (translation == null) translation = Translation.of(context);
     final textTheme = Theme.of(context).textTheme;
     return Center(
-      child: widget.user == null
-          ? CircularProgressIndicator()
-          : FirestoreAnimatedList(
+      child: FirestoreAnimatedList(
         query: _trailerManager.trailersQuery.snapshots(),
         errorChild: InformationWidget(
           icon: Icons.error,

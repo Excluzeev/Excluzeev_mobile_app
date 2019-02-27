@@ -68,6 +68,24 @@ class _$TrailerSerializer implements StructuredSerializer<Trailer> {
       serializers.serialize(object.createdDate,
           specifiedType: const FullType(Timestamp)),
     ];
+    if (object.likes != null) {
+      result
+        ..add('likes')
+        ..add(serializers.serialize(object.likes,
+            specifiedType: const FullType(int)));
+    }
+    if (object.dislikes != null) {
+      result
+        ..add('dislikes')
+        ..add(serializers.serialize(object.dislikes,
+            specifiedType: const FullType(int)));
+    }
+    if (object.neutral != null) {
+      result
+        ..add('neutral')
+        ..add(serializers.serialize(object.neutral,
+            specifiedType: const FullType(int)));
+    }
     if (object.originalUrl != null) {
       result
         ..add('originalUrl')
@@ -151,6 +169,18 @@ class _$TrailerSerializer implements StructuredSerializer<Trailer> {
           result.channelType = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
+        case 'likes':
+          result.likes = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
+          break;
+        case 'dislikes':
+          result.dislikes = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
+          break;
+        case 'neutral':
+          result.neutral = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
+          break;
         case 'originalUrl':
           result.originalUrl = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
@@ -202,6 +232,12 @@ class _$Trailer extends Trailer {
   @override
   final String channelType;
   @override
+  final int likes;
+  @override
+  final int dislikes;
+  @override
+  final int neutral;
+  @override
   final String originalUrl;
   @override
   final String playbackId;
@@ -227,6 +263,9 @@ class _$Trailer extends Trailer {
       this.description,
       this.videoUrl,
       this.channelType,
+      this.likes,
+      this.dislikes,
+      this.neutral,
       this.originalUrl,
       this.playbackId,
       this.image,
@@ -293,6 +332,9 @@ class _$Trailer extends Trailer {
         description == other.description &&
         videoUrl == other.videoUrl &&
         channelType == other.channelType &&
+        likes == other.likes &&
+        dislikes == other.dislikes &&
+        neutral == other.neutral &&
         originalUrl == other.originalUrl &&
         playbackId == other.playbackId &&
         image == other.image &&
@@ -318,20 +360,30 @@ class _$Trailer extends Trailer {
                                                         $jc(
                                                             $jc(
                                                                 $jc(
-                                                                    0,
-                                                                    userId
+                                                                    $jc(
+                                                                        $jc(
+                                                                            $jc(
+                                                                                0,
+                                                                                userId
+                                                                                    .hashCode),
+                                                                            trailerId
+                                                                                .hashCode),
+                                                                        channelId
+                                                                            .hashCode),
+                                                                    channelName
                                                                         .hashCode),
-                                                                trailerId
+                                                                categoryId
                                                                     .hashCode),
-                                                            channelId.hashCode),
-                                                        channelName.hashCode),
-                                                    categoryId.hashCode),
-                                                categoryName.hashCode),
-                                            createdBy.hashCode),
-                                        title.hashCode),
-                                    description.hashCode),
-                                videoUrl.hashCode),
-                            channelType.hashCode),
+                                                            categoryName
+                                                                .hashCode),
+                                                        createdBy.hashCode),
+                                                    title.hashCode),
+                                                description.hashCode),
+                                            videoUrl.hashCode),
+                                        channelType.hashCode),
+                                    likes.hashCode),
+                                dislikes.hashCode),
+                            neutral.hashCode),
                         originalUrl.hashCode),
                     playbackId.hashCode),
                 image.hashCode),
@@ -353,6 +405,9 @@ class _$Trailer extends Trailer {
           ..add('description', description)
           ..add('videoUrl', videoUrl)
           ..add('channelType', channelType)
+          ..add('likes', likes)
+          ..add('dislikes', dislikes)
+          ..add('neutral', neutral)
           ..add('originalUrl', originalUrl)
           ..add('playbackId', playbackId)
           ..add('image', image)
@@ -409,6 +464,18 @@ class TrailerBuilder implements Builder<Trailer, TrailerBuilder> {
   String get channelType => _$this._channelType;
   set channelType(String channelType) => _$this._channelType = channelType;
 
+  int _likes;
+  int get likes => _$this._likes;
+  set likes(int likes) => _$this._likes = likes;
+
+  int _dislikes;
+  int get dislikes => _$this._dislikes;
+  set dislikes(int dislikes) => _$this._dislikes = dislikes;
+
+  int _neutral;
+  int get neutral => _$this._neutral;
+  set neutral(int neutral) => _$this._neutral = neutral;
+
   String _originalUrl;
   String get originalUrl => _$this._originalUrl;
   set originalUrl(String originalUrl) => _$this._originalUrl = originalUrl;
@@ -444,6 +511,9 @@ class TrailerBuilder implements Builder<Trailer, TrailerBuilder> {
       _description = _$v.description;
       _videoUrl = _$v.videoUrl;
       _channelType = _$v.channelType;
+      _likes = _$v.likes;
+      _dislikes = _$v.dislikes;
+      _neutral = _$v.neutral;
       _originalUrl = _$v.originalUrl;
       _playbackId = _$v.playbackId;
       _image = _$v.image;
@@ -482,6 +552,9 @@ class TrailerBuilder implements Builder<Trailer, TrailerBuilder> {
             description: description,
             videoUrl: videoUrl,
             channelType: channelType,
+            likes: likes,
+            dislikes: dislikes,
+            neutral: neutral,
             originalUrl: originalUrl,
             playbackId: playbackId,
             image: image,

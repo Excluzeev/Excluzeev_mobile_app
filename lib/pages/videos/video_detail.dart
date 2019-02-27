@@ -18,6 +18,8 @@ import 'package:trenstop/models/video.dart';
 import 'package:trenstop/pages/home/widgets/information.dart';
 import 'package:trenstop/pages/videos/widgets/video_comments_widget.dart';
 import 'package:trenstop/pages/videos/widgets/video_title_widget.dart';
+import 'package:trenstop/widgets/ensure_visiblity.dart';
+import 'package:trenstop/widgets/like_dislike_neutral.dart';
 import 'package:trenstop/widgets/rounded_button.dart';
 import 'package:trenstop/widgets/white_app_bar.dart';
 import 'package:video_player/video_player.dart';
@@ -59,6 +61,8 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
 
   bool _showStartStream = false;
 
+  FocusNode _focusNode = new FocusNode();
+
   _showSnackBar(String message) {
     setState(() {
       _publishingComment = false;
@@ -77,11 +81,12 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
 
     var client = new http.Client();
     var response = await client.post(
-        "https://us-central1-trenstop-2033f.cloudfunctions.net/videoWebHook", body: body);
+        "https://us-central1-trenstop-2033f.cloudfunctions.net/videoWebHook",
+        body: body);
 
     setState(() {
       _isLoading = false;
-      if(response.body.contains("Error")) {
+      if (response.body.contains("Error")) {
         _isError = true;
       } else {
         videoUrl = response.body;
@@ -93,25 +98,25 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
   void _setVideo() async {
     await _getVideoUrl();
     _videoPlayerController = VideoPlayerController.network(videoUrl);
-    _videoPlayerController..initialize().then((v) {
-      if (aspectRatio != _videoPlayerController.value.aspectRatio) {
-        setState(() {
-          aspectRatio = _videoPlayerController.value.aspectRatio;
-        });
-      }
-    });
+    _videoPlayerController
+      ..initialize().then((v) {
+        if (aspectRatio != _videoPlayerController.value.aspectRatio) {
+          setState(() {
+            aspectRatio = _videoPlayerController.value.aspectRatio;
+          });
+        }
+      });
     _videoPlayerController.addListener(() {
-      Logger.log(VideoDetailPage.TAG, message: _videoPlayerController.value.toString());
-      if(_videoPlayerController.value.errorDescription != null) {
+      Logger.log(VideoDetailPage.TAG,
+          message: _videoPlayerController.value.toString());
+      if (_videoPlayerController.value.errorDescription != null) {
         setState(() {
           _isLoading = true;
           _isError = true;
         });
       }
     });
-    _videoPlayerController.addListener(() {
-
-    });
+    _videoPlayerController.addListener(() {});
 //    _chewieController = ChewieController(
 //      videoPlayerController: _videoPlayerController,
 //      aspectRatio: aspectRatio,
@@ -120,15 +125,9 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
 //    );
   }
 
-  @override
-  void dispose() {
-//    _chewieController?.dispose();
-    super.dispose();
-  }
-
   void _setStreamButton() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    if(widget.video.userId == user.uid) {
+    if (widget.video.userId == user.uid) {
       setState(() {
         _showStartStream =
             DateTime.now().difference(widget.video.createdDate.toDate()) <
@@ -140,16 +139,20 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
   @override
   void initState() {
     super.initState();
-
-    if(widget.video.later != "later") {
+    if (widget.video.later != "later") {
       _setVideo();
     } else {
       _isLoading = false;
     }
 
     _setStreamButton();
-
   }
+
+  @override
+  void dispose(){
+    super.dispose();
+  }
+
 
   _comment() async {
     String comment = _commentController.text;
@@ -195,13 +198,12 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
   }
 
   _startStream(streamKey) async {
-    if(widget.video.later == "later") {
-      var videoData = {
-        "videoId": widget.video.videoId
-      };
+    if (widget.video.later == "later") {
+      var videoData = {"videoId": widget.video.videoId};
       var client = new http.Client();
       var response = await client.post(
-          "https://us-central1-trenstop-2033f.cloudfunctions.net/createMuxLive", body: videoData);
+          "https://us-central1-trenstop-2033f.cloudfunctions.net/createMuxLive",
+          body: videoData);
       client.close();
       Logger.log(VideoDetailPage.TAG, message: response.body);
       var res = json.decode(response.body);
@@ -215,18 +217,16 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
     }
   }
 
-
   _startStreamButton() {
-    return _showStartStream ?
-    Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: RoundedButton(
-        text: translation.startStream,
-        onPressed: () => _startStream(widget.video.streamKey),
-      ),
-    )
-        :
-    Container();
+    return _showStartStream
+        ? Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: RoundedButton(
+              text: translation.startStream,
+              onPressed: () => _startStream(widget.video.streamKey),
+            ),
+          )
+        : Container();
   }
 
   Widget _buildCommentItem(BuildContext context, DocumentSnapshot snapshot,
@@ -267,12 +267,49 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
                       strokeWidth: 2.0,
                     ),
                   )
-                : Icon(Icons.add_comment),
+                : Icon(Icons.send),
             tooltip: translation.addCommentLabel,
             onPressed: _comment,
           ),
         ),
       ),
+    );
+  }
+
+  _triggerDelete() async {
+    await _videoManager.deleteVideo(widget.video);
+    Navigator.of(context).pop();
+  }
+
+  _delete() async {
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+                translation.deleteDialogTitle
+            ),
+            content: Text(
+                translation.deleteDialogContent(widget.video.title)
+            ),
+            actions: <Widget>[
+              new FlatButton(
+                child: new Text(translation.delete),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _triggerDelete();
+                },
+              ),
+              new FlatButton(
+                child: new Text(translation.cancel),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        }
     );
   }
 
@@ -284,91 +321,123 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
     return Scaffold(
       backgroundColor: Colors.white,
       key: _scaffoldKey,
+      resizeToAvoidBottomPadding: true,
 //      appBar: WhiteAppBar(),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            SizedBox(
-              height: 24.0,
-            ),
-            Container(
-              child: AspectRatio(
-                aspectRatio: aspectRatio,
+      body: CustomScrollView(
+        physics: BouncingScrollPhysics(),
+        slivers: [
+          SliverToBoxAdapter(
+            child: Stack(
+              children: <Widget>[
+
+                Column(children: <Widget>[
+                  SizedBox(
+                    height: 24.0,
+                  ),
+                  Container(
+                    child: AspectRatio(
+                      aspectRatio: aspectRatio,
 //              child: VideoPlayer(_controller),
-                child: _isLoading ?
-                   Center(
-                     child: _isError ? Icon(Icons.error)  : CircularProgressIndicator(),
-                   )
-                :  widget.video.later == "later" ?
-                    Center(
-                      child: Image.asset('res/icons/thumbnail_placeholder.png'),
-                    )
-                :
-                Chewie(
-                  _videoPlayerController,
-                  aspectRatio: aspectRatio,
-                  autoPlay: false,
-                  looping: false,
-                  placeholder: Image.asset('res/icons/thumbnail_placeholder.png'),
-                ),
+                      child: _isLoading
+                          ? Center(
+                              child: _isError
+                                  ? Icon(Icons.error)
+                                  : CircularProgressIndicator(),
+                            )
+                          : widget.video.later == "later"
+                              ? Center(
+                                  child: Image.asset(
+                                      'res/icons/thumbnail_placeholder.png'),
+                                )
+                              : Chewie(
+                                  _videoPlayerController,
+                                  aspectRatio: aspectRatio,
+                                  autoPlay: false,
+                                  looping: false,
+                                  placeholder: Image.asset(
+                                    'res/icons/thumbnail_placeholder.png',
+                                    key: Key(widget.video.videoId),
+                                  ),
+                                ),
 //                  Chewie(
 //                    controller: _chewieController,
 //                  ),
-              ),
-            ),
-            VideoTitleWidget(
-              video: widget.video,
-            ),
-            SizedBox(
-              height: 8.0,
-            ),
-            _startStreamButton(),
-            SizedBox(
-              height: 8.0,
-            ),
-            Container(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                widget.video.description,
-                style: textTheme.subtitle,
-              ),
-            ),
-            SizedBox(
-              height: .5,
-              child: Container(
-                color: Colors.grey[500],
-              ),
-            ),
-            Container(
-              child: FirestoreAnimatedList(
-                shrinkWrap: true,
-                query: _videoManager
-                    .videoCommentQuery(widget.video.videoId)
-                    .snapshots(),
-                errorChild: InformationWidget(
-                  icon: Icons.error,
-                  subtitle: translation.errorLoadComments,
-                ),
-                emptyChild: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        translation.noCommentsYet,
-                        style: textTheme.title,
-                        textAlign: TextAlign.center,
-                      ),
                     ),
-                  ],
+                  ),
+                  VideoTitleWidget(
+                    video: widget.video,
+                  ),
+                  LikeDislikeNeutral(
+                    id: widget.video.videoId,
+                    type: 'v',
+                    likes: widget.video.likes,
+                    dislikes: widget.video.dislikes,
+                    neutral: widget.video.neutral,
+                  ),
+                  SizedBox(
+                    height: 8.0,
+                  ),
+                  _startStreamButton(),
+                  SizedBox(
+                    height: 8.0,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      widget.video.description,
+                      style: textTheme.subtitle,
+                    ),
+                  ),
+                  SizedBox(
+                    height: .5,
+                    child: Container(
+                      color: Colors.grey[500],
+                    ),
+                  ),
+                  _buildAddCommentWidget(),
+                ]),
+                Positioned(
+                  top: 30.0,
+                  right: 8.0,
+                  child: IconButton(
+                    icon: Icon(
+                        Icons.delete
+                    ),
+                    color: Colors.white,
+                    onPressed: _delete,
+                  ),
                 ),
-                itemBuilder: _buildCommentItem,
-              ),
+              ],
             ),
-            _buildAddCommentWidget(),
-          ],
-        ),
+          ),
+          SliverToBoxAdapter(
+            child: FirestoreAnimatedList(
+              shrinkWrap: true,
+              query: _videoManager
+                  .videoCommentQuery(widget.video.videoId)
+                  .snapshots(),
+              errorChild: InformationWidget(
+                icon: Icons.error,
+                subtitle: translation.errorLoadComments,
+              ),
+              emptyChild: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      translation.noCommentsYet,
+                      style: textTheme.title,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
+              itemBuilder: _buildCommentItem,
+            ),
+          )
+        ],
       ),
     );
   }

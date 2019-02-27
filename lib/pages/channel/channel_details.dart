@@ -134,25 +134,39 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> {
               ),
               onPressed: _showAddVideo,
             ),
-            _isPreparingStream ?
-                Padding(
-                  padding: const EdgeInsets.all(18.0),
-                  child: SizedBox(
-                    height: 5.0,
-                    child: SmallLoadingIndicator(),
-
-                  ),
-                )
-                :
-            IconButton(
-              icon: Image.asset(
-                'res/icons/logo_live_e.png'
-              ),
-              onPressed: () => requestPermission(),
-            )
+//            _isPreparingStream ?
+//                Padding(
+//                  padding: const EdgeInsets.all(18.0),
+//                  child: SizedBox(
+//                    height: 5.0,
+//                    child: SmallLoadingIndicator(),
+//
+//                  ),
+//                )
+//                :
+//            IconButton(
+//              icon: Image.asset(
+//                'res/icons/logo_live_e.png'
+//              ),
+//              onPressed: () => requestPermission(),
+//            )
           ],
         ),
         backgroundColor: Colors.white,
+        floatingActionButton: FloatingActionButton.extended(
+          icon: Image.asset(
+              'res/icons/logo_live_e.png',
+            color: Colors.white,
+          ),
+          label: Text(
+              translation.excluzeevLive,
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          onPressed: () => requestPermission(),
+          isExtended: true,
+        ),
         body: TabBarView(
           children: <Widget>[
             _getChannelTrailers(),

@@ -124,6 +124,12 @@ class VideoManager {
     );
   }
 
+  Future<bool> deleteVideo(Video video) async {
+    DocumentReference reference = videosCollection.document(video.videoId);
+    var result = await reference.delete();
+    return true;
+  }
+
 //  Future<Snapshot<Comments>> addComment(Comments comment) async {
 //    String error;
 //

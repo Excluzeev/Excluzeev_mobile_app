@@ -31,7 +31,7 @@ class _SplashScreenState extends State<SplashScreen> {
   _init() async {
     await Future.delayed(
       Duration(seconds: 1),
-          () async => WidgetUtils.proceedToAuth(context, replaceAll: true),
+          () async => WidgetUtils.proceedToHome(context, replaceAll: true),
     );
   }
 

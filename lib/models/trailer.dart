@@ -26,6 +26,13 @@ abstract class Trailer implements Built<Trailer, TrailerBuilder> {
   String get channelType;
 
   @nullable
+  int get likes;
+  @nullable
+  int get dislikes;
+  @nullable
+  int get neutral;
+
+  @nullable
   String get originalUrl;
   @nullable
   String get playbackId;
@@ -64,7 +71,10 @@ abstract class Trailer implements Built<Trailer, TrailerBuilder> {
         ..videoUrl = "https://stream.mux.com/${data['playbackId']}.m3u8"
         ..originalUrl = data['videoUrl'] ?? ''
         ..playbackId = data['playbackId'] ?? ''
-        ..createdDate = data['createdDate'] ?? null;
+        ..createdDate = data['createdDate'] ?? null
+        ..likes = data['likes'] ?? 0
+        ..dislikes = data['dislikes'] ?? 0
+        ..neutral = data['neutral'] ?? 0;
       return builder.build();
     } catch (error) {
       Logger.log(TAG, message: "Couldn't build user object, error: $error");

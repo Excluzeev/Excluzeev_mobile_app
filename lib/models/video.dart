@@ -24,6 +24,13 @@ abstract class Video implements Built<Video, VideoBuilder> {
   String get type; // live or vod
 
   @nullable
+  int get likes;
+  @nullable
+  int get dislikes;
+  @nullable
+  int get neutral;
+
+  @nullable
   String get image;
 
   @nullable
@@ -75,7 +82,10 @@ abstract class Video implements Built<Video, VideoBuilder> {
         ..muxId = data['muxId'] ?? ''
         ..channelImage = 'https://firebasestorage.googleapis.com/v0/b/trenstop-public/o/channels%2F${data['channelId']}%2Fthumbnail.jpg?alt=media'
         ..playbackId = data['playbackId'] ?? ''
-        ..createdDate = data['createdDate'] ?? null;
+        ..createdDate = data['createdDate'] ?? null
+        ..likes = data['likes'] ?? 0
+        ..dislikes = data['dislikes'] ?? 0
+        ..neutral = data['neutral'] ?? 0;
       return builder.build();
     } catch (error) {
       Logger.log(TAG, message: "Couldn't build user object, error: $error");

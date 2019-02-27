@@ -62,6 +62,55 @@ class WidgetUtils {
     }
   }
 
+  static void proceedToHome(
+      BuildContext context, {
+        bool replaceAll = false,
+        String invite,
+      }) async {
+    String tag;
+    Widget page;
+
+    tag = FeedPage.TAG;
+    page = FeedPage();
+
+    final route = CupertinoPageRoute(
+      maintainState: true,
+      settings: RouteSettings(name: tag),
+      builder: (context) => page,
+    );
+
+    if (replaceAll) {
+      Navigator.of(context).pushAndRemoveUntil(route, (route) => false);
+    } else {
+      Navigator.of(context).push(route);
+    }
+  }
+
+  static void goToAuth(
+      BuildContext context, {
+        bool replaceAll = false,
+      }) async {
+    String tag;
+    Widget page;
+
+
+    tag = SignInPage.TAG;
+    page = SignInPage();
+    print("auth");
+
+    final route = CupertinoPageRoute(
+      maintainState: true,
+      settings: RouteSettings(name: tag),
+      builder: (context) => page,
+    );
+
+    if (replaceAll) {
+      Navigator.of(context).pushAndRemoveUntil(route, (route) => false);
+    } else {
+      Navigator.of(context).push(route);
+    }
+  }
+
   static Future<bool> showContentCreatorSignUp(BuildContext context) async {
     String tag = ContentCreatorSignUpPage.TAG;
     Widget page = ContentCreatorSignUpPage();

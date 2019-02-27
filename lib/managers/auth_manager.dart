@@ -43,6 +43,12 @@ class AuthManager {
 
   Future<FirebaseUser> get currentUser async => await _auth.currentUser();
 
+  Future<bool> isLoggedIn() async {
+    var firebaseUser = await currentUser;
+    if (firebaseUser == null) return false;
+    return true;
+  }
+
 
   Future<User> getUser({FirebaseUser firebaseUser, bool force = false}) async {
     if (firebaseUser == null) firebaseUser = await currentUser;
