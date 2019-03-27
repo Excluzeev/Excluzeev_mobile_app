@@ -82,6 +82,12 @@ class _$VideoSerializer implements StructuredSerializer<Video> {
         ..add(serializers.serialize(object.neutral,
             specifiedType: const FullType(int)));
     }
+    if (object.views != null) {
+      result
+        ..add('views')
+        ..add(serializers.serialize(object.views,
+            specifiedType: const FullType(int)));
+    }
     if (object.image != null) {
       result
         ..add('image')
@@ -203,6 +209,10 @@ class _$VideoSerializer implements StructuredSerializer<Video> {
           result.neutral = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
           break;
+        case 'views':
+          result.views = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
+          break;
         case 'image':
           result.image = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
@@ -278,6 +288,8 @@ class _$Video extends Video {
   @override
   final int neutral;
   @override
+  final int views;
+  @override
   final String image;
   @override
   final String playbackId;
@@ -315,6 +327,7 @@ class _$Video extends Video {
       this.likes,
       this.dislikes,
       this.neutral,
+      this.views,
       this.image,
       this.playbackId,
       this.videoUrl,
@@ -385,6 +398,7 @@ class _$Video extends Video {
         likes == other.likes &&
         dislikes == other.dislikes &&
         neutral == other.neutral &&
+        views == other.views &&
         image == other.image &&
         playbackId == other.playbackId &&
         videoUrl == other.videoUrl &&
@@ -417,16 +431,16 @@ class _$Video extends Video {
                                                                 $jc(
                                                                     $jc(
                                                                         $jc(
-                                                                            $jc($jc($jc($jc($jc(0, userId.hashCode), videoId.hashCode), channelId.hashCode), channelName.hashCode),
-                                                                                categoryId.hashCode),
-                                                                            categoryName.hashCode),
-                                                                        createdBy.hashCode),
-                                                                    title.hashCode),
-                                                                description.hashCode),
-                                                            type.hashCode),
-                                                        likes.hashCode),
-                                                    dislikes.hashCode),
-                                                neutral.hashCode),
+                                                                            $jc($jc($jc($jc($jc($jc(0, userId.hashCode), videoId.hashCode), channelId.hashCode), channelName.hashCode), categoryId.hashCode),
+                                                                                categoryName.hashCode),
+                                                                            createdBy.hashCode),
+                                                                        title.hashCode),
+                                                                    description.hashCode),
+                                                                type.hashCode),
+                                                            likes.hashCode),
+                                                        dislikes.hashCode),
+                                                    neutral.hashCode),
+                                                views.hashCode),
                                             image.hashCode),
                                         playbackId.hashCode),
                                     videoUrl.hashCode),
@@ -455,6 +469,7 @@ class _$Video extends Video {
           ..add('likes', likes)
           ..add('dislikes', dislikes)
           ..add('neutral', neutral)
+          ..add('views', views)
           ..add('image', image)
           ..add('playbackId', playbackId)
           ..add('videoUrl', videoUrl)
@@ -524,6 +539,10 @@ class VideoBuilder implements Builder<Video, VideoBuilder> {
   int get neutral => _$this._neutral;
   set neutral(int neutral) => _$this._neutral = neutral;
 
+  int _views;
+  int get views => _$this._views;
+  set views(int views) => _$this._views = views;
+
   String _image;
   String get image => _$this._image;
   set image(String image) => _$this._image = image;
@@ -582,6 +601,7 @@ class VideoBuilder implements Builder<Video, VideoBuilder> {
       _likes = _$v.likes;
       _dislikes = _$v.dislikes;
       _neutral = _$v.neutral;
+      _views = _$v.views;
       _image = _$v.image;
       _playbackId = _$v.playbackId;
       _videoUrl = _$v.videoUrl;
@@ -627,6 +647,7 @@ class VideoBuilder implements Builder<Video, VideoBuilder> {
             likes: likes,
             dislikes: dislikes,
             neutral: neutral,
+            views: views,
             image: image,
             playbackId: playbackId,
             videoUrl: videoUrl,

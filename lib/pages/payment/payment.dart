@@ -18,8 +18,10 @@ class PaymentPage extends StatefulWidget {
 
   final Trailer trailer;
   final User user;
+  final bool isDonate;
+  final int price;
 
-  PaymentPage(this.trailer, this.user);
+  PaymentPage(this.trailer, this.user, this.isDonate, { this.price });
 
 
   @override
@@ -76,8 +78,13 @@ class _PaymentPageState extends State<PaymentPage> {
 
     FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
     var body = {
-      "channelId": widget.trailer.channelId
+      "channelId": widget.trailer.channelId,
+      "userId": firebaseUser.uid
     };
+
+    if(widget.isDonate) {
+      body["donate"] = widget.price.toString();
+    }
 
     Logger.log(PaymentPage.TAG, message: "$body");
 
@@ -136,12 +143,18 @@ class _PaymentPageState extends State<PaymentPage> {
     client.close();
   }
 
-  _recordPayment() {
+  _recordPayment() async {
     setState(() {
       _isFinishing = true;
       _isPreparing = true;
     });
-    _markSubscribed();
+//    _markSubscribed();
+    FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
+    User user = await _authManager.getUser(firebaseUser: firebaseUser, force: true);
+
+    if(user.subscribedChannels.contains(widget.trailer.channelId)) {
+      Navigator.of(context).pop();
+    }
   }
 
   @override
@@ -150,10 +163,11 @@ class _PaymentPageState extends State<PaymentPage> {
 
     flutterWebViewPlugin.onUrlChanged.listen((String url) {
       Logger.log(PaymentPage.TAG, message: url);
-      if(url.endsWith("/pagePaymentSuccess")) {
+      print(url.contains("/pagePaymentSuccess"));
+      if(url.contains("/pagePaymentSuccess")) {
         flutterWebViewPlugin.close();
         _recordPayment();
-      } else if(url.endsWith("/pagePaymentCanceled")) {
+      } else if(url.contains("/pagePaymentCanceled")) {
         flutterWebViewPlugin.close();
         showDialog(
           context: context,

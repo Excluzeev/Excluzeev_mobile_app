@@ -237,9 +237,9 @@ class WidgetUtils {
     Navigator.of(context).push(route);
   }
 
-  static void showPaymentScreen(BuildContext context, Trailer trailer, User user) async {
+  static void showPaymentScreen(BuildContext context, Trailer trailer, User user, bool isDonate, {int price}) async {
     String tag = PaymentPage.TAG;
-    Widget page = PaymentPage(trailer, user);
+    Widget page = PaymentPage(trailer, user, isDonate, price: price);
 
     final route = CupertinoPageRoute<bool>(
       maintainState: true,

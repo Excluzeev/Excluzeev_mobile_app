@@ -22,6 +22,7 @@ part of 'serializers.dart';
 Serializers _$serializers = (new Serializers().toBuilder()
       ..add(Category.serializer)
       ..add(Channel.serializer)
+      ..add(Chat.serializer)
       ..add(Comments.serializer)
       ..add(Trailer.serializer)
       ..add(User.serializer)

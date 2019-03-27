@@ -1,27 +1,19 @@
 import 'dart:convert';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firestore_ui/animated_firestore_list.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:trenstop/i18n/translation.dart';
 import 'package:trenstop/managers/auth_manager.dart';
 import 'package:trenstop/managers/channel_manager.dart';
-import 'package:trenstop/managers/snapshot.dart';
 import 'package:trenstop/managers/video_manager.dart';
-import 'package:trenstop/misc/iuid.dart';
 import 'package:trenstop/misc/logger.dart';
-import 'package:trenstop/models/comments.dart';
 import 'package:trenstop/models/user.dart';
 import 'package:trenstop/models/video.dart';
-import 'package:trenstop/pages/home/widgets/information.dart';
-import 'package:trenstop/pages/videos/widgets/video_comments_widget.dart';
+import 'package:trenstop/pages/videos/widgets/CommentWidget.dart';
+import 'package:trenstop/pages/videos/widgets/LiveChat.dart';
 import 'package:trenstop/pages/videos/widgets/video_title_widget.dart';
-import 'package:trenstop/widgets/ensure_visiblity.dart';
 import 'package:trenstop/widgets/like_dislike_neutral.dart';
 import 'package:trenstop/widgets/rounded_button.dart';
-import 'package:trenstop/widgets/white_app_bar.dart';
 import 'package:video_player/video_player.dart';
 // import 'package:chewie/chewie.dart';
 import 'package:flutter_rtmp_publisher/flutter_rtmp_publisher.dart';
@@ -46,7 +38,6 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
 
   final VideoManager _videoManager = VideoManager.instance;
   final AuthManager _authManager = AuthManager.instance;
-  final TextEditingController _commentController = TextEditingController();
 
   Translation translation;
   ChannelManager _channelManager = ChannelManager.instance;
@@ -54,23 +45,25 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
   VideoPlayerController _videoPlayerController;
 //  ChewieController _chewieController;
   double aspectRatio = 16.0 / 9.0;
-  bool _publishingComment = false;
   String videoUrl = "";
   bool _isLoading = true;
   bool _isError = false;
+  bool _isViewTriggered = false;
 
   bool _showStartStream = false;
 
   FocusNode _focusNode = new FocusNode();
 
   _showSnackBar(String message) {
-    setState(() {
-      _publishingComment = false;
-    });
     if (mounted && message != null && message.isNotEmpty)
       _scaffoldKey.currentState.showSnackBar(SnackBar(
         content: Text(message),
       ));
+  }
+
+  _triggerVideoView() async {
+    _isViewTriggered = true;
+    _videoManager.countView(widget.video);
   }
 
   _getVideoUrl() async {
@@ -106,17 +99,18 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
           });
         }
       });
-    _videoPlayerController.addListener(() {
-      Logger.log(VideoDetailPage.TAG,
-          message: _videoPlayerController.value.toString());
+    _videoPlayerController.addListener(() async {
       if (_videoPlayerController.value.errorDescription != null) {
         setState(() {
           _isLoading = true;
           _isError = true;
         });
       }
+
+      if(!_isViewTriggered && (await _videoPlayerController.position > Duration(seconds: 5))) {
+        _triggerVideoView();
+      }
     });
-    _videoPlayerController.addListener(() {});
 //    _chewieController = ChewieController(
 //      videoPlayerController: _videoPlayerController,
 //      aspectRatio: aspectRatio,
@@ -154,49 +148,6 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
   }
 
 
-  _comment() async {
-    String comment = _commentController.text;
-
-    if (comment.isEmpty) {
-      _showSnackBar(translation.commentEmpty);
-      return;
-    }
-
-    setState(() {
-      _publishingComment = true;
-    });
-
-    FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
-    User user = await _authManager.getUser(firebaseUser: firebaseUser);
-
-    String commentId = IUID.string;
-
-    CommentsBuilder commentsBuilder = CommentsBuilder()
-      ..comment = comment
-      ..userPhoto = user.userPhoto
-      ..createdDate = Timestamp.fromDate(DateTime.now())
-      ..channelName = widget.video.channelName
-      ..channelId = widget.video.channelId
-      ..userId = user.uid
-      ..userName = user.displayName
-      ..vtId = widget.video.videoId
-      ..commentId = commentId;
-
-    Snapshot<Comments> snapshot =
-        await _videoManager.addComment(commentsBuilder.build());
-
-    if (snapshot.hasError) {
-      _showSnackBar(snapshot.error);
-      return;
-    }
-
-    setState(() {
-      _publishingComment = false;
-    });
-
-    setState(() {});
-  }
-
   _startStream(streamKey) async {
     if (widget.video.later == "later") {
       var videoData = {"videoId": widget.video.videoId};
@@ -227,53 +178,6 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
             ),
           )
         : Container();
-  }
-
-  Widget _buildCommentItem(BuildContext context, DocumentSnapshot snapshot,
-      Animation animation, int index) {
-    final comment = Comments.fromDocumentSnapshot(snapshot);
-
-    return FadeTransition(
-      opacity: animation,
-      child: comment != null
-          ? VideoCommentsWidget(
-              comment: comment,
-            )
-          : Center(child: CircularProgressIndicator()),
-    );
-  }
-
-  Widget _buildAddCommentWidget() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-      child: TextField(
-        controller: _commentController,
-        maxLines: 1,
-        inputFormatters: [LengthLimitingTextInputFormatter(256)],
-        textInputAction: TextInputAction.send,
-        onSubmitted: (text) => _comment(),
-        decoration: InputDecoration(
-          enabled: !_publishingComment,
-          contentPadding: const EdgeInsets.all(16.0),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(32.0),
-          ),
-          hintText: translation.addCommentLabel,
-          suffixIcon: IconButton(
-            icon: _publishingComment
-                ? SizedBox.fromSize(
-                    size: Size.fromRadius(10.0),
-                    child: CircularProgressIndicator(
-                      strokeWidth: 2.0,
-                    ),
-                  )
-                : Icon(Icons.send),
-            tooltip: translation.addCommentLabel,
-            onPressed: _comment,
-          ),
-        ),
-      ),
-    );
   }
 
   _triggerDelete() async {
@@ -394,7 +298,6 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
                       color: Colors.grey[500],
                     ),
                   ),
-                  _buildAddCommentWidget(),
                 ]),
                 Positioned(
                   top: 30.0,
@@ -411,31 +314,7 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
             ),
           ),
           SliverToBoxAdapter(
-            child: FirestoreAnimatedList(
-              shrinkWrap: true,
-              query: _videoManager
-                  .videoCommentQuery(widget.video.videoId)
-                  .snapshots(),
-              errorChild: InformationWidget(
-                icon: Icons.error,
-                subtitle: translation.errorLoadComments,
-              ),
-              emptyChild: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      translation.noCommentsYet,
-                      style: textTheme.title,
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ],
-              ),
-              itemBuilder: _buildCommentItem,
-            ),
+            child: widget.video.type != "Live" ? CommentWidget(widget.video) : LiveChatWidget(widget.video),
           )
         ],
       ),

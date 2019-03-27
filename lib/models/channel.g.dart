@@ -90,7 +90,7 @@ class _$ChannelSerializer implements StructuredSerializer<Channel> {
       result
         ..add('currentFund')
         ..add(serializers.serialize(object.currentFund,
-            specifiedType: const FullType(int)));
+            specifiedType: const FullType(double)));
     }
     if (object.percentage != null) {
       result
@@ -171,7 +171,7 @@ class _$ChannelSerializer implements StructuredSerializer<Channel> {
           break;
         case 'currentFund':
           result.currentFund = serializers.deserialize(value,
-              specifiedType: const FullType(int)) as int;
+              specifiedType: const FullType(double)) as double;
           break;
         case 'percentage':
           result.percentage = serializers.deserialize(value,
@@ -214,7 +214,7 @@ class _$Channel extends Channel {
   @override
   final double targetFund;
   @override
-  final int currentFund;
+  final double currentFund;
   @override
   final double percentage;
 
@@ -423,9 +423,9 @@ class ChannelBuilder implements Builder<Channel, ChannelBuilder> {
   double get targetFund => _$this._targetFund;
   set targetFund(double targetFund) => _$this._targetFund = targetFund;
 
-  int _currentFund;
-  int get currentFund => _$this._currentFund;
-  set currentFund(int currentFund) => _$this._currentFund = currentFund;
+  double _currentFund;
+  double get currentFund => _$this._currentFund;
+  set currentFund(double currentFund) => _$this._currentFund = currentFund;
 
   double _percentage;
   double get percentage => _$this._percentage;

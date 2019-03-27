@@ -113,4 +113,37 @@ class TrailerManager {
     );
   }
 
+  Future countView(Trailer trailer) async {
+    String error = "";
+
+    DocumentReference reference = trailersCollection.document(trailer.trailerId);
+
+    Logger.log(TAG, message: "Trying to retrieve ${reference.documentID}");
+
+    final errorHandler = (exception, stacktrace) {
+      Logger.log(TAG,
+          message: "Couldn't update Comment on database, error: $exception");
+      error = "Unknown Error";
+    };
+
+    final freshSnap = await reference.get().catchError(errorHandler);
+
+    await _store.runTransaction((transaction) async {
+      final data = {
+        "views": freshSnap.data["views"] ?? 0 + 1
+      };
+      final isUpdate = freshSnap?.exists ?? false;
+      if (isUpdate) {
+        Logger.log(TAG,
+            message: "Sending data with isUpdate ($isUpdate): ${data.keys}");
+        await transaction.update(reference, data).catchError(errorHandler);
+      } else {
+        Logger.log(TAG,
+            message: "Sending data with isUpdate ($isUpdate): ${data.keys}");
+        await transaction.set(reference, data).catchError(errorHandler);
+      }
+    }).catchError(errorHandler);
+
+  }
+
 }

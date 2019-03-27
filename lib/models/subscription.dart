@@ -14,11 +14,11 @@ abstract class Subscription implements Built<Subscription, SubscriptionBuilder> 
 
   String get userId;
   String get channelId;
-  String get subscribedDate;
+  DateTime get subscribedDate;
   String get channelName;
   String get channelImage;
 
-  String get expiryDate;
+  DateTime get expiryDate;
 
   String get subscriptionId;
 
@@ -39,8 +39,8 @@ abstract class Subscription implements Built<Subscription, SubscriptionBuilder> 
         ..channelImage = 'https://firebasestorage.googleapis.com/v0/b/trenstop-public/o/channels%2F${data['channelId']}%2Fthumbnail.jpg?alt=media'
         ..channelId = data['channelId'] ?? ''
         ..channelName = data['channelName'] ?? ''
-        ..subscribedDate = data['subscribedDate'] ?? null
-        ..expiryDate = data['expiryDate'] ?? null
+        ..subscribedDate = data['subscribedDate'].toDate() ?? null
+        ..expiryDate = data['expiryDate'].toDate() ?? null
         ..isActive = data['isActive'] ?? false
         ..subscriptionId = data['subscriptionId'] ?? '';
       return builder.build();

@@ -401,7 +401,7 @@ class _NewChannelPageState extends State<NewChannelPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     _buildCategoryDropDown(),
-                    selectedCategory != null && selectedCategory.name == "Causes" ?
+                    selectedCategory != null && selectedCategory.name == "Call-to-Action" ?
                     _buildTypeDropDown()
                     :
                     Container(),

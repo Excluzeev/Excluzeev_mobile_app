@@ -38,7 +38,7 @@ abstract class Channel implements Built<Channel, ChannelBuilder> {
   double get targetFund;
 
   @nullable
-  int get currentFund;
+  double get currentFund;
 
   @nullable
   double get percentage;
@@ -68,8 +68,8 @@ abstract class Channel implements Built<Channel, ChannelBuilder> {
         ..subscriberCount = data['subscriberCount'] ?? 0
         ..price = double.parse(data['price'].toString()) ?? 0.0
         ..targetFund = double.parse(data['targetFund'].toString()) ?? 0.0
-        ..currentFund = data['currentFund'] ?? 0
-        ..percentage = data['percentage'] ?? 0.0;
+        ..currentFund = double.parse(data['currentFund'].toString()) ?? 0.0
+        ..percentage = double.parse(data['percentage'].toString()) ?? 0.0;
       return builder.build();
     } catch (error) {
       Logger.log(TAG, message: "Couldn't build user object, error: $error");

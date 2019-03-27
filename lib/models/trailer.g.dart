@@ -86,6 +86,12 @@ class _$TrailerSerializer implements StructuredSerializer<Trailer> {
         ..add(serializers.serialize(object.neutral,
             specifiedType: const FullType(int)));
     }
+    if (object.views != null) {
+      result
+        ..add('views')
+        ..add(serializers.serialize(object.views,
+            specifiedType: const FullType(int)));
+    }
     if (object.originalUrl != null) {
       result
         ..add('originalUrl')
@@ -181,6 +187,10 @@ class _$TrailerSerializer implements StructuredSerializer<Trailer> {
           result.neutral = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
           break;
+        case 'views':
+          result.views = serializers.deserialize(value,
+              specifiedType: const FullType(int)) as int;
+          break;
         case 'originalUrl':
           result.originalUrl = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
@@ -238,6 +248,8 @@ class _$Trailer extends Trailer {
   @override
   final int neutral;
   @override
+  final int views;
+  @override
   final String originalUrl;
   @override
   final String playbackId;
@@ -266,6 +278,7 @@ class _$Trailer extends Trailer {
       this.likes,
       this.dislikes,
       this.neutral,
+      this.views,
       this.originalUrl,
       this.playbackId,
       this.image,
@@ -335,6 +348,7 @@ class _$Trailer extends Trailer {
         likes == other.likes &&
         dislikes == other.dislikes &&
         neutral == other.neutral &&
+        views == other.views &&
         originalUrl == other.originalUrl &&
         playbackId == other.playbackId &&
         image == other.image &&
@@ -362,28 +376,21 @@ class _$Trailer extends Trailer {
                                                                 $jc(
                                                                     $jc(
                                                                         $jc(
-                                                                            $jc(
-                                                                                0,
-                                                                                userId
-                                                                                    .hashCode),
-                                                                            trailerId
-                                                                                .hashCode),
-                                                                        channelId
-                                                                            .hashCode),
-                                                                    channelName
-                                                                        .hashCode),
-                                                                categoryId
-                                                                    .hashCode),
-                                                            categoryName
-                                                                .hashCode),
-                                                        createdBy.hashCode),
-                                                    title.hashCode),
-                                                description.hashCode),
-                                            videoUrl.hashCode),
-                                        channelType.hashCode),
-                                    likes.hashCode),
-                                dislikes.hashCode),
-                            neutral.hashCode),
+                                                                            $jc($jc(0, userId.hashCode),
+                                                                                trailerId.hashCode),
+                                                                            channelId.hashCode),
+                                                                        channelName.hashCode),
+                                                                    categoryId.hashCode),
+                                                                categoryName.hashCode),
+                                                            createdBy.hashCode),
+                                                        title.hashCode),
+                                                    description.hashCode),
+                                                videoUrl.hashCode),
+                                            channelType.hashCode),
+                                        likes.hashCode),
+                                    dislikes.hashCode),
+                                neutral.hashCode),
+                            views.hashCode),
                         originalUrl.hashCode),
                     playbackId.hashCode),
                 image.hashCode),
@@ -408,6 +415,7 @@ class _$Trailer extends Trailer {
           ..add('likes', likes)
           ..add('dislikes', dislikes)
           ..add('neutral', neutral)
+          ..add('views', views)
           ..add('originalUrl', originalUrl)
           ..add('playbackId', playbackId)
           ..add('image', image)
@@ -476,6 +484,10 @@ class TrailerBuilder implements Builder<Trailer, TrailerBuilder> {
   int get neutral => _$this._neutral;
   set neutral(int neutral) => _$this._neutral = neutral;
 
+  int _views;
+  int get views => _$this._views;
+  set views(int views) => _$this._views = views;
+
   String _originalUrl;
   String get originalUrl => _$this._originalUrl;
   set originalUrl(String originalUrl) => _$this._originalUrl = originalUrl;
@@ -514,6 +526,7 @@ class TrailerBuilder implements Builder<Trailer, TrailerBuilder> {
       _likes = _$v.likes;
       _dislikes = _$v.dislikes;
       _neutral = _$v.neutral;
+      _views = _$v.views;
       _originalUrl = _$v.originalUrl;
       _playbackId = _$v.playbackId;
       _image = _$v.image;
@@ -555,6 +568,7 @@ class TrailerBuilder implements Builder<Trailer, TrailerBuilder> {
             likes: likes,
             dislikes: dislikes,
             neutral: neutral,
+            views: views,
             originalUrl: originalUrl,
             playbackId: playbackId,
             image: image,

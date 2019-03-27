@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:trenstop/managers/snapshot.dart';
+import 'package:trenstop/models/chat.dart';
 import 'package:trenstop/models/video.dart';
 import 'package:trenstop/misc/logger.dart';
 import 'package:trenstop/models/comments.dart';
@@ -35,6 +36,9 @@ class VideoManager {
 
   Query videoCommentQuery(String videoId) {
     return videosCollection.document(videoId).collection('comments').orderBy("createdDate", descending: true);
+  }
+  Query videoChatQuery(String videoId) {
+    return videosCollection.document(videoId).collection('chat').orderBy("createdAt", descending: true);
   }
 
   Future<http.Response> addLiveVideo(Video video) async {
@@ -124,10 +128,81 @@ class VideoManager {
     );
   }
 
+
+  Future<Snapshot<Chat>> addLiveChat(Chat chat, String vtId) async {
+    String error;
+
+    DocumentReference reference = videosCollection.document(vtId)
+        .collection("chat").document(chat.chatId);
+
+    Logger.log(TAG, message: "Trying to retrieve ${reference.documentID}");
+
+    final errorHandler = (exception, stacktrace) {
+      Logger.log(TAG,
+          message: "Couldn't update Comment on database, error: $exception");
+      error = "Unknown Error";
+    };
+
+    final freshSnap = await reference.get().catchError(errorHandler);
+
+    await _store.runTransaction((transaction) async {
+      final data = chat.toMap;
+      print(data);
+      final isUpdate = freshSnap?.exists ?? false;
+      if (isUpdate) {
+        Logger.log(TAG,
+            message: "Sending data with isUpdate ($isUpdate): ${data.keys}");
+        await transaction.update(reference, data).catchError(errorHandler);
+      } else {
+        Logger.log(TAG,
+            message: "Sending data with isUpdate ($isUpdate): ${data.keys}");
+        await transaction.set(reference, data).catchError(errorHandler);
+      }
+    }).catchError(errorHandler);
+
+    return Snapshot<Chat>(
+      data: chat,
+      error: error,
+    );
+  }
+
   Future<bool> deleteVideo(Video video) async {
     DocumentReference reference = videosCollection.document(video.videoId);
     var result = await reference.delete();
     return true;
+  }
+
+  Future countView(Video video) async {
+    DocumentReference reference = videosCollection.document(video.videoId);
+    String error = "";
+
+    final errorHandler = (exception, stacktrace) {
+      Logger.log(TAG,
+          message: "Couldn't update Comment on database, error: $exception");
+      error = "Unknown Error";
+    };
+
+    final freshSnap = await reference.get().catchError(errorHandler);
+
+    await _store.runTransaction((transaction) async {
+
+      final data = {
+        "views": freshSnap.data["views"] ?? 0 + 1
+      };
+
+      final isUpdate = freshSnap?.exists ?? false;
+
+      if (isUpdate) {
+        Logger.log(TAG,
+            message: "Sending data with isUpdate ($isUpdate): ${data.keys}");
+        await transaction.update(reference, data).catchError(errorHandler);
+      } else {
+        Logger.log(TAG,
+            message: "Sending data with isUpdate ($isUpdate): ${data.keys}");
+        await transaction.set(reference, data).catchError(errorHandler);
+      }
+    }).catchError(errorHandler);
+
   }
 
 //  Future<Snapshot<Comments>> addComment(Comments comment) async {

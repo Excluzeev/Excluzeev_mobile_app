@@ -29,6 +29,8 @@ abstract class Video implements Built<Video, VideoBuilder> {
   int get dislikes;
   @nullable
   int get neutral;
+  @nullable
+  int get views;
 
   @nullable
   String get image;
@@ -84,6 +86,7 @@ abstract class Video implements Built<Video, VideoBuilder> {
         ..playbackId = data['playbackId'] ?? ''
         ..createdDate = data['createdDate'] ?? null
         ..likes = data['likes'] ?? 0
+        ..views = data['views'] ?? 0
         ..dislikes = data['dislikes'] ?? 0
         ..neutral = data['neutral'] ?? 0;
       return builder.build();

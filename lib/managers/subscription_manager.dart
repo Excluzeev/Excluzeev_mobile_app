@@ -25,6 +25,18 @@ class SubscriptionManager {
   Query mySubscriptionsQuery(String userId) {
     return subscriptionsCollection
         .where("userId", isEqualTo: userId)
-        .orderBy("createdDate", descending: true);
+        .where("isActive", isEqualTo: true);
+  }
+
+  fetchData(String userId) {
+    Logger.log(TAG, message: userId);
+    var data = subscriptionsCollection
+        .where("userId", isEqualTo: userId)
+        .getDocuments()
+    .then((qSnap) => {
+    Logger.log(TAG, message: qSnap.documents.length.toString())
+    });
+
+
   }
 }

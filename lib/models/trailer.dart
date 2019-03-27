@@ -31,6 +31,8 @@ abstract class Trailer implements Built<Trailer, TrailerBuilder> {
   int get dislikes;
   @nullable
   int get neutral;
+  @nullable
+  int get views;
 
   @nullable
   String get originalUrl;
@@ -74,7 +76,8 @@ abstract class Trailer implements Built<Trailer, TrailerBuilder> {
         ..createdDate = data['createdDate'] ?? null
         ..likes = data['likes'] ?? 0
         ..dislikes = data['dislikes'] ?? 0
-        ..neutral = data['neutral'] ?? 0;
+        ..neutral = data['neutral'] ?? 0
+        ..views = data['views'] ?? 0;
       return builder.build();
     } catch (error) {
       Logger.log(TAG, message: "Couldn't build user object, error: $error");

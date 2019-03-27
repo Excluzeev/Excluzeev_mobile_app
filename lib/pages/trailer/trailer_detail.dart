@@ -54,6 +54,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage> {
   double aspectRatio = 16.0 / 9.0;
   bool _publishingComment = false;
 
+  bool _isViewTriggered = false;
   bool _showSubscribe = true;
 
   _showSnackBar(String message) {
@@ -65,6 +66,12 @@ class _TrailerDetailPageState extends State<TrailerDetailPage> {
         content: Text(message),
       ));
   }
+
+  _triggerVideoView() async {
+    _isViewTriggered = true;
+    _trailerManager.countView(widget.trailer);
+  }
+
 
   @override
   void initState() {
@@ -83,7 +90,11 @@ class _TrailerDetailPageState extends State<TrailerDetailPage> {
           });
         }
       });
-
+    _videoPlayerController.addListener(() async {
+      if(!_isViewTriggered && (await _videoPlayerController.position > Duration(seconds: 5))) {
+        _triggerVideoView();
+      }
+    });
 //    _chewieController = ChewieController(
 //      videoPlayerController: _videoPlayerController,
 //      aspectRatio: aspectRatio,
@@ -111,7 +122,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage> {
     }
   }
 
-  _startSubscribe() async {
+  _startSubscribe(bool isDonate, {int price}) async {
     FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
 
     if (firebaseUser == null) {
@@ -119,7 +130,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage> {
       return;
     }
     User user = await _authManager.getUser(firebaseUser: firebaseUser);
-    WidgetUtils.showPaymentScreen(context, widget.trailer, user);
+    WidgetUtils.showPaymentScreen(context, widget.trailer, user, isDonate, price: price);
   }
 
   @override
@@ -225,12 +236,28 @@ class _TrailerDetailPageState extends State<TrailerDetailPage> {
 
   _subscribeButton() {
     return _showSubscribe
-        ? RoundedButton(
-            text: widget.trailer.channelType == "CrowdFunding"
-                ? translation.donate
-                : translation.subscribe,
-            onPressed: _startSubscribe,
+        ?
+    widget.trailer.channelType != "CrowdFunding"
+        ?
+
+    RoundedButton(
+            text: translation.subscribe,
+            onPressed: () => _startSubscribe(false),
           )
+    :
+    Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      children: <Widget>[
+        RoundedButton(
+          text: translation.donate5,
+          onPressed: () => _startSubscribe(true, price: 5),
+        ),
+        RoundedButton(
+          text: translation.donate10,
+          onPressed: () => _startSubscribe(true, price: 10),
+        )
+      ],
+    )
         : Container();
   }
 

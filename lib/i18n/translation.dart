@@ -318,6 +318,10 @@ class Translation {
     "Add Comment",
     name: 'addCommentLabel',
   );
+  String get addMessageLabel => Intl.message(
+    "Add Message",
+    name: 'addMessageLabel',
+  );
   String get commentEmpty => Intl.message(
     "Invalid Comment",
     name: 'commentEmpty',
@@ -330,6 +334,14 @@ class Translation {
     "No Comments yet.",
     name: 'noCommentsYet',
   );
+  String get errorLoadChat => Intl.message(
+    "Loading Chat Failed",
+    name: 'errorLoadChat',
+  );
+  String get noChatsYet => Intl.message(
+    "No Chat yet.",
+    name: 'noChatsYet',
+  );
   String get subscribe => Intl.message(
     "Subscribe",
     name: 'subscribe',
@@ -337,6 +349,16 @@ class Translation {
   String get donate => Intl.message(
     "Donate",
     name: 'donate',
+  );
+
+  String get donate5 => Intl.message(
+    "Donate 5\$",
+    name: 'donate5',
+  );
+
+  String get donate10 => Intl.message(
+    "Donate 10\$",
+    name: 'donate10',
   );
   String get paymentPreparing => Intl.message(
     "Preparing for payment",

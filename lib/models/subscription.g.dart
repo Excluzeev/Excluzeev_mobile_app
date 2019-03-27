@@ -40,7 +40,7 @@ class _$SubscriptionSerializer implements StructuredSerializer<Subscription> {
           specifiedType: const FullType(String)),
       'subscribedDate',
       serializers.serialize(object.subscribedDate,
-          specifiedType: const FullType(String)),
+          specifiedType: const FullType(DateTime)),
       'channelName',
       serializers.serialize(object.channelName,
           specifiedType: const FullType(String)),
@@ -49,7 +49,7 @@ class _$SubscriptionSerializer implements StructuredSerializer<Subscription> {
           specifiedType: const FullType(String)),
       'expiryDate',
       serializers.serialize(object.expiryDate,
-          specifiedType: const FullType(String)),
+          specifiedType: const FullType(DateTime)),
       'subscriptionId',
       serializers.serialize(object.subscriptionId,
           specifiedType: const FullType(String)),
@@ -82,7 +82,7 @@ class _$SubscriptionSerializer implements StructuredSerializer<Subscription> {
           break;
         case 'subscribedDate':
           result.subscribedDate = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
+              specifiedType: const FullType(DateTime)) as DateTime;
           break;
         case 'channelName':
           result.channelName = serializers.deserialize(value,
@@ -94,7 +94,7 @@ class _$SubscriptionSerializer implements StructuredSerializer<Subscription> {
           break;
         case 'expiryDate':
           result.expiryDate = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
+              specifiedType: const FullType(DateTime)) as DateTime;
           break;
         case 'subscriptionId':
           result.subscriptionId = serializers.deserialize(value,
@@ -117,13 +117,13 @@ class _$Subscription extends Subscription {
   @override
   final String channelId;
   @override
-  final String subscribedDate;
+  final DateTime subscribedDate;
   @override
   final String channelName;
   @override
   final String channelImage;
   @override
-  final String expiryDate;
+  final DateTime expiryDate;
   @override
   final String subscriptionId;
   @override
@@ -232,9 +232,9 @@ class SubscriptionBuilder
   String get channelId => _$this._channelId;
   set channelId(String channelId) => _$this._channelId = channelId;
 
-  String _subscribedDate;
-  String get subscribedDate => _$this._subscribedDate;
-  set subscribedDate(String subscribedDate) =>
+  DateTime _subscribedDate;
+  DateTime get subscribedDate => _$this._subscribedDate;
+  set subscribedDate(DateTime subscribedDate) =>
       _$this._subscribedDate = subscribedDate;
 
   String _channelName;
@@ -245,9 +245,9 @@ class SubscriptionBuilder
   String get channelImage => _$this._channelImage;
   set channelImage(String channelImage) => _$this._channelImage = channelImage;
 
-  String _expiryDate;
-  String get expiryDate => _$this._expiryDate;
-  set expiryDate(String expiryDate) => _$this._expiryDate = expiryDate;
+  DateTime _expiryDate;
+  DateTime get expiryDate => _$this._expiryDate;
+  set expiryDate(DateTime expiryDate) => _$this._expiryDate = expiryDate;
 
   String _subscriptionId;
   String get subscriptionId => _$this._subscriptionId;
