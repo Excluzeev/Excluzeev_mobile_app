@@ -1,6 +1,6 @@
 # flutter_rtmp_publisher
 
-RTMP Publisher Plugin for flutter
+A new flutter plugin project.
 
 ## Getting Started
 

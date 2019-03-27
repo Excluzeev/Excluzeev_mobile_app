@@ -4,9 +4,9 @@
 Pod::Spec.new do |s|
   s.name             = 'flutter_rtmp_publisher'
   s.version          = '0.0.1'
-  s.summary          = 'RTMP Publisher Plugin for flutter'
+  s.summary          = 'A new flutter plugin project.'
   s.description      = <<-DESC
-RTMP Publisher Plugin for flutter
+A new flutter plugin project.
                        DESC
   s.homepage         = 'http://example.com'
   s.license          = { :file => '../LICENSE' }
@@ -15,6 +15,8 @@ RTMP Publisher Plugin for flutter
   s.source_files = 'Classes/**/*'
   s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
+
+  s.dependency 'LFLiveKit'
 
   s.ios.deployment_target = '8.0'
 end
