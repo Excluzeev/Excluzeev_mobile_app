@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <Flutter/Flutter.h>
 
 @interface LMLivePreview : UIView
 
 @property (nonatomic, retain) NSString *streamUrl;
+@property (nonatomic, retain) UIViewController *viewC;
 
 @end

@@ -260,11 +260,12 @@
         _closeButton.size = CGSizeMake(44, 44);
         _closeButton.left = self.width - 10 - _closeButton.width;
         _closeButton.top = 20;
-        [_closeButton setImage:[UIImage imageNamed:@"path"] forState:UIControlStateNormal];
+        [_closeButton setImage:[UIImage imageNamed:@"close_preview"] forState:UIControlStateNormal];
         _closeButton.exclusiveTouch = YES;
-        [_closeButton addBlockForControlEvents:UIControlEventTouchUpInside block:^(id sender) {
-            
-        }];
+//         [_closeButton addBlockForControlEvents:UIControlEventTouchUpInside block:^(id sender) {
+//             NSLog(@"Close pressed");
+//             [self.viewController dismissViewControllerAnimated:YES completion:nil];
+//         }];
     }
     return _closeButton;
 }
@@ -320,7 +321,6 @@
             if(_self.startLiveButton.selected){
                 [_self.startLiveButton setTitle:@"End live" forState:UIControlStateNormal];
                 LFLiveStreamInfo *stream = [LFLiveStreamInfo new];
-                NSLog(@"%@", self.streamUrl);
                 stream.url = self.streamUrl;
                 //stream.url = @"rtmp://daniulive.com:1935/live/stream2399";
                 [_self.session startLive:stream];

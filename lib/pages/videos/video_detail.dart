@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -93,6 +94,7 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
     _videoPlayerController = VideoPlayerController.network(videoUrl);
     _videoPlayerController
       ..initialize().then((v) {
+        _videoPlayerController.play();
         if (aspectRatio != _videoPlayerController.value.aspectRatio) {
           setState(() {
             aspectRatio = _videoPlayerController.value.aspectRatio;
@@ -253,7 +255,9 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
                                   child: Image.asset(
                                       'res/icons/thumbnail_placeholder.png'),
                                 )
-                              : Chewie(
+                              : Platform.isIOS ?
+             VideoPlayer(_videoPlayerController)
+              : Chewie(
                                   _videoPlayerController,
                                   aspectRatio: aspectRatio,
                                   autoPlay: false,

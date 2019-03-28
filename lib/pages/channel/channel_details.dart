@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:trenstop/i18n/translation.dart';
 import 'package:trenstop/misc/logger.dart';
@@ -34,8 +36,11 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> {
 
     permissionGroups.add(PermissionGroup.camera);
     permissionGroups.add(PermissionGroup.microphone);
-    permissionGroups.add(PermissionGroup.storage);
 
+    if(Platform.isAndroid) {
+      permissionGroups.add(PermissionGroup.storage);
+    }
+    
     Map<PermissionGroup, PermissionStatus> permissions = await PermissionHandler().requestPermissions(permissionGroups);
 
     var allAccept = true;

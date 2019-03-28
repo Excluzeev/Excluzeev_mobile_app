@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -84,6 +85,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage> {
 
     _videoPlayerController
       ..initialize().then((v) {
+        _videoPlayerController.play();
         if (aspectRatio != _videoPlayerController.value.aspectRatio) {
           setState(() {
             aspectRatio = _videoPlayerController.value.aspectRatio;
@@ -95,6 +97,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage> {
         _triggerVideoView();
       }
     });
+
 //    _chewieController = ChewieController(
 //      videoPlayerController: _videoPlayerController,
 //      aspectRatio: aspectRatio,
@@ -278,12 +281,12 @@ class _TrailerDetailPageState extends State<TrailerDetailPage> {
             ),
             AspectRatio(
               aspectRatio: aspectRatio,
-//              child: VideoPlayer(_controller),
-              child: Chewie(
+             child: Platform.isIOS ?
+             VideoPlayer(_videoPlayerController)
+              : Chewie(
                 _videoPlayerController,
                 aspectRatio: aspectRatio,
                 autoPlay: false,
-                looping: false,
                 placeholder: Image.asset('res/icons/thumbnail_placeholder.png'),
                       key: Key(widget.trailer.trailerId),
               ),

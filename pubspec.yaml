@@ -11,6 +11,7 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+  firebase_core: ^0.3.1+1
   cupertino_icons: ^0.1.2
   shared_preferences: ^0.4.3
   timeago: ^2.0.8
@@ -41,11 +42,9 @@ dependencies:
     path: plugins/flutter_rtmp_publisher
 
 
-dependency_overrides:
-  chewie: ^0.9.5
-  video_player: ^0.10.0+2
-
-
+# dependency_overrides:
+#   chewie: ^0.9.6
+#   video_player: ^0.10.0+4
 
 
 dev_dependencies:
