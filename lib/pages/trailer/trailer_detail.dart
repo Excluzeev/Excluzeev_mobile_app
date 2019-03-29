@@ -283,7 +283,10 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
                   )
                 ],
               )
-        : Container();
+        : RoundedButton(
+            text: translation.subscribed,
+            onPressed: null,
+          );
   }
 
   @override

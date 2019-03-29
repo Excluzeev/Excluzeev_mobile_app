@@ -55,12 +55,12 @@ class Translation {
       );
 
   String get login => Intl.message(
-        "Log In",
+        "Sign In",
         name: "login",
       );
 
   String get logout => Intl.message(
-        "Log out",
+        "Sign out",
         name: "logout",
       );
 
@@ -98,7 +98,7 @@ class Translation {
       );
 
   String get errorFields => Intl.message(
-        "Invalid login details",
+        "Invalid sign in details",
         name: "errorFields",
       );
 
@@ -337,6 +337,10 @@ class Translation {
   String get subscribe => Intl.message(
         "Subscribe",
         name: 'subscribe',
+      );
+  String get subscribed => Intl.message(
+        "Subscribed",
+        name: 'subscribed',
       );
   String get donate => Intl.message(
         "Donate",

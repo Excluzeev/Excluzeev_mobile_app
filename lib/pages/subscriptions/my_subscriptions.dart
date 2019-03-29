@@ -85,7 +85,6 @@ class _MySubscriptionsPageState extends State<MySubscriptionsPage> {
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
     if (translation == null) translation = Translation.of(context);
 
     return Scaffold(
@@ -106,20 +105,24 @@ class _MySubscriptionsPageState extends State<MySubscriptionsPage> {
                   icon: Icons.error,
                   subtitle: translation.errorLoadSubscriptions,
                 ),
-                emptyChild: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        translation.errorEmptySubscriptions,
-                        style: textTheme.title,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ],
+                emptyChild: Image.asset(
+                  'res/icons/empty-subscribe.png',
+                  fit: BoxFit.fill,
                 ),
+                // Column(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   crossAxisAlignment: CrossAxisAlignment.center,
+                //   children: <Widget>[
+                //     Padding(
+                //       padding: const EdgeInsets.all(8.0),
+                //       child: Text(
+                //         translation.errorEmptySubscriptions,
+                //         style: textTheme.title,
+                //         textAlign: TextAlign.center,
+                //       ),
+                //     ),
+                //   ],
+                // ),
                 itemBuilder: _buildItem,
               ),
       ),

@@ -13,7 +13,6 @@ import 'package:trenstop/pages/videos/widgets/video_title_widget.dart';
 import 'package:trenstop/widgets/image_display.dart';
 
 class VideoWidget extends StatelessWidget {
-
   static const String TAG = "VIDEO_WIDGET";
 
   final Video video;
@@ -39,50 +38,51 @@ class VideoWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           AspectRatio(
-            aspectRatio: 16.0/9.0,
+            aspectRatio: 16.0 / 9.0,
             child: Stack(
               alignment: Alignment.center,
               fit: StackFit.expand,
               children: <Widget>[
                 SizedBox.expand(
-                  child: ImageDisplay(
-                    urls: [video.image],
-                    zoomable: this.zoomable,
-                  ),
-                ),
-                showShare ?
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: CircleAvatar(
-                      radius: 26.0,
-                      backgroundColor: Colors.black38,
-                      child: FittedBox(
-                        child: InkWell(
-                          onTap: () {
-                            onShare(video);
-                          },
-                          child: Icon(
-                            Platform.isAndroid ? Icons.share : CupertinoIcons.share,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
+                  child: Container(
+                    color: Colors.blueGrey,
+                    child: ImageDisplay(
+                      urls: [video.image],
+                      zoomable: this.zoomable,
                     ),
                   ),
-                )
-                    :
-                    Container(),
+                ),
+                showShare
+                    ? Align(
+                        alignment: Alignment.topLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: CircleAvatar(
+                            radius: 26.0,
+                            backgroundColor: Colors.black38,
+                            child: FittedBox(
+                              child: InkWell(
+                                onTap: () {
+                                  onShare(video);
+                                },
+                                child: Icon(
+                                  Platform.isAndroid
+                                      ? Icons.share
+                                      : CupertinoIcons.share,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    : Container(),
               ],
             ),
           ),
-
           VideoTitleWidget(video: video)
         ],
       ),
     );
   }
 }
-
-

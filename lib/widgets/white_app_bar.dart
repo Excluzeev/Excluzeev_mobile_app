@@ -130,7 +130,7 @@ class WhiteAppBar extends StatefulWidget implements PreferredSizeWidget {
     this.iconTheme,
     this.textTheme,
     this.primary = true,
-    this.centerTitle,
+    this.centerTitle = true,
     this.titleSpacing = NavigationToolbar.kMiddleSpacing,
     this.toolbarOpacity = 1.0,
     this.bottomOpacity = 1.0,
@@ -327,8 +327,8 @@ class _WhiteAppBarState extends State<WhiteAppBar> {
         parentRoute is PageRoute<dynamic> && parentRoute.fullscreenDialog;
 
     IconThemeData appBarIconTheme = widget.iconTheme ?? themeData.iconTheme;
-    TextStyle centerStyle =
-        widget.textTheme?.title ?? themeData.textTheme.title;
+    TextStyle centerStyle = widget.textTheme?.title ??
+        themeData.textTheme.title.copyWith(fontWeight: FontWeight.bold);
     TextStyle sideStyle = widget.textTheme?.body1 ?? themeData.textTheme.body1;
 
     if (widget.toolbarOpacity != 1.0) {

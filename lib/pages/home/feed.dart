@@ -11,7 +11,6 @@ import 'package:trenstop/widgets/full_app_logo.dart';
 import 'package:trenstop/widgets/white_app_bar.dart';
 
 class FeedPage extends StatefulWidget {
-
   static const String TAG = "HOME_PAGE";
 
   FeedPage();
@@ -23,10 +22,8 @@ class FeedPage extends StatefulWidget {
 class _FeedPageState extends State<FeedPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final AuthManager _authManager = AuthManager();
-  TextStyle drawerItemTextStyle = TextStyle(
-    fontWeight: FontWeight.bold,
-    fontSize: 16.0
-  );
+  TextStyle drawerItemTextStyle =
+      TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0);
 
   Translation translation;
   User user;
@@ -45,13 +42,15 @@ class _FeedPageState extends State<FeedPage> {
 
   _getUser() async {
     user = await _authManager.getUser();
-    setState(() {
-
-    });
+    setState(() {});
   }
 
   _createChannel() async {
-    if(user.isContentCreator) {
+    if (user == null) {
+      _login();
+      return;
+    }
+    if (user.isContentCreator) {
       Navigator.pop(context);
       WidgetUtils.showCreateChannelPage(context);
     } else {
@@ -60,30 +59,39 @@ class _FeedPageState extends State<FeedPage> {
   }
 
   _contentCreatorMenu() {
-    return user.isContentCreator ?
-    Container()
-        :
-    FlatButton(
-      onPressed: _contentCreator,
-      child: Text(
-        translation.signUpContentCreator,
-        style: drawerItemTextStyle,
-      ),
-    );
+    return user == null
+        ? Container()
+        : user.isContentCreator
+            ? Container()
+            : FlatButton(
+                onPressed: _contentCreator,
+                child: Text(
+                  translation.signUpContentCreator,
+                  style: drawerItemTextStyle,
+                ),
+              );
   }
 
   _myChannels() {
-    if(user.isContentCreator) {
-      Navigator.pop(context);
-      WidgetUtils.showChannels(context, user);
+    if (user != null) {
+      if (user.isContentCreator) {
+        Navigator.pop(context);
+        WidgetUtils.showChannels(context, user);
+      } else {
+        _contentCreator();
+      }
     } else {
-      _contentCreator();
+      _login();
     }
   }
 
   _mySubscriptions() {
-    Navigator.pop(context);
-    WidgetUtils.showSubscriptions(context, user);
+    if (user != null) {
+      Navigator.pop(context);
+      WidgetUtils.showSubscriptions(context, user);
+    } else {
+      _login();
+    }
   }
 
   _createMenu() {
@@ -124,13 +132,13 @@ class _FeedPageState extends State<FeedPage> {
 
   _login() async {
     await Prefs.clear();
+    Navigator.of(context).pop();
     WidgetUtils.goToAuth(context, replaceAll: false);
   }
 
   _drawerWidget() {
     return Drawer(
-      child: user != null ?
-      Container(
+      child: Container(
         padding: const EdgeInsets.only(left: 16.0),
         color: Colors.white,
         child: Stack(
@@ -138,19 +146,23 @@ class _FeedPageState extends State<FeedPage> {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                SizedBox(height: 32.0,),
+                SizedBox(
+                  height: 32.0,
+                ),
                 SizedAppLogo(),
-                SizedBox(height: 14.0,),
+                SizedBox(
+                  height: 14.0,
+                ),
                 Container(
                   width: MediaQuery.of(context).size.width,
                   color: Palette.primary,
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
-                      user.displayName.toUpperCase(),
-                      style: TextStyle(
-                        color: Colors.white
-                      ),
+                      user == null
+                          ? "User".toUpperCase()
+                          : user.displayName.toUpperCase(),
+                      style: TextStyle(color: Colors.white),
                     ),
                   ),
                 ),
@@ -160,39 +172,35 @@ class _FeedPageState extends State<FeedPage> {
             ),
             Positioned(
               bottom: 20.0,
-              child: FlatButton(
-                  onPressed: _logout,
-                  child: Text(
-                    translation.logout,
-                    style: drawerItemTextStyle,
-                  )
+              child: Column(
+                children: <Widget>[
+                  user != null
+                      ? FlatButton(
+                          onPressed: _logout,
+                          child: Text(
+                            translation.logout,
+                            style: drawerItemTextStyle,
+                          ))
+                      : Container(
+                          child: FlatButton(
+                              onPressed: () => _login(),
+                              child: Text(
+                                translation.login,
+                                style: drawerItemTextStyle,
+                              )),
+                        )
+                ],
               ),
             )
           ],
         ),
-      )
-      :
-          Column(
-            children: <Widget>[
-              SizedBox(height: 32.0,),
-              Container(
-                child: FlatButton(
-                    onPressed: () => _login(),
-                    child: Text(
-                      translation.login,
-                      style: drawerItemTextStyle,
-                    )
-                ),
-              )
-            ],
-          ),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-
-    if(translation == null) translation = Translation.of(context);
+    if (translation == null) translation = Translation.of(context);
 
     return Scaffold(
       key: _scaffoldKey,
@@ -200,10 +208,8 @@ class _FeedPageState extends State<FeedPage> {
       appBar: WhiteAppBar(
         centerTitle: true,
         title: Text(
-            translation.appNameTrailers,
-          style: TextStyle(
-            fontWeight: FontWeight.bold
-          ),
+          translation.appNameTrailers,
+          style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
       drawer: _drawerWidget(),

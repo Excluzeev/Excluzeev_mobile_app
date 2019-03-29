@@ -23,24 +23,24 @@ class ImageLoaderWidgetState extends State<ImageLoaderWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return failed ?
-      Image.asset('res/icons/thumbnail_placeholder.png')
-        :
-      Image(
-      image: AdvancedNetworkImage(
-        widget.url,
-        useDiskCache: true,
-        retryLimit: 1,
-        retryDuration: Duration(milliseconds: 2000),
-        loadFailedCallback: () {
-          if(mounted) {
-            setState(() {
-              failed = true;
-            });
-          }
-        }
-      ),
-      fit: BoxFit.cover,
+    return Container(
+      color: Colors.blueGrey,
+      child: failed
+          ? Image.asset('res/icons/thumbnail_placeholder.png')
+          : Image(
+              image: AdvancedNetworkImage(widget.url,
+                  useDiskCache: true,
+                  retryLimit: 1,
+                  retryDuration: Duration(milliseconds: 2000),
+                  loadFailedCallback: () {
+                if (mounted) {
+                  setState(() {
+                    failed = true;
+                  });
+                }
+              }),
+              fit: BoxFit.cover,
+            ),
     );
   }
 }

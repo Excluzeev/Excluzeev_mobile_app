@@ -13,6 +13,8 @@ class TrailerTitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var daysAgo = DateUtils.getLocalizedTimeAgo(trailer.createdDate.toDate(),
+        locale: Localizations.localeOf(context));
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Container(
@@ -43,6 +45,7 @@ class TrailerTitleWidget extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.title.copyWith(
                               fontWeight: FontWeight.normal,
+                              fontSize: 20.0,
                             ),
                       ),
                       SizedBox(
@@ -60,9 +63,7 @@ class TrailerTitleWidget extends StatelessWidget {
                         height: 4.0,
                       ),
                       Text(
-                        DateUtils.getLocalizedTimeAgo(
-                            trailer.createdDate.toDate(),
-                            locale: Localizations.localeOf(context)),
+                        "$daysAgo • ${trailer.views} views",
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.caption.copyWith(
@@ -74,12 +75,6 @@ class TrailerTitleWidget extends StatelessWidget {
                 ),
               ],
             ),
-            Column(
-              children: <Widget>[
-                Icon(Icons.remove_red_eye),
-                Text("${trailer.views}")
-              ],
-            )
           ],
         ),
       ),

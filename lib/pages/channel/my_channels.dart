@@ -90,20 +90,24 @@ class _MyChannelsPageState extends State<MyChannelsPage> {
                   icon: Icons.error,
                   subtitle: translation.errorLoadTrailers,
                 ),
-                emptyChild: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        translation.errorEmptyChannels,
-                        style: textTheme.title,
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  ],
+                emptyChild: Image.asset(
+                  'res/icons/empty-create-channel.png',
+                  fit: BoxFit.cover,
                 ),
+                // Column(
+                //   mainAxisAlignment: MainAxisAlignment.center,
+                //   crossAxisAlignment: CrossAxisAlignment.center,
+                //   children: <Widget>[
+                //     Padding(
+                //       padding: const EdgeInsets.all(8.0),
+                //       child: Text(
+                //         translation.errorEmptyChannels,
+                //         style: textTheme.title,
+                //         textAlign: TextAlign.center,
+                //       ),
+                //     ),
+                //   ],
+                // ),
                 itemBuilder: _buildItem,
               ),
       ),

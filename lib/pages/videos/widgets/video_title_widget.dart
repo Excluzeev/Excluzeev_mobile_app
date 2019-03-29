@@ -13,6 +13,9 @@ class VideoTitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var daysAgo = DateUtils.getLocalizedTimeAgo(video.createdDate.toDate(),
+        locale: Localizations.localeOf(context));
+
     return Container(
       padding: const EdgeInsets.all(16.0),
       width: MediaQuery.of(context).size.width,
@@ -59,8 +62,7 @@ class VideoTitleWidget extends StatelessWidget {
                       height: 4.0,
                     ),
                     Text(
-                      DateUtils.getLocalizedTimeAgo(video.createdDate.toDate(),
-                          locale: Localizations.localeOf(context)),
+                      "$daysAgo • ${video.views} views",
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.caption.copyWith(
@@ -70,12 +72,6 @@ class VideoTitleWidget extends StatelessWidget {
                   ],
                 ),
               ),
-            ],
-          ),
-          Column(
-            children: <Widget>[
-              Icon(Icons.remove_red_eye),
-              Text("${video.views}")
             ],
           ),
         ],
