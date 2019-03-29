@@ -4,7 +4,6 @@ import 'package:trenstop/misc/date_utils.dart';
 import 'package:trenstop/models/video.dart';
 
 class VideoTitleWidget extends StatelessWidget {
-
   const VideoTitleWidget({
     Key key,
     @required this.video,
@@ -27,11 +26,12 @@ class VideoTitleWidget extends StatelessWidget {
               InkWell(
 //                  onTap: () => _showProfile(context),
                 child: CircleAvatar(
-                  backgroundImage:
-                  AdvancedNetworkImage(video.channelImage, useDiskCache: true),
+                  backgroundImage: AdvancedNetworkImage(video.channelImage,
+                      useDiskCache: true),
                 ),
               ),
               Container(
+                width: MediaQuery.of(context).size.width * 0.7,
                 padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -41,8 +41,8 @@ class VideoTitleWidget extends StatelessWidget {
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.title.copyWith(
-                        fontWeight: FontWeight.normal,
-                      ),
+                            fontWeight: FontWeight.normal,
+                          ),
                     ),
                     SizedBox(
                       height: 4.0,
@@ -52,19 +52,20 @@ class VideoTitleWidget extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.subtitle.copyWith(
-                        fontWeight: FontWeight.normal,
-                      ),
+                            fontWeight: FontWeight.normal,
+                          ),
                     ),
                     SizedBox(
                       height: 4.0,
                     ),
                     Text(
-                      DateUtils.getLocalizedTimeAgo(video.createdDate.toDate(), locale: Localizations.localeOf(context)),
+                      DateUtils.getLocalizedTimeAgo(video.createdDate.toDate(),
+                          locale: Localizations.localeOf(context)),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.caption.copyWith(
-                        fontWeight: FontWeight.normal,
-                      ),
+                            fontWeight: FontWeight.normal,
+                          ),
                     ),
                   ],
                 ),
@@ -73,12 +74,8 @@ class VideoTitleWidget extends StatelessWidget {
           ),
           Column(
             children: <Widget>[
-              Icon(
-                Icons.remove_red_eye
-              ),
-              Text(
-                "${video.views} views"
-              )
+              Icon(Icons.remove_red_eye),
+              Text("${video.views}")
             ],
           ),
         ],

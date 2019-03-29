@@ -16,7 +16,7 @@ import 'package:trenstop/pages/videos/widgets/video_title_widget.dart';
 import 'package:trenstop/widgets/like_dislike_neutral.dart';
 import 'package:trenstop/widgets/rounded_button.dart';
 import 'package:video_player/video_player.dart';
-// import 'package:chewie/chewie.dart';
+import 'package:screen/screen.dart';
 import 'package:flutter_rtmp_publisher/flutter_rtmp_publisher.dart';
 import 'package:custom_chewie/custom_chewie.dart';
 
@@ -34,7 +34,8 @@ class VideoDetailPage extends StatefulWidget {
   _VideoDetailPageState createState() => _VideoDetailPageState();
 }
 
-class _VideoDetailPageState extends State<VideoDetailPage> {
+class _VideoDetailPageState extends State<VideoDetailPage>
+    with WidgetsBindingObserver {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final VideoManager _videoManager = VideoManager.instance;
@@ -89,6 +90,21 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
     client.close();
   }
 
+  @override
+  Future<Null> didChangeAppLifecycleState(AppLifecycleState state) async {
+    switch (state) {
+      case AppLifecycleState.inactive:
+      case AppLifecycleState.paused:
+      case AppLifecycleState.suspending:
+        if (!_videoPlayerController.isDisposed) {
+          _videoPlayerController.pause();
+        }
+        break;
+      case AppLifecycleState.resumed:
+        break;
+    }
+  }
+
   void _setVideo() async {
     await _getVideoUrl();
     _videoPlayerController = VideoPlayerController.network(videoUrl);
@@ -109,7 +125,8 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
         });
       }
 
-      if(!_isViewTriggered && (await _videoPlayerController.position > Duration(seconds: 5))) {
+      if (!_isViewTriggered &&
+          (await _videoPlayerController.position > Duration(seconds: 5))) {
         _triggerVideoView();
       }
     });
@@ -135,6 +152,7 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
   @override
   void initState() {
     super.initState();
+    Screen.keepOn(true);
     if (widget.video.later != "later") {
       _setVideo();
     } else {
@@ -145,10 +163,12 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
   }
 
   @override
-  void dispose(){
+  void dispose() {
+    _videoPlayerController.removeListener(() {});
+    _videoPlayerController.pause();
+    _videoPlayerController?.dispose();
     super.dispose();
   }
-
 
   _startStream(streamKey) async {
     if (widget.video.later == "later") {
@@ -188,17 +208,12 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
   }
 
   _delete() async {
-
     showDialog(
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text(
-                translation.deleteDialogTitle
-            ),
-            content: Text(
-                translation.deleteDialogContent(widget.video.title)
-            ),
+            title: Text(translation.deleteDialogTitle),
+            content: Text(translation.deleteDialogContent(widget.video.title)),
             actions: <Widget>[
               new FlatButton(
                 child: new Text(translation.delete),
@@ -215,8 +230,7 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
               ),
             ],
           );
-        }
-    );
+        });
   }
 
   @override
@@ -235,7 +249,6 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
           SliverToBoxAdapter(
             child: Stack(
               children: <Widget>[
-
                 Column(children: <Widget>[
                   SizedBox(
                     height: 24.0,
@@ -255,18 +268,18 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
                                   child: Image.asset(
                                       'res/icons/thumbnail_placeholder.png'),
                                 )
-                              : Platform.isIOS ?
-             VideoPlayer(_videoPlayerController)
-              : Chewie(
-                                  _videoPlayerController,
-                                  aspectRatio: aspectRatio,
-                                  autoPlay: false,
-                                  looping: false,
-                                  placeholder: Image.asset(
-                                    'res/icons/thumbnail_placeholder.png',
-                                    key: Key(widget.video.videoId),
-                                  ),
-                                ),
+                              : Platform.isIOS
+                                  ? VideoPlayer(_videoPlayerController)
+                                  : Chewie(
+                                      _videoPlayerController,
+                                      aspectRatio: aspectRatio,
+                                      autoPlay: false,
+                                      looping: false,
+                                      placeholder: Image.asset(
+                                        'res/icons/thumbnail_placeholder.png',
+                                        key: Key(widget.video.videoId),
+                                      ),
+                                    ),
 //                  Chewie(
 //                    controller: _chewieController,
 //                  ),
@@ -307,9 +320,7 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
                   top: 30.0,
                   right: 8.0,
                   child: IconButton(
-                    icon: Icon(
-                        Icons.delete
-                    ),
+                    icon: Icon(Icons.delete),
                     color: Colors.white,
                     onPressed: _delete,
                   ),
@@ -318,7 +329,9 @@ class _VideoDetailPageState extends State<VideoDetailPage> {
             ),
           ),
           SliverToBoxAdapter(
-            child: widget.video.type != "Live" ? CommentWidget(widget.video) : LiveChatWidget(widget.video),
+            child: widget.video.type != "Live"
+                ? CommentWidget(widget.video)
+                : LiveChatWidget(widget.video),
           )
         ],
       ),

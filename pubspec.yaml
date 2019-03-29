@@ -40,12 +40,11 @@ dependencies:
     path: plugins/flutter_webview
   flutter_rtmp_publisher:
     path: plugins/flutter_rtmp_publisher
-
+  screen: ^0.0.5
 
 # dependency_overrides:
 #   chewie: ^0.9.6
 #   video_player: ^0.10.0+4
-
 
 dev_dependencies:
   build_runner: ^0.10.3
@@ -53,7 +52,6 @@ dev_dependencies:
   intl: ^0.15.7
   intl_translation: ^0.17.1
   flutter_launcher_icons: "^0.7.0"
-
 
 # flutter packages pub run flutter_launcher_icons:main
 flutter_icons:
@@ -65,37 +63,32 @@ flutter:
   uses-material-design: true
 
   assets:
-  - res/icons/logo/
-  - res/
-  - res/icons/
+    - res/icons/logo/
+    - res/
+    - res/icons/
 
   fonts:
-#  - family: AppIcon
-#    fonts:
-#    - asset: res/fonts/AppIcon.ttf
-  - family: Montserrat
-    fonts:
-    - asset: res/fonts/Montserrat-Regular.ttf
-    - asset: res/fonts/Montserrat-Italic.ttf
-      style: italic
-    - asset: res/fonts/Montserrat-SemiBoldItalic.ttf
-      style: italic
-      weight: 500
-    - asset: res/fonts/Montserrat-BoldItalic.ttf
-      style: italic
-      weight: 600
-    - asset: res/fonts/Montserrat-ExtraBoldItalic.ttf
-      style: italic
-      weight: 600
-    - asset: res/fonts/Montserrat-SemiBold.ttf
-      weight: 500
-    - asset: res/fonts/Montserrat-Bold.ttf
-      weight: 600
-    - asset: res/fonts/Montserrat-ExtraBold.ttf
-      weight: 600
-
-
-
-
-
+    #  - family: AppIcon
+    #    fonts:
+    #    - asset: res/fonts/AppIcon.ttf
+    - family: Montserrat
+      fonts:
+        - asset: res/fonts/Montserrat-Regular.ttf
+        - asset: res/fonts/Montserrat-Italic.ttf
+          style: italic
+        - asset: res/fonts/Montserrat-SemiBoldItalic.ttf
+          style: italic
+          weight: 500
+        - asset: res/fonts/Montserrat-BoldItalic.ttf
+          style: italic
+          weight: 600
+        - asset: res/fonts/Montserrat-ExtraBoldItalic.ttf
+          style: italic
+          weight: 600
+        - asset: res/fonts/Montserrat-SemiBold.ttf
+          weight: 500
+        - asset: res/fonts/Montserrat-Bold.ttf
+          weight: 600
+        - asset: res/fonts/Montserrat-ExtraBold.ttf
+          weight: 600
 # flutter build apk --release --target-platform android-arm

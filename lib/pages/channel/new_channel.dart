@@ -27,7 +27,6 @@ import 'package:trenstop/widgets/rounded_border.dart';
 import 'package:trenstop/widgets/rounded_button.dart';
 import 'package:trenstop/widgets/white_app_bar.dart';
 
-
 class NewChannelPage extends StatefulWidget {
   static String TAG = "NEW_CHANNEL_PAGE";
 
@@ -86,22 +85,18 @@ class _NewChannelPageState extends State<NewChannelPage> {
     _updateLoading(true);
     _listCategories = await _channelManager.getCategories();
     _updateLoading(false);
-
   }
-
 
   _buildCategoryDropDown() {
     return Container(
-      margin: const EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0, bottom: 8.0),
+      margin:
+          const EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0, bottom: 8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
             translation.categoryNameLabel,
-            style: TextStyle(
-                fontSize: 14.0,
-                fontWeight: FontWeight.bold
-            ),
+            style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold),
           ),
           DropdownButton<Category>(
             value: selectedCategory,
@@ -127,32 +122,30 @@ class _NewChannelPageState extends State<NewChannelPage> {
 
   _buildTypeDropDown() {
     return Container(
-      margin: const EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0, bottom: 8.0),
+      margin:
+          const EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0, bottom: 8.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
             translation.channelTypeLabel,
-            style: TextStyle(
-              fontSize: 14.0,
-              fontWeight: FontWeight.bold
-            ),
+            style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold),
           ),
           DropdownButton<String>(
             value: selectedType,
             hint: Text(translation.channelTypeLabel),
             isExpanded: true,
-              items: <String>["CrowdFunding", "VOD"].map((String type) {
-            return DropdownMenuItem<String>(
+            items: <String>["CrowdFunding", "VOD"].map((String type) {
+              return DropdownMenuItem<String>(
                 value: type,
                 child: Text(type),
               );
             }).toList(),
             onChanged: (type) {
-                bloc.updateType(type);
-                setState(() {
-                  selectedType = type;
-                });
+              bloc.updateType(type);
+              setState(() {
+                selectedType = type;
+              });
             },
           ),
         ],
@@ -170,27 +163,28 @@ class _NewChannelPageState extends State<NewChannelPage> {
     showRoundedModalBottomSheet(
       context: context,
       builder: (context) => ModalImagePicker(
-        pop: true,
-        onSelected: (file) async {
-          if (file != null) {
-            Logger.log(NewChannelPage.TAG, message: "Received: $file from gallery!");
+            pop: true,
+            onSelected: (file) async {
+              if (file != null) {
+                Logger.log(NewChannelPage.TAG,
+                    message: "Received: $file from gallery!");
 
-            final snapshot = await ImageUtils.nativeResize(
-              file,
-              StorageManager.DEFAULT_SIZE,
-              centerCrop: false,
-            );
+                final snapshot = await ImageUtils.nativeResize(
+                  file,
+                  StorageManager.DEFAULT_SIZE,
+                  centerCrop: false,
+                );
 
-            if (snapshot.success) {
-              setState(() {
-                thumbnailFile = snapshot.data;
-              });
-            } else {
-              _showSnackBar(translation.errorCropPhoto);
-            }
-          }
-        },
-      ),
+                if (snapshot.success) {
+                  setState(() {
+                    thumbnailFile = snapshot.data;
+                  });
+                } else {
+                  _showSnackBar(translation.errorCropPhoto);
+                }
+              }
+            },
+          ),
     );
   }
 
@@ -204,27 +198,28 @@ class _NewChannelPageState extends State<NewChannelPage> {
     showRoundedModalBottomSheet(
       context: context,
       builder: (context) => ModalImagePicker(
-        pop: true,
-        onSelected: (file) async {
-          if (file != null) {
-            Logger.log(NewChannelPage.TAG, message: "Received: $file from gallery!");
+            pop: true,
+            onSelected: (file) async {
+              if (file != null) {
+                Logger.log(NewChannelPage.TAG,
+                    message: "Received: $file from gallery!");
 
-            final snapshot = await ImageUtils.nativeResize(
-              file,
-              StorageManager.DEFAULT_SIZE,
-              centerCrop: false,
-            );
+                final snapshot = await ImageUtils.nativeResize(
+                  file,
+                  StorageManager.DEFAULT_SIZE,
+                  centerCrop: false,
+                );
 
-            if (snapshot.success) {
-              setState(() {
-                coverFile = snapshot.data;
-              });
-            } else {
-              _showSnackBar(translation.errorCropPhoto);
-            }
-          }
-        },
-      ),
+                if (snapshot.success) {
+                  setState(() {
+                    coverFile = snapshot.data;
+                  });
+                } else {
+                  _showSnackBar(translation.errorCropPhoto);
+                }
+              }
+            },
+          ),
     );
   }
 
@@ -239,32 +234,31 @@ class _NewChannelPageState extends State<NewChannelPage> {
           color: Colors.grey[300],
           child: InkWell(
             onTap: _addThumbnail,
-            child: thumbnailFile == null ?
-            AddWidget(label: translation.thumbnailLabel)
-                :
-            Stack(
-              children: <Widget>[
-                SizedBox.expand(
-                  child: Image.file(
-                    thumbnailFile,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Container(
-                    margin: EdgeInsets.all(8.0),
-                    child: CircleAvatar(
-                      backgroundColor: Colors.white,
-                      child: IconButton(
-                        icon: Icon(Icons.close, color: Colors.black),
-                        onPressed: () => _removeThumbnailImage(),
+            child: thumbnailFile == null
+                ? AddWidget(label: translation.thumbnailLabel)
+                : Stack(
+                    children: <Widget>[
+                      SizedBox.expand(
+                        child: Image.file(
+                          thumbnailFile,
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                    ),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: Container(
+                          margin: EdgeInsets.all(8.0),
+                          child: CircleAvatar(
+                            backgroundColor: Colors.white,
+                            child: IconButton(
+                              icon: Icon(Icons.close, color: Colors.black),
+                              onPressed: () => _removeThumbnailImage(),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
           ),
         ),
       ),
@@ -282,32 +276,31 @@ class _NewChannelPageState extends State<NewChannelPage> {
           color: Colors.grey[300],
           child: InkWell(
             onTap: _addCoverImage,
-            child: coverFile == null ?
-            AddWidget(label: translation.coverImageLabel)
-                :
-            Stack(
-              children: <Widget>[
-                SizedBox.expand(
-                  child: Image.file(
-                    coverFile,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Container(
-                    margin: EdgeInsets.all(8.0),
-                    child: CircleAvatar(
-                      backgroundColor: Colors.white,
-                      child: IconButton(
-                        icon: Icon(Icons.close, color: Colors.black),
-                        onPressed: () => _removeCoverImage(),
+            child: coverFile == null
+                ? AddWidget(label: translation.coverImageLabel)
+                : Stack(
+                    children: <Widget>[
+                      SizedBox.expand(
+                        child: Image.file(
+                          coverFile,
+                          fit: BoxFit.cover,
+                        ),
                       ),
-                    ),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: Container(
+                          margin: EdgeInsets.all(8.0),
+                          child: CircleAvatar(
+                            backgroundColor: Colors.white,
+                            child: IconButton(
+                              icon: Icon(Icons.close, color: Colors.black),
+                              onPressed: () => _removeCoverImage(),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
           ),
         ),
       ),
@@ -322,61 +315,63 @@ class _NewChannelPageState extends State<NewChannelPage> {
     User user = await _authManager.getUser(firebaseUser: firebaseUser);
     String channelId = IUID.string;
 
-    Snapshot image = await _storageManager.uploadChannelImage(firebaseUser.uid, channelId, thumbnailFile, "thumbnail");
-    Snapshot coverImage = await _storageManager.uploadChannelImage(firebaseUser.uid, channelId, coverFile, "cover");
+    Snapshot image = await _storageManager.uploadChannelImage(
+        firebaseUser.uid, channelId, thumbnailFile, "thumbnail");
+    Snapshot coverImage = await _storageManager.uploadChannelImage(
+        firebaseUser.uid, channelId, coverFile, "cover");
 
-    if(image.error != null) {
+    if (image.error != null) {
       _showSnackBar(image.error);
       return;
     }
 
-    if(coverImage.error != null) {
+    if (coverImage.error != null) {
       _showSnackBar(coverImage.error);
       return;
     }
 
     double targetFund = 0.0;
     try {
-      targetFund =  double.parse(_targetFundController.text);
-    } catch(err) {
-      targetFund =  0.0;
+      targetFund = double.parse(_targetFundController.text);
+    } catch (err) {
+      targetFund = 0.0;
     }
 
-
     ChannelBuilder channelBuilder = ChannelBuilder()
-        ..channelId = channelId
-        ..categoryName = selectedCategory.name
-        ..categoryId = selectedCategory.id
-        ..userId = firebaseUser.uid
-        ..createdBy = user.displayName
-        ..channelType = selectedType
-        ..title = _titleController.text
-        ..description = _descriptionController.text
-        ..image = image.data
-        ..coverImage = coverImage.data
-        ..createdDate = Timestamp.fromDate(DateTime.now())
-        ..subscriberCount = 0
-        ..price = double.parse(_priceController.text) ?? 0.0
-        ..targetFund = targetFund
-        ..currentFund = 0
-        ..percentage = 0.0;
+      ..channelId = channelId
+      ..categoryName = selectedCategory.name
+      ..categoryId = selectedCategory.id
+      ..userId = firebaseUser.uid
+      ..createdBy = user.displayName
+      ..channelType = selectedType
+      ..title = _titleController.text
+      ..description = _descriptionController.text
+      ..image = image.data
+      ..coverImage = coverImage.data
+      ..createdDate = Timestamp.fromDate(DateTime.now())
+      ..subscriberCount = 0
+      ..price = double.parse(_priceController.text) ?? 0.0
+      ..targetFund = targetFund
+      ..currentFund = 0
+      ..percentage = 0.0;
 
-    Snapshot<Channel> snapshot = await _channelManager.addChannel(channelBuilder.build());
-    
-    if(snapshot.error != null) {
+    Snapshot<Channel> snapshot =
+        await _channelManager.addChannel(channelBuilder.build());
+
+    if (snapshot.error != null) {
       _showSnackBar(snapshot.error);
       return;
     }
 
     WidgetUtils.showCreateTrailerPage(context, snapshot.data);
-
   }
 
   @override
   Widget build(BuildContext context) {
     if (translation == null) translation = Translation.of(context);
     if (bloc == null)
-      bloc = CreateChannelBloc(validator: CreateChannelBlocValidator(translation));
+      bloc =
+          CreateChannelBloc(validator: CreateChannelBlocValidator(translation));
 
     return BlocProvider(
       bloc: bloc,
@@ -385,158 +380,153 @@ class _NewChannelPageState extends State<NewChannelPage> {
         key: _scaffoldKey,
         appBar: WhiteAppBar(
           title: Text(
-              translation.addChannel,
+            translation.addChannel,
           ),
         ),
         body: _isLoading
-        ?
-            Center(
-              child: CircularProgressIndicator(),
-            )
-        :
-            SingleChildScrollView(
-              child: Container(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    _buildCategoryDropDown(),
-                    selectedCategory != null && selectedCategory.name == "Call-to-Action" ?
-                    _buildTypeDropDown()
-                    :
-                    Container(),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: RoundedBorder(
-                        child: StreamBuilder(
-                          stream: bloc.title,
-                          builder: (context, snapshot) => TextField(
-                            controller: _titleController,
-                            onChanged: bloc.updateTitle,
-                            decoration: InputDecoration(
-                              fillColor: Colors.white,
-                              contentPadding: EdgeInsets.zero,
-                              filled: true,
-                              border: InputBorder.none,
-                              errorText: snapshot.error,
-                              hintText: translation.titleLabel,
-                            ),
-                            inputFormatters: [
-                              LengthLimitingTextInputFormatter(32)
-                          ],
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : SingleChildScrollView(
+                child: Container(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      _buildCategoryDropDown(),
+                      selectedCategory != null &&
+                              selectedCategory.name == "Call-to-Action"
+                          ? _buildTypeDropDown()
+                          : Container(),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: RoundedBorder(
+                          child: StreamBuilder(
+                            stream: bloc.title,
+                            builder: (context, snapshot) => TextField(
+                                  controller: _titleController,
+                                  onChanged: bloc.updateTitle,
+                                  decoration: InputDecoration(
+                                    fillColor: Colors.white,
+                                    contentPadding: EdgeInsets.zero,
+                                    filled: true,
+                                    border: InputBorder.none,
+                                    errorText: snapshot.error,
+                                    hintText: translation.titleLabel,
+                                  ),
+                                  inputFormatters: [
+                                    LengthLimitingTextInputFormatter(32)
+                                  ],
+                                ),
                           ),
                         ),
                       ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: RoundedBorder(
-                        child: StreamBuilder(
-                          stream: bloc.description,
-                          builder: (context, snapshot) => TextField(
-                            controller: _descriptionController,
-                            onChanged: bloc.updateDescription,
-                            maxLines: 3,
-                            decoration: InputDecoration(
-                              fillColor: Colors.white,
-                              contentPadding: EdgeInsets.zero,
-                              filled: true,
-                              border: InputBorder.none,
-                              errorText: snapshot.error,
-                              hintText: translation.descriptionLabel,
-                            ),
-                            inputFormatters: [
-                              LengthLimitingTextInputFormatter(255)
-                          ],
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: RoundedBorder(
+                          child: StreamBuilder(
+                            stream: bloc.description,
+                            builder: (context, snapshot) => TextField(
+                                  controller: _descriptionController,
+                                  onChanged: bloc.updateDescription,
+                                  maxLines: 3,
+                                  decoration: InputDecoration(
+                                    fillColor: Colors.white,
+                                    contentPadding: EdgeInsets.zero,
+                                    filled: true,
+                                    border: InputBorder.none,
+                                    errorText: snapshot.error,
+                                    hintText: translation.descriptionLabel,
+                                  ),
+                                  inputFormatters: [
+                                    LengthLimitingTextInputFormatter(255)
+                                  ],
+                                ),
                           ),
                         ),
                       ),
-                    ),
-                    selectedType != "CrowdFunding" ?
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: RoundedBorder(
-                        child: StreamBuilder(
-                          stream: bloc.price,
-                          builder: (context, snapshot) => TextField(
-                            controller: _priceController,
-                            onChanged: (p) => bloc.updatePrice(double.parse(p)),
-                            maxLines: 1,
-                            decoration: InputDecoration(
-                              fillColor: Colors.white,
-                              contentPadding: EdgeInsets.zero,
-                              filled: true,
-                              border: InputBorder.none,
-                              errorText: snapshot.error,
-                              hintText: translation.priceLabel,
+                      selectedType != "CrowdFunding"
+                          ? Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: RoundedBorder(
+                                child: StreamBuilder(
+                                  stream: bloc.price,
+                                  builder: (context, snapshot) => TextField(
+                                        controller: _priceController,
+                                        onChanged: (p) =>
+                                            bloc.updatePrice(double.parse(p)),
+                                        maxLines: 1,
+                                        decoration: InputDecoration(
+                                          fillColor: Colors.white,
+                                          contentPadding: EdgeInsets.zero,
+                                          filled: true,
+                                          border: InputBorder.none,
+                                          errorText: snapshot.error,
+                                          hintText: translation.priceLabel,
+                                        ),
+                                        keyboardType: TextInputType.number,
+                                      ),
+                                ),
+                              ),
+                            )
+                          : Container(),
+                      selectedType == "CrowdFunding"
+                          ? Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: RoundedBorder(
+                                child: StreamBuilder(
+                                  stream: bloc.targetFund,
+                                  builder: (context, snapshot) => TextField(
+                                        controller: _targetFundController,
+                                        onChanged: (p) => bloc
+                                            .updateTargetFund(double.parse(p)),
+                                        maxLines: 1,
+                                        decoration: InputDecoration(
+                                          fillColor: Colors.white,
+                                          contentPadding: EdgeInsets.zero,
+                                          filled: true,
+                                          border: InputBorder.none,
+                                          errorText: snapshot.error,
+                                          hintText: translation.targetFundLabel,
+                                        ),
+                                        keyboardType: TextInputType.number,
+                                      ),
+                                ),
+                              ),
+                            )
+                          : Container(),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                        child: Text(
+                          translation.thumbnailLabel,
+                          style: TextStyle(
+                              fontSize: 14.0, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      _uploadThumbnailWidget(),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                        child: Text(
+                          translation.coverImageLabel,
+                          style: TextStyle(
+                              fontSize: 14.0, fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      _uploadCoverWidget(),
+                      StreamBuilder(
+                        stream: bloc.submitValid,
+                        builder: (context, snapshot) => RoundedButton(
+                              enabled: snapshot.hasData,
+                              text: translation.addChannel.toUpperCase(),
+                              onPressed: () => snapshot.hasData
+                                  ? _addChannel()
+                                  : _showSnackBar(translation.errorEmptyField),
                             ),
-                            keyboardType: TextInputType.number,
-                          ),
-                        ),
                       ),
-                    )
-                    :
-                    Container(),
-                    selectedType == "CrowdFunding" ?
-                    Padding (
-                      padding: const EdgeInsets.all(8.0),
-                      child: RoundedBorder(
-                        child: StreamBuilder(
-                          stream: bloc.targetFund,
-                          builder: (context, snapshot) => TextField(
-                            controller: _targetFundController,
-                            onChanged: (p) => bloc.updateTargetFund(double.parse(p)),
-                            maxLines: 1,
-                            decoration: InputDecoration(
-                              fillColor: Colors.white,
-                              contentPadding: EdgeInsets.zero,
-                              filled: true,
-                              border: InputBorder.none,
-                              errorText: snapshot.error,
-                              hintText: translation.targetFundLabel,
-                            ),
-                            keyboardType: TextInputType.number,
-                          ),
-                        ),
-                      ),
-                    )
-                    :
-                    Container(),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                      child: Text(
-                        translation.thumbnailLabel,
-                        style: TextStyle(
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.bold
-                        ),
-                      ),
-                    ),
-                    _uploadThumbnailWidget(),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                      child: Text(
-                        translation.coverImageLabel,
-                        style: TextStyle(
-                            fontSize: 14.0,
-                            fontWeight: FontWeight.bold
-                        ),
-                      ),
-                    ),
-                    _uploadCoverWidget(),
-                    StreamBuilder(
-                      stream: bloc.submitValid,
-                      builder: (context, snapshot) => RoundedButton(
-                        enabled: snapshot.hasData,
-                        text: translation.addChannel.toUpperCase(),
-                        onPressed: () => snapshot.hasData ?  _addChannel() : _showSnackBar(translation.errorFields),
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
-            )
-        ,
       ),
     );
   }

@@ -26,7 +26,7 @@ import 'package:trenstop/widgets/white_app_bar.dart';
 import 'package:video_player/video_player.dart';
 //import 'package:chewie/chewie.dart';
 import 'package:custom_chewie/custom_chewie.dart';
-
+import 'package:screen/screen.dart';
 import 'package:http/http.dart' as http;
 
 class TrailerDetailPage extends StatefulWidget {
@@ -40,7 +40,8 @@ class TrailerDetailPage extends StatefulWidget {
   _TrailerDetailPageState createState() => _TrailerDetailPageState();
 }
 
-class _TrailerDetailPageState extends State<TrailerDetailPage> {
+class _TrailerDetailPageState extends State<TrailerDetailPage>
+    with WidgetsBindingObserver {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   final TrailerManager _trailerManager = TrailerManager.instance;
@@ -74,8 +75,27 @@ class _TrailerDetailPageState extends State<TrailerDetailPage> {
   }
 
   @override
+  Future<Null> didChangeAppLifecycleState(AppLifecycleState state) async {
+    switch (state) {
+      case AppLifecycleState.inactive:
+      case AppLifecycleState.paused:
+      case AppLifecycleState.suspending:
+        if (!_videoPlayerController.isDisposed) {
+          _videoPlayerController.pause();
+        }
+        break;
+      case AppLifecycleState.resumed:
+        break;
+    }
+  }
+
+  @override
   void initState() {
     super.initState();
+
+    WidgetsBinding.instance.addObserver(this);
+
+    Screen.keepOn(true);
 
     _checkSubscription();
 
@@ -132,6 +152,9 @@ class _TrailerDetailPageState extends State<TrailerDetailPage> {
       WidgetUtils.goToAuth(context, replaceAll: false);
       return;
     }
+
+    _videoPlayerController.pause();
+
     User user = await _authManager.getUser(firebaseUser: firebaseUser);
     WidgetUtils.showPaymentScreen(context, widget.trailer, user, isDonate,
         price: price);
@@ -140,6 +163,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage> {
   @override
   void dispose() {
     _videoPlayerController.removeListener(() {});
+    _videoPlayerController.pause();
     _videoPlayerController?.dispose();
 //    _chewieController?.dispose();
     super.dispose();

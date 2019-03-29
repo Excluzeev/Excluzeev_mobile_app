@@ -97,21 +97,25 @@ class _AddVideoPageState extends State<AddVideoPage> {
 
   Future _selectDate() async {
     var initDate = DateTime.now();
-    var initTime  = TimeOfDay.fromDateTime(initDate);
+    var initTime = TimeOfDay.fromDateTime(initDate);
     DateTime date = await showDatePicker(
-        context: context,
-        initialDate: initDate,
-        firstDate: initDate,
-        lastDate: new DateTime(2020),
+      context: context,
+      initialDate: initDate,
+      firstDate: initDate,
+      lastDate: new DateTime(2020),
     );
     showTimePicker(
-        context: context,
-        initialTime: initTime,
+      context: context,
+      initialTime: initTime,
     ).then((TimeOfDay value) {
-      _dateValue = DateTime(date.year, date.month, date.day, value.hour, value.minute);
-      Logger.log(AddVideoPage.TAG, message: "${DateTime(date.year, date.month, date.day, value.hour, value.minute)}");
+      _dateValue =
+          DateTime(date.year, date.month, date.day, value.hour, value.minute);
+      Logger.log(AddVideoPage.TAG,
+          message:
+              "${DateTime(date.year, date.month, date.day, value.hour, value.minute)}");
 
-      _dateController.text = DateFormat('EEE, MMM d yyyy HH:mm').format(_dateValue);
+      _dateController.text =
+          DateFormat('EEE, MMM d yyyy HH:mm').format(_dateValue);
     });
   }
 
@@ -189,12 +193,10 @@ class _AddVideoPageState extends State<AddVideoPage> {
       ..later = timePublish
       ..createdBy = user.displayName;
 
-    if(timePublish == "later") {
-      videoBuilder = videoBuilder
-        ..sDate = _dateValue.toIso8601String();
+    if (timePublish == "later") {
+      videoBuilder = videoBuilder..sDate = _dateValue.toIso8601String();
     } else {
-      videoBuilder = videoBuilder
-        ..sDate = "";
+      videoBuilder = videoBuilder..sDate = "";
     }
 
     Video videoBuilt = videoBuilder.build();
@@ -208,10 +210,11 @@ class _AddVideoPageState extends State<AddVideoPage> {
         Navigator.of(context).pop();
       } else {
         Navigator.of(context).pop();
-        if(timePublish == "now") {
+        if (timePublish == "now") {
           Logger.log(AddVideoPage.TAG,
               message: "rtmp://live.mux.com/app/${res['message']}");
-          RTMPPublisher.streamVideo("rtmp://live.mux.com/app/${res['message']}");
+          RTMPPublisher.streamVideo(
+              "rtmp://live.mux.com/app/${res['message']}");
         }
       }
     } else {
@@ -314,55 +317,53 @@ class _AddVideoPageState extends State<AddVideoPage> {
                           : _uploadVideoWidget(),
                       widget.hideVideoUpload
                           ? ListView(
-                            shrinkWrap: true,
-                            children: <Widget>[
-                              CheckboxListTile(
-                                title: Text(
-                                  translation.now,
-                                ),
-                                value: timePublish == "now",
-                                onChanged: (value) {
-                                  setState(() {
-                                    timePublish = "now";
-                                  });
-                                },
-                              ),
-                              CheckboxListTile(
-                                title: Text(
-                                  translation.schedule,
-                                ),
-                                value: timePublish == "later",
-                                onChanged: (value) {
-                                  setState(() {
-                                    timePublish = "later";
-                                  });
-                                },
-                              ),
-                              timePublish == "later" ?
-                              InkWell(
-                                onTap: _selectDate,
-                                child: RoundedBorder(
-                                  child: TextField(
-                                    enabled: false,
-                                    controller: _dateController,
-                                    decoration: InputDecoration(
-                                      fillColor: Colors.white,
-                                      contentPadding: EdgeInsets.zero,
-                                      filled: true,
-                                      border: InputBorder.none,
-                                      suffix: Icon(
-                                        Icons.calendar_today,
-                                        size: 18.0,
-                                      ),
-                                    ),
+                              shrinkWrap: true,
+                              children: <Widget>[
+                                CheckboxListTile(
+                                  title: Text(
+                                    translation.now,
                                   ),
+                                  value: timePublish == "now",
+                                  onChanged: (value) {
+                                    setState(() {
+                                      timePublish = "now";
+                                    });
+                                  },
                                 ),
-                              )
-                                  :
-                                  Container(),
-
-                            ],
-                          )
+                                CheckboxListTile(
+                                  title: Text(
+                                    translation.schedule,
+                                  ),
+                                  value: timePublish == "later",
+                                  onChanged: (value) {
+                                    setState(() {
+                                      timePublish = "later";
+                                    });
+                                  },
+                                ),
+                                timePublish == "later"
+                                    ? InkWell(
+                                        onTap: _selectDate,
+                                        child: RoundedBorder(
+                                          child: TextField(
+                                            enabled: false,
+                                            controller: _dateController,
+                                            decoration: InputDecoration(
+                                              fillColor: Colors.white,
+                                              contentPadding: EdgeInsets.zero,
+                                              filled: true,
+                                              border: InputBorder.none,
+                                              suffix: Icon(
+                                                Icons.calendar_today,
+                                                size: 18.0,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      )
+                                    : Container(),
+                              ],
+                            )
                           : Container(),
                       SizedBox(
                         height: 16.0,
@@ -376,7 +377,7 @@ class _AddVideoPageState extends State<AddVideoPage> {
                                   : translation.addVideo.toUpperCase(),
                               onPressed: () => snapshot.hasData
                                   ? _addVideo()
-                                  : _showSnackBar(translation.errorFields),
+                                  : _showSnackBar(translation.errorEmptyField),
                             ),
                       ),
                     ],
