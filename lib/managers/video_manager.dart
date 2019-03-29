@@ -7,7 +7,6 @@ import 'package:trenstop/models/comments.dart';
 import 'package:http/http.dart' as http;
 
 class VideoManager {
-
   static String TAG = "VIDEO_MANAGER";
 
   static VideoManager _instance;
@@ -23,7 +22,6 @@ class VideoManager {
 
   CollectionReference get videosCollection => _store.collection(VIDEOS_TAG);
 
-
   Query get videosQuery =>
       videosCollection.orderBy("createdDate", descending: true);
 
@@ -35,10 +33,17 @@ class VideoManager {
   }
 
   Query videoCommentQuery(String videoId) {
-    return videosCollection.document(videoId).collection('comments').orderBy("createdDate", descending: true);
+    return videosCollection
+        .document(videoId)
+        .collection('comments')
+        .orderBy("createdDate", descending: true);
   }
+
   Query videoChatQuery(String videoId) {
-    return videosCollection.document(videoId).collection('chat').orderBy("createdAt", descending: true);
+    return videosCollection
+        .document(videoId)
+        .collection('chat')
+        .orderBy("createdAt", descending: true);
   }
 
   Future<http.Response> addLiveVideo(Video video) async {
@@ -46,14 +51,14 @@ class VideoManager {
 
     var client = new http.Client();
     var response = await client.post(
-        "https://us-central1-trenstop-2033f.cloudfunctions.net/processLiveVideo", body: video.toJson);
+        "https://us-central1-trenstop-2033f.cloudfunctions.net/processLiveVideo",
+        body: video.toJson);
     client.close();
 
     return response;
   }
 
   Future<Snapshot<Video>> addVideo(Video video) async {
-
     String error;
 
     DocumentReference reference = videosCollection.document(video.videoId);
@@ -87,15 +92,15 @@ class VideoManager {
       data: video,
       error: error,
     );
-
   }
-
 
   Future<Snapshot<Comments>> addComment(Comments comment) async {
     String error;
 
-    DocumentReference reference = videosCollection.document(comment.vtId)
-        .collection("comments").document(comment.commentId);
+    DocumentReference reference = videosCollection
+        .document(comment.vtId)
+        .collection("comments")
+        .document(comment.commentId);
 
     Logger.log(TAG, message: "Trying to retrieve ${reference.documentID}");
 
@@ -128,12 +133,13 @@ class VideoManager {
     );
   }
 
-
   Future<Snapshot<Chat>> addLiveChat(Chat chat, String vtId) async {
     String error;
 
-    DocumentReference reference = videosCollection.document(vtId)
-        .collection("chat").document(chat.chatId);
+    DocumentReference reference = videosCollection
+        .document(vtId)
+        .collection("chat")
+        .document(chat.chatId);
 
     Logger.log(TAG, message: "Trying to retrieve ${reference.documentID}");
 
@@ -185,9 +191,9 @@ class VideoManager {
     final freshSnap = await reference.get().catchError(errorHandler);
 
     await _store.runTransaction((transaction) async {
-
       final data = {
-        "views": freshSnap.data["views"] ?? 0 + 1
+        "views":
+            freshSnap.data["views"] == null ? 1 : freshSnap.data["views"] + 1
       };
 
       final isUpdate = freshSnap?.exists ?? false;
@@ -202,7 +208,6 @@ class VideoManager {
         await transaction.set(reference, data).catchError(errorHandler);
       }
     }).catchError(errorHandler);
-
   }
 
 //  Future<Snapshot<Comments>> addComment(Comments comment) async {

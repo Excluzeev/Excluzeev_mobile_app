@@ -18,7 +18,6 @@ class ChannelDetailPage extends StatefulWidget {
   final Channel channel;
   final User user;
 
-
   const ChannelDetailPage({Key key, this.channel, this.user}) : super(key: key);
 
   @override
@@ -37,25 +36,25 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> {
     permissionGroups.add(PermissionGroup.camera);
     permissionGroups.add(PermissionGroup.microphone);
 
-    if(Platform.isAndroid) {
+    if (Platform.isAndroid) {
       permissionGroups.add(PermissionGroup.storage);
     }
-    
-    Map<PermissionGroup, PermissionStatus> permissions = await PermissionHandler().requestPermissions(permissionGroups);
+
+    Map<PermissionGroup, PermissionStatus> permissions =
+        await PermissionHandler().requestPermissions(permissionGroups);
 
     var allAccept = true;
     permissions.forEach((group, PermissionStatus status) {
-      if(status != PermissionStatus.granted) {
+      if (status != PermissionStatus.granted) {
         allAccept = false;
       }
     });
 
-    if(allAccept) {
+    if (allAccept) {
       _showStartLive();
     } else {
       bool isOpened = await PermissionHandler().openAppSettings();
     }
-
   }
 
   Widget _getChannelTrailers() {
@@ -66,14 +65,13 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> {
     return VideosListPage(widget.user, widget.channel);
   }
 
-
   _showAddVideo() {
     WidgetUtils.showAddVideo(context, widget.user, widget.channel);
   }
 
   _showStartLive() {
-
-    WidgetUtils.showAddVideo(context, widget.user, widget.channel, hideVideoUpload: true);
+    WidgetUtils.showAddVideo(context, widget.user, widget.channel,
+        hideVideoUpload: true);
 
 //    showDialog(
 //        context: context,
@@ -107,7 +105,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    if(translation == null) translation = Translation.of(context);
+    if (translation == null) translation = Translation.of(context);
 
     return DefaultTabController(
       length: 2,
@@ -115,9 +113,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> {
       child: Scaffold(
         key: _scaffoldKey,
         appBar: WhiteAppBar(
-          title: Text(
-            widget.channel.title
-          ),
+          title: Text(widget.channel.title),
           centerTitle: true,
           bottom: TabBar(
             indicatorColor: Palette.primary,
@@ -133,12 +129,12 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> {
             ],
           ),
           actions: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.add
-              ),
-              onPressed: _showAddVideo,
-            ),
+            widget.channel.isDeleted
+                ? Container()
+                : IconButton(
+                    icon: Icon(Icons.add),
+                    onPressed: _showAddVideo,
+                  ),
 //            _isPreparingStream ?
 //                Padding(
 //                  padding: const EdgeInsets.all(18.0),
@@ -158,20 +154,22 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> {
           ],
         ),
         backgroundColor: Colors.white,
-        floatingActionButton: FloatingActionButton.extended(
-          icon: Image.asset(
-              'res/icons/logo_live_e.png',
-            color: Colors.white,
-          ),
-          label: Text(
-              translation.excluzeevLive,
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-          onPressed: () => requestPermission(),
-          isExtended: true,
-        ),
+        floatingActionButton: widget.channel.isDeleted
+            ? Container()
+            : FloatingActionButton.extended(
+                icon: Image.asset(
+                  'res/icons/logo_live_e.png',
+                  color: Colors.white,
+                ),
+                label: Text(
+                  translation.excluzeevLive,
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                onPressed: () => requestPermission(),
+                isExtended: true,
+              ),
         body: TabBarView(
           children: <Widget>[
             _getChannelTrailers(),
@@ -181,5 +179,4 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> {
       ),
     );
   }
-
 }

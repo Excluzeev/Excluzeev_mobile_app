@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
-import 'package:trenstop/misc/date_utils.dart';
 import 'package:trenstop/models/channel.dart';
-import 'package:trenstop/models/trailer.dart';
 
 class ChannelWidget extends StatelessWidget {
-
-  const ChannelWidget({
-    Key key,
-    @required this.channel,
-    this.onTap
-  }) : super(key: key);
+  const ChannelWidget(
+      {Key key, @required this.channel, this.onTap, this.onDelete})
+      : super(key: key);
 
   final Channel channel;
   final Function(Channel) onTap;
+  final Function(Channel) onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -27,10 +23,18 @@ class ChannelWidget extends StatelessWidget {
           children: <Widget>[
             InkWell(
 //            onTap: () => _showProfile(context),
-              child: CircleAvatar(
-                backgroundImage:
-                AdvancedNetworkImage(channel.image, useDiskCache: true),
-              ),
+              child: channel.isDeleted
+                  ? CircleAvatar(
+                      backgroundColor: Colors.white10,
+                      child: Icon(
+                        Icons.delete,
+                        color: Colors.red,
+                      ),
+                    )
+                  : CircleAvatar(
+                      backgroundImage: AdvancedNetworkImage(channel.image,
+                          useDiskCache: true),
+                    ),
             ),
             Expanded(
               child: Container(
@@ -43,19 +47,21 @@ class ChannelWidget extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.title.copyWith(
-                        fontWeight: FontWeight.normal,
-                      ),
+                            fontWeight: FontWeight.normal,
+                          ),
                     ),
                     SizedBox(
                       height: 4.0,
                     ),
                     Text(
-                      channel.description,
+                      channel.isDeleted
+                          ? "deletes in ${DateTime.now().difference(channel.deleteOn).inDays.abs()} day(s)"
+                          : "${channel.subscriberCount} subscriber(s)",
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.subtitle.copyWith(
-                        fontWeight: FontWeight.normal,
-                      ),
+                            fontWeight: FontWeight.normal,
+                          ),
                     ),
                     SizedBox(
                       height: 4.0,
@@ -64,6 +70,16 @@ class ChannelWidget extends StatelessWidget {
                 ),
               ),
             ),
+            channel.isDeleted
+                ? Container()
+                : IconButton(
+                    icon: Icon(
+                      Icons.delete_forever,
+                      color: Colors.red,
+                    ),
+                    onPressed: () => onDelete?.call(channel),
+                    tooltip: "Delete ${channel.title}",
+                  )
           ],
         ),
       ),

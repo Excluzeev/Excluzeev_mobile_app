@@ -98,6 +98,18 @@ class _$ChannelSerializer implements StructuredSerializer<Channel> {
         ..add(serializers.serialize(object.percentage,
             specifiedType: const FullType(double)));
     }
+    if (object.isDeleted != null) {
+      result
+        ..add('isDeleted')
+        ..add(serializers.serialize(object.isDeleted,
+            specifiedType: const FullType(bool)));
+    }
+    if (object.deleteOn != null) {
+      result
+        ..add('deleteOn')
+        ..add(serializers.serialize(object.deleteOn,
+            specifiedType: const FullType(DateTime)));
+    }
 
     return result;
   }
@@ -177,6 +189,14 @@ class _$ChannelSerializer implements StructuredSerializer<Channel> {
           result.percentage = serializers.deserialize(value,
               specifiedType: const FullType(double)) as double;
           break;
+        case 'isDeleted':
+          result.isDeleted = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
+          break;
+        case 'deleteOn':
+          result.deleteOn = serializers.deserialize(value,
+              specifiedType: const FullType(DateTime)) as DateTime;
+          break;
       }
     }
 
@@ -217,6 +237,10 @@ class _$Channel extends Channel {
   final double currentFund;
   @override
   final double percentage;
+  @override
+  final bool isDeleted;
+  @override
+  final DateTime deleteOn;
 
   factory _$Channel([void updates(ChannelBuilder b)]) =>
       (new ChannelBuilder()..update(updates)).build();
@@ -237,7 +261,9 @@ class _$Channel extends Channel {
       this.price,
       this.targetFund,
       this.currentFund,
-      this.percentage})
+      this.percentage,
+      this.isDeleted,
+      this.deleteOn})
       : super._() {
     if (userId == null) {
       throw new BuiltValueNullFieldError('Channel', 'userId');
@@ -297,7 +323,9 @@ class _$Channel extends Channel {
         price == other.price &&
         targetFund == other.targetFund &&
         currentFund == other.currentFund &&
-        percentage == other.percentage;
+        percentage == other.percentage &&
+        isDeleted == other.isDeleted &&
+        deleteOn == other.deleteOn;
   }
 
   @override
@@ -318,26 +346,31 @@ class _$Channel extends Channel {
                                                         $jc(
                                                             $jc(
                                                                 $jc(
-                                                                    0,
-                                                                    userId
+                                                                    $jc(
+                                                                        $jc(
+                                                                            0,
+                                                                            userId
+                                                                                .hashCode),
+                                                                        channelId
+                                                                            .hashCode),
+                                                                    categoryId
                                                                         .hashCode),
-                                                                channelId
+                                                                categoryName
                                                                     .hashCode),
-                                                            categoryId
-                                                                .hashCode),
-                                                        categoryName.hashCode),
-                                                    createdBy.hashCode),
-                                                channelType.hashCode),
-                                            title.hashCode),
-                                        description.hashCode),
-                                    image.hashCode),
-                                coverImage.hashCode),
-                            createdDate.hashCode),
-                        subscriberCount.hashCode),
-                    price.hashCode),
-                targetFund.hashCode),
-            currentFund.hashCode),
-        percentage.hashCode));
+                                                            createdBy.hashCode),
+                                                        channelType.hashCode),
+                                                    title.hashCode),
+                                                description.hashCode),
+                                            image.hashCode),
+                                        coverImage.hashCode),
+                                    createdDate.hashCode),
+                                subscriberCount.hashCode),
+                            price.hashCode),
+                        targetFund.hashCode),
+                    currentFund.hashCode),
+                percentage.hashCode),
+            isDeleted.hashCode),
+        deleteOn.hashCode));
   }
 
   @override
@@ -358,7 +391,9 @@ class _$Channel extends Channel {
           ..add('price', price)
           ..add('targetFund', targetFund)
           ..add('currentFund', currentFund)
-          ..add('percentage', percentage))
+          ..add('percentage', percentage)
+          ..add('isDeleted', isDeleted)
+          ..add('deleteOn', deleteOn))
         .toString();
   }
 }
@@ -431,6 +466,14 @@ class ChannelBuilder implements Builder<Channel, ChannelBuilder> {
   double get percentage => _$this._percentage;
   set percentage(double percentage) => _$this._percentage = percentage;
 
+  bool _isDeleted;
+  bool get isDeleted => _$this._isDeleted;
+  set isDeleted(bool isDeleted) => _$this._isDeleted = isDeleted;
+
+  DateTime _deleteOn;
+  DateTime get deleteOn => _$this._deleteOn;
+  set deleteOn(DateTime deleteOn) => _$this._deleteOn = deleteOn;
+
   ChannelBuilder();
 
   ChannelBuilder get _$this {
@@ -451,6 +494,8 @@ class ChannelBuilder implements Builder<Channel, ChannelBuilder> {
       _targetFund = _$v.targetFund;
       _currentFund = _$v.currentFund;
       _percentage = _$v.percentage;
+      _isDeleted = _$v.isDeleted;
+      _deleteOn = _$v.deleteOn;
       _$v = null;
     }
     return this;
@@ -488,7 +533,9 @@ class ChannelBuilder implements Builder<Channel, ChannelBuilder> {
             price: price,
             targetFund: targetFund,
             currentFund: currentFund,
-            percentage: percentage);
+            percentage: percentage,
+            isDeleted: isDeleted,
+            deleteOn: deleteOn);
     replace(_$result);
     return _$result;
   }

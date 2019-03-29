@@ -9,7 +9,6 @@ import 'package:trenstop/misc/logger.dart';
 part 'channel.g.dart';
 
 abstract class Channel implements Built<Channel, ChannelBuilder> {
-
   static String TAG = "CHANNEL_MODEL";
 
   String get userId;
@@ -43,6 +42,11 @@ abstract class Channel implements Built<Channel, ChannelBuilder> {
   @nullable
   double get percentage;
 
+  @nullable
+  bool get isDeleted;
+
+  @nullable
+  DateTime get deleteOn;
 
   Channel._();
 
@@ -65,6 +69,8 @@ abstract class Channel implements Built<Channel, ChannelBuilder> {
         ..image = data['image'] ?? ''
         ..coverImage = data['coverImage'] ?? ''
         ..createdDate = data['createdDate'] ?? null
+        ..deleteOn = data['deleteOn'] != null ? data['deleteOn'].toDate() : null
+        ..isDeleted = data['isDeleted'] ?? false
         ..subscriberCount = data['subscriberCount'] ?? 0
         ..price = double.parse(data['price'].toString()) ?? 0.0
         ..targetFund = double.parse(data['targetFund'].toString()) ?? 0.0
@@ -78,23 +84,23 @@ abstract class Channel implements Built<Channel, ChannelBuilder> {
   }
 
   Map<String, dynamic> get toMap => {
-    "userId": this.userId,
-    "channelId": this.channelId,
-    "categoryId": this.categoryId,
-    "categoryName": this.categoryName,
-    "createdBy": this.createdBy,
-    "channelType": this.channelType,
-    "title": this.title,
-    "description": this.description,
-    "image": this.image,
-    "coverImage": this.coverImage,
-    "createdDate": this.createdDate,
-    "subscriberCount": this.subscriberCount,
-    "price": this.price,
-    "targetFund": this.targetFund,
-    "currentFund": this.currentFund,
-    "percentage": this.percentage,
-  };
+        "userId": this.userId,
+        "channelId": this.channelId,
+        "categoryId": this.categoryId,
+        "categoryName": this.categoryName,
+        "createdBy": this.createdBy,
+        "channelType": this.channelType,
+        "title": this.title,
+        "description": this.description,
+        "image": this.image,
+        "coverImage": this.coverImage,
+        "createdDate": this.createdDate,
+        "subscriberCount": this.subscriberCount,
+        "price": this.price,
+        "targetFund": this.targetFund,
+        "currentFund": this.currentFund,
+        "percentage": this.percentage,
+      };
 
   static Serializer<Channel> get serializer => _$channelSerializer;
 }

@@ -7,7 +7,6 @@ import 'package:trenstop/models/comments.dart';
 import 'package:trenstop/models/trailer.dart';
 
 class TrailerManager {
-
   static String TAG = "TRAILER_MANAGER";
 
   static TrailerManager _instance;
@@ -23,7 +22,6 @@ class TrailerManager {
 
   CollectionReference get trailersCollection => _store.collection(TRAILERS_TAG);
 
-
   Query get trailersQuery =>
       trailersCollection.orderBy("createdDate", descending: true);
 
@@ -35,14 +33,17 @@ class TrailerManager {
   }
 
   Query trailerCommentQuery(String trailerId) {
-    return trailersCollection.document(trailerId).collection('comments').orderBy("createdDate", descending: true);
+    return trailersCollection
+        .document(trailerId)
+        .collection('comments')
+        .orderBy("createdDate", descending: true);
   }
 
   Future<Snapshot<Trailer>> addTrailer(Trailer trailer) async {
-
     String error;
 
-    DocumentReference reference = trailersCollection.document(trailer.trailerId);
+    DocumentReference reference =
+        trailersCollection.document(trailer.trailerId);
 
     Logger.log(TAG, message: "Trying to retrieve ${reference.documentID}");
 
@@ -73,14 +74,15 @@ class TrailerManager {
       data: trailer,
       error: error,
     );
-
   }
 
   Future<Snapshot<Comments>> addComment(Comments comment) async {
     String error;
 
-    DocumentReference reference = trailersCollection.document(comment.vtId)
-        .collection("comments").document(comment.commentId);
+    DocumentReference reference = trailersCollection
+        .document(comment.vtId)
+        .collection("comments")
+        .document(comment.commentId);
 
     Logger.log(TAG, message: "Trying to retrieve ${reference.documentID}");
 
@@ -116,7 +118,8 @@ class TrailerManager {
   Future countView(Trailer trailer) async {
     String error = "";
 
-    DocumentReference reference = trailersCollection.document(trailer.trailerId);
+    DocumentReference reference =
+        trailersCollection.document(trailer.trailerId);
 
     Logger.log(TAG, message: "Trying to retrieve ${reference.documentID}");
 
@@ -130,7 +133,8 @@ class TrailerManager {
 
     await _store.runTransaction((transaction) async {
       final data = {
-        "views": freshSnap.data["views"] ?? 0 + 1
+        "views":
+            freshSnap.data["views"] == null ? 1 : freshSnap.data["views"] + 1
       };
       final isUpdate = freshSnap?.exists ?? false;
       if (isUpdate) {
@@ -143,7 +147,5 @@ class TrailerManager {
         await transaction.set(reference, data).catchError(errorHandler);
       }
     }).catchError(errorHandler);
-
   }
-
 }

@@ -6,7 +6,6 @@ import 'package:trenstop/misc/logger.dart';
 import 'package:trenstop/models/trailer.dart';
 
 class ChannelManager {
-
   static String TAG = "CHANNEL MANAGER";
 
   static ChannelManager _instance;
@@ -21,10 +20,10 @@ class ChannelManager {
   static const String COLLECTION_TAG = "channels";
   static const String CATEGORY_TAG = "categories";
 
-  CollectionReference get channelsCollection => _store.collection(COLLECTION_TAG);
+  CollectionReference get channelsCollection =>
+      _store.collection(COLLECTION_TAG);
 
   CollectionReference get categories => _store.collection(CATEGORY_TAG);
-
 
   Query myChannelsQuery(String userId) {
     return channelsCollection
@@ -36,18 +35,18 @@ class ChannelManager {
 //      .where("userUid", isEqualTo: userUid)
 //      .orderBy("timestamp", descending: true);
 
-
   getCategories() async {
     QuerySnapshot querySnapshot = await categories.getDocuments();
-    if(querySnapshot != null && querySnapshot.documents.length > 0) {
-      List<Category> listCategories = querySnapshot.documents.map((snapshot) => Category.fromDocumentSnapshot(snapshot)).toList();
+    if (querySnapshot != null && querySnapshot.documents.length > 0) {
+      List<Category> listCategories = querySnapshot.documents
+          .map((snapshot) => Category.fromDocumentSnapshot(snapshot))
+          .toList();
       return listCategories;
     } else
       return null;
   }
 
   Future<Snapshot<Channel>> getChannelFromId(String channelId) async {
-
     String error;
 
     DocumentReference reference = channelsCollection.document(channelId);
@@ -68,15 +67,12 @@ class ChannelManager {
       data: channel,
       error: error,
     );
-
   }
 
   Future<Snapshot<Channel>> addChannel(Channel channel) async {
-
     String error;
-
-
-    DocumentReference reference = channelsCollection.document(channel.channelId);
+    DocumentReference reference =
+        channelsCollection.document(channel.channelId);
 
     Logger.log(TAG, message: "Trying to retrieve ${reference.documentID}");
 
@@ -107,6 +103,47 @@ class ChannelManager {
       data: channel,
       error: error,
     );
+  }
 
+  Future<void> doDeleteChannel(Channel channel) async {
+    String error;
+    DocumentReference reference =
+        channelsCollection.document(channel.channelId);
+
+    Logger.log(TAG, message: "Trying to retrieve ${reference.documentID}");
+
+    final errorHandler = (exception, stacktrace) {
+      Logger.log(TAG,
+          message: "Couldn't update Cahnnel on database, error: $exception");
+      error = "Unknown Error";
+    };
+
+    final freshSnap = await reference.get().catchError(errorHandler);
+
+    await _store.runTransaction((transaction) async {
+      final data = Map<String, dynamic>();
+
+      data["isDeleted"] = true;
+      data["delete"] = 0;
+      DateTime deleteOn = DateTime.now();
+
+      print(deleteOn);
+
+      deleteOn = deleteOn.add(Duration(days: 30));
+      data["deleteOn"] = Timestamp.fromDate(deleteOn);
+
+      print(deleteOn);
+
+      final isUpdate = freshSnap?.exists ?? false;
+      if (isUpdate) {
+        Logger.log(TAG,
+            message: "Sending data with isUpdate ($isUpdate): ${data.keys}");
+        await transaction.update(reference, data).catchError(errorHandler);
+      } else {
+        Logger.log(TAG,
+            message: "Sending data with isUpdate ($isUpdate): ${data.keys}");
+        await transaction.set(reference, data).catchError(errorHandler);
+      }
+    }).catchError(errorHandler);
   }
 }

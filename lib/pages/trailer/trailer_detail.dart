@@ -73,7 +73,6 @@ class _TrailerDetailPageState extends State<TrailerDetailPage> {
     _trailerManager.countView(widget.trailer);
   }
 
-
   @override
   void initState() {
     super.initState();
@@ -93,7 +92,8 @@ class _TrailerDetailPageState extends State<TrailerDetailPage> {
         }
       });
     _videoPlayerController.addListener(() async {
-      if(!_isViewTriggered && (await _videoPlayerController.position > Duration(seconds: 5))) {
+      if (!_isViewTriggered &&
+          (await _videoPlayerController.position > Duration(seconds: 5))) {
         _triggerVideoView();
       }
     });
@@ -133,7 +133,8 @@ class _TrailerDetailPageState extends State<TrailerDetailPage> {
       return;
     }
     User user = await _authManager.getUser(firebaseUser: firebaseUser);
-    WidgetUtils.showPaymentScreen(context, widget.trailer, user, isDonate, price: price);
+    WidgetUtils.showPaymentScreen(context, widget.trailer, user, isDonate,
+        price: price);
   }
 
   @override
@@ -186,6 +187,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage> {
     }
 
     setState(() {
+      _commentController.text = "";
       _publishingComment = false;
     });
   }
@@ -239,28 +241,24 @@ class _TrailerDetailPageState extends State<TrailerDetailPage> {
 
   _subscribeButton() {
     return _showSubscribe
-        ?
-    widget.trailer.channelType != "CrowdFunding"
-        ?
-
-    RoundedButton(
-            text: translation.subscribe,
-            onPressed: () => _startSubscribe(false),
-          )
-    :
-    Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        RoundedButton(
-          text: translation.donate5,
-          onPressed: () => _startSubscribe(true, price: 5),
-        ),
-        RoundedButton(
-          text: translation.donate10,
-          onPressed: () => _startSubscribe(true, price: 10),
-        )
-      ],
-    )
+        ? widget.trailer.channelType != "CrowdFunding"
+            ? RoundedButton(
+                text: translation.subscribe,
+                onPressed: () => _startSubscribe(false),
+              )
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  RoundedButton(
+                    text: translation.donate5,
+                    onPressed: () => _startSubscribe(true, price: 5),
+                  ),
+                  RoundedButton(
+                    text: translation.donate10,
+                    onPressed: () => _startSubscribe(true, price: 10),
+                  )
+                ],
+              )
         : Container();
   }
 
@@ -281,15 +279,16 @@ class _TrailerDetailPageState extends State<TrailerDetailPage> {
             ),
             AspectRatio(
               aspectRatio: aspectRatio,
-             child: Platform.isIOS ?
-             VideoPlayer(_videoPlayerController)
-              : Chewie(
-                _videoPlayerController,
-                aspectRatio: aspectRatio,
-                autoPlay: false,
-                placeholder: Image.asset('res/icons/thumbnail_placeholder.png'),
+              child: Platform.isIOS
+                  ? VideoPlayer(_videoPlayerController)
+                  : Chewie(
+                      _videoPlayerController,
+                      aspectRatio: aspectRatio,
+                      autoPlay: false,
+                      placeholder:
+                          Image.asset('res/icons/thumbnail_placeholder.png'),
                       key: Key(widget.trailer.trailerId),
-              ),
+                    ),
             ),
             TrailerTitleWidget(
               trailer: widget.trailer,
