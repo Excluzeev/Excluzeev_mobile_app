@@ -71,24 +71,13 @@ flutter:
     #  - family: AppIcon
     #    fonts:
     #    - asset: res/fonts/AppIcon.ttf
-    - family: Montserrat
+    - family: Quicksand
       fonts:
-        - asset: res/fonts/Montserrat-Regular.ttf
-        - asset: res/fonts/Montserrat-Italic.ttf
-          style: italic
-        - asset: res/fonts/Montserrat-SemiBoldItalic.ttf
-          style: italic
+        - asset: res/fonts/Quicksand-Regular.ttf
+        - asset: res/fonts/Quicksand-Light.ttf
+          weight: 300
+        - asset: res/fonts/Quicksand-Medium.ttf
           weight: 500
-        - asset: res/fonts/Montserrat-BoldItalic.ttf
-          style: italic
-          weight: 600
-        - asset: res/fonts/Montserrat-ExtraBoldItalic.ttf
-          style: italic
-          weight: 600
-        - asset: res/fonts/Montserrat-SemiBold.ttf
-          weight: 500
-        - asset: res/fonts/Montserrat-Bold.ttf
-          weight: 600
-        - asset: res/fonts/Montserrat-ExtraBold.ttf
-          weight: 600
+        - asset: res/fonts/Quicksand-Bold.ttf
+          weight: 700
 # flutter build apk --release --target-platform android-arm

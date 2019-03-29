@@ -44,30 +44,20 @@ class TrailerTitleWidget extends StatelessWidget {
                         softWrap: true,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.title.copyWith(
-                              fontWeight: FontWeight.normal,
-                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15.0,
                             ),
                       ),
                       SizedBox(
                         height: 4.0,
                       ),
                       Text(
-                        "${trailer.channelName} ${trailer.channelType == "CrowdFunding" ? '- ' + trailer.channelType : ''}",
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.subtitle.copyWith(
-                              fontWeight: FontWeight.normal,
-                            ),
-                      ),
-                      SizedBox(
-                        height: 4.0,
-                      ),
-                      Text(
-                        "$daysAgo • ${trailer.views} views",
+                        "${trailer.channelName} • ${trailer.views} views • $daysAgo",
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.caption.copyWith(
                               fontWeight: FontWeight.normal,
+                              fontSize: 12.0,
                             ),
                       ),
                     ],

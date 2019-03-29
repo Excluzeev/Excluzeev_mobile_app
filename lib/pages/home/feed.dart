@@ -160,7 +160,7 @@ class _FeedPageState extends State<FeedPage> {
                     padding: const EdgeInsets.all(16.0),
                     child: Text(
                       user == null
-                          ? "User".toUpperCase()
+                          ? "Welcome".toUpperCase()
                           : user.displayName.toUpperCase(),
                       style: TextStyle(color: Colors.white),
                     ),
@@ -188,7 +188,14 @@ class _FeedPageState extends State<FeedPage> {
                                 translation.login,
                                 style: drawerItemTextStyle,
                               )),
-                        )
+                        ),
+                  FlatButton(
+                    onPressed: null,
+                    child: Text(
+                      translation.copyrights,
+                      style: drawerItemTextStyle,
+                    ),
+                  ),
                 ],
               ),
             )

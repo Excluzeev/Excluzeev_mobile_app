@@ -67,9 +67,12 @@ class _MyChannelsPageState extends State<MyChannelsPage> {
     );
   }
 
+  _createChannel() {
+    WidgetUtils.showCreateChannelPage(context);
+  }©
+
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
     if (translation == null) translation = Translation.of(context);
 
     return Scaffold(
@@ -77,6 +80,14 @@ class _MyChannelsPageState extends State<MyChannelsPage> {
       appBar: WhiteAppBar(
         title: Text(translation.myChannels),
         centerTitle: true,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.add,
+            ),
+            onPressed: () => _createChannel,
+          ),
+        ],
       ),
       backgroundColor: Colors.white,
       body: Center(
@@ -90,9 +101,32 @@ class _MyChannelsPageState extends State<MyChannelsPage> {
                   icon: Icons.error,
                   subtitle: translation.errorLoadTrailers,
                 ),
-                emptyChild: Image.asset(
-                  'res/icons/empty-create-channel.png',
-                  fit: BoxFit.cover,
+                emptyChild: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    RaisedButton.icon(
+                      shape: new RoundedRectangleBorder(
+                        borderRadius: new BorderRadius.circular(30.0),
+                      ),
+                      materialTapTargetSize: MaterialTapTargetSize.padded,
+                      color: Colors.white,
+                      textColor: ThemeData().primaryColor,
+                      icon: Icon(
+                        Icons.add,
+                      ),
+                      label: Text(
+                        "Create a Channel",
+                        style: TextStyle(
+                          fontSize: 24.0,
+                        ),
+                      ),
+                      onPressed: () => _createChannel,
+                    ),
+                    Image.asset(
+                      'res/icons/empty-create-channel.png',
+                      fit: BoxFit.cover,
+                    ),
+                  ],
                 ),
                 // Column(
                 //   mainAxisAlignment: MainAxisAlignment.center,

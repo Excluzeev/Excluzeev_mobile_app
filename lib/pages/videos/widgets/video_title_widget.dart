@@ -51,21 +51,10 @@ class VideoTitleWidget extends StatelessWidget {
                       height: 4.0,
                     ),
                     Text(
-                      video.channelName,
+                      "${video.channelName} • ${video.views} views • $daysAgo",
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.subtitle.copyWith(
-                            fontWeight: FontWeight.normal,
-                          ),
-                    ),
-                    SizedBox(
-                      height: 4.0,
-                    ),
-                    Text(
-                      "$daysAgo • ${video.views} views",
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.caption.copyWith(
                             fontWeight: FontWeight.normal,
                           ),
                     ),

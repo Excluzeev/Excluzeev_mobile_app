@@ -412,6 +412,10 @@ class Translation {
         "My Subscriptions",
         name: 'mySubscriptions',
       );
+  String get copyrights => Intl.message(
+        "©2019. Excluzeev. All Rights Reserved.",
+        name: 'mySubscriptions',
+      );
   String get errorEmptySubscriptions => Intl.message(
         "No Subscriptions Found.",
         name: 'errorEmptySubscriptions',

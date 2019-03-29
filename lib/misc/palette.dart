@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show SystemUiOverlayStyle;
 
 class Palette {
-  static const Color primary = Color(0xFF29AAE1);
+  static const Color primary = Color(0xFF00AEEF);
   static const Color secondary = Color(0xFF304B78);
   static const Color teal = Color(0xFF2494A2);
   // static const Color accentGreen = Color(0xFF56BCA2);

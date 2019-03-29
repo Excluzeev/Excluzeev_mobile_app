@@ -24,7 +24,7 @@ class ImageLoaderWidgetState extends State<ImageLoaderWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.blueGrey,
+      color: Colors.grey[350],
       child: failed
           ? Image.asset('res/icons/thumbnail_placeholder.png')
           : Image(

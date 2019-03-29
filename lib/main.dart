@@ -40,7 +40,7 @@ class _AppState extends State<App> {
         accentColor: Palette.primary,
         cursorColor: Palette.primary,
         buttonColor: Palette.primary,
-        fontFamily: 'Montserrat',
+        fontFamily: 'Quicksand',
       ),
       onGenerateTitle: (ctx) => Translation.of(ctx).appName,
       home: SplashScreen(),
