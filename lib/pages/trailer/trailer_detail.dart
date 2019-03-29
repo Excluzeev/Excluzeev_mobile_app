@@ -211,7 +211,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
     }
 
     setState(() {
-      _commentController.text = "";
+      _commentController.clear();
       _publishingComment = false;
     });
   }

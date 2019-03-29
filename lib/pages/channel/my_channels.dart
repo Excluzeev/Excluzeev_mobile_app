@@ -38,13 +38,13 @@ class _MyChannelsPageState extends State<MyChannelsPage> {
                   "Do you want to delete from ${channel.title}.\nusers will have 30 days notice period"),
               actions: <Widget>[
                 FlatButton(
-                    child: Text("Agree"),
+                    child: Text("Yes"),
                     onPressed: () {
                       Navigator.of(context).pop();
                       _channelManager.doDeleteChannel(channel);
                     }),
                 FlatButton(
-                  child: Text("Cancel"),
+                  child: Text("No"),
                   onPressed: () => Navigator.of(context).pop(),
                 )
               ],

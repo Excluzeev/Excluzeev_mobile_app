@@ -13,8 +13,12 @@ class LikeDislikeNeutral extends StatefulWidget {
   final int dislikes;
   final int neutral;
 
-
-  LikeDislikeNeutral({@required this.id, @required this.type, @required this.likes, @required this.dislikes, @required this.neutral});
+  LikeDislikeNeutral(
+      {@required this.id,
+      @required this.type,
+      @required this.likes,
+      @required this.dislikes,
+      @required this.neutral});
 
   @override
   _LikeDislikeNeutralState createState() => _LikeDislikeNeutralState();
@@ -34,45 +38,39 @@ class _LikeDislikeNeutralState extends State<LikeDislikeNeutral> {
 
   Future<bool> isLoggedIn() async {
     FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
-    if(firebaseUser != null) {
+    if (firebaseUser != null) {
       return true;
     }
     return false;
   }
 
   _updateCount(int newWhat) {
+    setState(() {
+      if (newWhat == 1) {
+        likes += 1;
+      } else if (newWhat == 0) {
+        neutral += 1;
+      } else if (newWhat == -1) {
+        dislikes += 1;
+      }
 
-    if(prev != 2) {
-
-      setState(() {
-        if(newWhat == 1) {
-          likes +=1;
-        } else if(newWhat == 0) {
-          neutral +=1;
-        } else if(newWhat == -1) {
-          dislikes +=1;
-        }
-
-        if(prev == 1) {
-          likes -= 1;
-        } else if(prev == 0) {
-          neutral -= 1;
-        } else if(prev == -1) {
-          dislikes -= 1;
-        }
-      });
-      prev = newWhat;
-
-    }
-
+      if (prev == 1) {
+        likes -= 1;
+      } else if (prev == 0) {
+        neutral -= 1;
+      } else if (prev == -1) {
+        dislikes -= 1;
+      }
+    });
+    prev = newWhat;
   }
 
   _like() async {
-    if(isLike) {
+    if (isLike) {
       return;
     }
     FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
-    if(firebaseUser == null) {
+    if (firebaseUser == null) {
       WidgetUtils.goToAuth(context, replaceAll: false);
       return;
     }
@@ -86,11 +84,11 @@ class _LikeDislikeNeutralState extends State<LikeDislikeNeutral> {
   }
 
   _neutral() async {
-    if(isNeutral) {
+    if (isNeutral) {
       return;
     }
     FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
-    if(firebaseUser == null) {
+    if (firebaseUser == null) {
       WidgetUtils.goToAuth(context, replaceAll: false);
       return;
     }
@@ -104,11 +102,11 @@ class _LikeDislikeNeutralState extends State<LikeDislikeNeutral> {
   }
 
   _dislike() async {
-    if(isDislike) {
+    if (isDislike) {
       return;
     }
     FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
-    if(firebaseUser == null) {
+    if (firebaseUser == null) {
       WidgetUtils.goToAuth(context, replaceAll: false);
       return;
     }
@@ -123,14 +121,15 @@ class _LikeDislikeNeutralState extends State<LikeDislikeNeutral> {
 
   _checkWhat() async {
     FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
-    if(firebaseUser != null) {
-      int what = await _likeManager.isWhat(firebaseUser.uid, widget.id, widget.type);
+    if (firebaseUser != null) {
+      int what =
+          await _likeManager.isWhat(firebaseUser.uid, widget.id, widget.type);
       Logger.log(LikeDislikeNeutral.TAG, message: "$what");
       prev = what;
       setState(() {
-        if(what == 1) {
+        if (what == 1) {
           isLike = true;
-        } else if(what == -1) {
+        } else if (what == -1) {
           isDislike = true;
         } else if (what == 0) {
           isNeutral = true;
@@ -140,7 +139,7 @@ class _LikeDislikeNeutralState extends State<LikeDislikeNeutral> {
   }
 
   Color _getColor(isWhat) {
-    if(isWhat) {
+    if (isWhat) {
       return Palette.primary;
     } else {
       return Palette.disabled;
@@ -177,9 +176,7 @@ class _LikeDislikeNeutralState extends State<LikeDislikeNeutral> {
                 ),
                 onPressed: () => _like(),
               ),
-              Text(
-                "$likes"
-              ),
+              Text("$likes"),
             ],
           ),
           Column(
@@ -191,9 +188,7 @@ class _LikeDislikeNeutralState extends State<LikeDislikeNeutral> {
                 ),
                 onPressed: () => _neutral(),
               ),
-              Text(
-                  "$neutral"
-              ),
+              Text("$neutral"),
             ],
           ),
           Column(
@@ -205,9 +200,7 @@ class _LikeDislikeNeutralState extends State<LikeDislikeNeutral> {
                 ),
                 onPressed: () => _dislike(),
               ),
-              Text(
-                  "$dislikes"
-              ),
+              Text("$dislikes"),
             ],
           ),
         ],

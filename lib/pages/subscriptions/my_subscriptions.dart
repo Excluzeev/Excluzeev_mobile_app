@@ -52,16 +52,16 @@ class _MySubscriptionsPageState extends State<MySubscriptionsPage> {
         builder: (BuildContext context) => AlertDialog(
               title: Text("Un Subscribe"),
               content: Text(
-                  "Do you want to unsubscribe from ${subscription.channelName} you still have ${subscription.expiryDate.difference(DateTime.now()).inDays} day(s) Left"),
+                  "Do you want to unsubscribe from ${subscription.channelName} you still have ${subscription.expiryDate.difference(DateTime.now()).inDays} day(s) Left.\n\nYou are not able to view the videos once you unsubscribe."),
               actions: <Widget>[
                 FlatButton(
-                    child: Text("Agree"),
+                    child: Text("Yes"),
                     onPressed: () {
                       Navigator.of(context).pop();
                       _subscriptionManager.doUnSubscribe(subscription);
                     }),
                 FlatButton(
-                  child: Text("Cancel"),
+                  child: Text("No"),
                   onPressed: () => Navigator.of(context).pop(),
                 )
               ],
