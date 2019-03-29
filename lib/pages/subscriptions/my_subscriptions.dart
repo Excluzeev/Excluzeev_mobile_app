@@ -47,7 +47,25 @@ class _MySubscriptionsPageState extends State<MySubscriptionsPage> {
   }
 
   _onUnsubscribe(Subscription subscription) async {
-    _subscriptionManager.doUnSubscribe(subscription);
+    showDialog(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+              title: Text("Un Subscribe"),
+              content: Text(
+                  "Do you want to unsubscribe from ${subscription.channelName} you still have ${subscription.expiryDate.difference(DateTime.now()).inDays} day(s) Left"),
+              actions: <Widget>[
+                FlatButton(
+                    child: Text("Agree"),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      _subscriptionManager.doUnSubscribe(subscription);
+                    }),
+                FlatButton(
+                  child: Text("Cancel"),
+                  onPressed: () => Navigator.of(context).pop(),
+                )
+              ],
+            ));
   }
 
   Widget _buildItem(BuildContext context, DocumentSnapshot snapshot,

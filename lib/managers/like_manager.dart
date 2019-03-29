@@ -1,13 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:trenstop/managers/snapshot.dart';
-import 'package:trenstop/models/category.dart';
-import 'package:trenstop/models/channel.dart';
 import 'package:trenstop/misc/logger.dart';
-import 'package:trenstop/models/comments.dart';
-import 'package:trenstop/models/trailer.dart';
 
 class LikeManager {
-
   static String TAG = "LIKES_MANAGER";
 
   static LikeManager _instance;
@@ -24,7 +18,6 @@ class LikeManager {
   CollectionReference get likesCollection => _store.collection(LIKES_TAG);
 
   Future<int> isWhat(String userId, String id, String type) async {
-
     String error;
 
     DocumentReference reference = likesCollection.document("$userId:$id:$type");
@@ -37,7 +30,7 @@ class LikeManager {
 
     final snap = await reference.get().catchError(errorHandler);
 
-    if(snap.exists) {
+    if (snap.exists) {
       int what = snap.data['what'];
       return what;
     } else {
@@ -46,7 +39,6 @@ class LikeManager {
   }
 
   what(String userId, String id, int what, String type) async {
-
     DocumentReference reference = likesCollection.document("$userId:$id:$type");
 
     Map<String, int> updateData = Map();
@@ -54,11 +46,10 @@ class LikeManager {
 
     DocumentSnapshot snap = await reference.get();
 
-    if(snap.exists) {
+    if (snap.exists) {
       reference.updateData(updateData);
     } else {
       reference.setData(updateData);
     }
   }
-
 }
