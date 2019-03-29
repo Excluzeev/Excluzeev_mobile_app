@@ -9,11 +9,13 @@ class SubscriptionWidget extends StatelessWidget {
   const SubscriptionWidget({
     Key key,
     @required this.subscription,
-    this.onTap
+    this.onTap,
+    this.onUnsubscribe
   }) : super(key: key);
 
   final Subscription subscription;
   final Function(Subscription) onTap;
+  final Function(Subscription) onUnsubscribe;
 
   @override
   Widget build(BuildContext context) {
@@ -49,10 +51,24 @@ class SubscriptionWidget extends StatelessWidget {
                     SizedBox(
                       height: 4.0,
                     ),
+                    Text(
+                      "Expires in ${subscription.expiryDate.difference(DateTime.now()).inDays} days",
+                      style: Theme.of(context).textTheme.subtitle.copyWith(
+                        fontWeight: FontWeight.normal,
+                      ),
+                    )
                   ],
                 ),
               ),
             ),
+            IconButton(
+              icon: Icon(
+                Icons.delete_forever,
+                color: Colors.red,
+              ),
+              onPressed: () => onUnsubscribe?.call(subscription),
+              tooltip: "Un Subscribe ${subscription.channelName}",
+            )
           ],
         ),
       ),

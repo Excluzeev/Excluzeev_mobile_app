@@ -29,7 +29,6 @@ class _MySubscriptionsPageState extends State<MySubscriptionsPage> {
   ChannelManager _channelManager = ChannelManager.instance;
   Translation translation;
 
-
   _showSnackBar(String message) {
     if (mounted && message != null && message.isNotEmpty)
       _scaffoldKey.currentState.showSnackBar(SnackBar(
@@ -38,42 +37,43 @@ class _MySubscriptionsPageState extends State<MySubscriptionsPage> {
   }
 
   _onTapSubscription(Subscription subscription) async {
-    Snapshot snap = await _channelManager.getChannelFromId(subscription.channelId);
-    if(snap.error != null) {
+    Snapshot snap =
+        await _channelManager.getChannelFromId(subscription.channelId);
+    if (snap.error != null) {
       _showSnackBar(snap.error);
       return;
     }
     WidgetUtils.showChannelDetails(context, widget.user, snap.data);
   }
 
+  _onUnsubscribe(Subscription subscription) async {
+    _subscriptionManager.doUnSubscribe(subscription);
+  }
 
-  Widget _buildItem(BuildContext context, DocumentSnapshot snapshot, Animation animation, int index) {
+  Widget _buildItem(BuildContext context, DocumentSnapshot snapshot,
+      Animation animation, int index) {
     final subscription = Subscription.fromDocumentSnapshot(snapshot);
 
     return FadeTransition(
       opacity: animation,
       child: subscription != null
           ? SubscriptionWidget(
-        subscription: subscription,
-        onTap: _onTapSubscription
-      )
+              subscription: subscription,
+              onTap: _onTapSubscription,
+              onUnsubscribe: _onUnsubscribe)
           : Center(child: CircularProgressIndicator()),
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
-
     final textTheme = Theme.of(context).textTheme;
-    if(translation == null) translation = Translation.of(context);
+    if (translation == null) translation = Translation.of(context);
 
     return Scaffold(
       key: _scaffoldKey,
       appBar: WhiteAppBar(
-        title: Text(
-          translation.mySubscriptions
-        ),
+        title: Text(translation.mySubscriptions),
         centerTitle: true,
       ),
       backgroundColor: Colors.white,
@@ -81,27 +81,29 @@ class _MySubscriptionsPageState extends State<MySubscriptionsPage> {
         child: widget.user == null
             ? CircularProgressIndicator()
             : FirestoreAnimatedList(
-          query: _subscriptionManager.mySubscriptionsQuery(widget.user.uid).snapshots(),
-          errorChild: InformationWidget(
-            icon: Icons.error,
-            subtitle: translation.errorLoadSubscriptions,
-          ),
-          emptyChild: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  translation.errorEmptySubscriptions,
-                  style: textTheme.title,
-                  textAlign: TextAlign.center,
+                query: _subscriptionManager
+                    .mySubscriptionsQuery(widget.user.uid)
+                    .snapshots(),
+                errorChild: InformationWidget(
+                  icon: Icons.error,
+                  subtitle: translation.errorLoadSubscriptions,
                 ),
+                emptyChild: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        translation.errorEmptySubscriptions,
+                        style: textTheme.title,
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ],
+                ),
+                itemBuilder: _buildItem,
               ),
-            ],
-          ),
-          itemBuilder: _buildItem,
-        ),
       ),
     );
   }

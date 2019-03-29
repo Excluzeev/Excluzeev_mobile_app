@@ -1,4 +1,4 @@
-package com.trenstop.mobile
+package com.excluzeev.mobileapp
 
 import android.os.Bundle
 
