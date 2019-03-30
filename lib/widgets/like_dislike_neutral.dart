@@ -142,7 +142,7 @@ class _LikeDislikeNeutralState extends State<LikeDislikeNeutral> {
     if (isWhat) {
       return Palette.primary;
     } else {
-      return Palette.disabled;
+      return Palette.grey;
     }
   }
 
@@ -165,43 +165,119 @@ class _LikeDislikeNeutralState extends State<LikeDislikeNeutral> {
   Widget build(BuildContext context) {
     return Container(
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          Column(
-            children: <Widget>[
-              IconButton(
-                icon: Icon(
-                  Icons.thumb_up,
-                  color: _getColor(isLike),
+          Padding(
+            padding: const EdgeInsets.only(
+                left: 10.0, right: 15.0, top: 5.0, bottom: 5.0),
+            child: Row(
+              children: <Widget>[
+                InkWell(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: ImageIcon(
+                      AssetImage(
+                        "res/icons/like.png",
+                      ),
+                      size: 32.0,
+                      color: _getColor(isLike),
+                    ),
+                  ),
+                  onTap: () => _like(),
                 ),
-                onPressed: () => _like(),
-              ),
-              Text("$likes"),
-            ],
+                // IconButton(
+                //   icon: Icon(
+                //     Icons.thumb_up,
+                //     color: _getColor(isLike),
+                //   ),
+                //   onPressed: () => _like(),
+                // ),
+                Text(
+                  "$likes",
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    color: _getColor(isLike),
+                  ),
+                ),
+              ],
+            ),
           ),
-          Column(
-            children: <Widget>[
-              IconButton(
-                icon: Icon(
-                  Icons.sentiment_neutral,
-                  color: _getColor(isNeutral),
+          Padding(
+            padding: const EdgeInsets.only(
+                left: 15.0, right: 15.0, top: 5.0, bottom: 5.0),
+            child: Row(
+              children: <Widget>[
+                InkWell(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Transform.rotate(
+                      angle: 80,
+                      child: ImageIcon(
+                        AssetImage(
+                          "res/icons/like.png",
+                        ),
+                        size: 32.0,
+                        color: _getColor(isNeutral),
+                      ),
+                    ),
+                  ),
+                  onTap: () => _neutral(),
                 ),
-                onPressed: () => _neutral(),
-              ),
-              Text("$neutral"),
-            ],
+                // IconButton(
+                //   icon: Icon(
+                //     Icons.sentiment_neutral,
+                //     color: _getColor(isNeutral),
+                //   ),
+                //   onPressed: () => _neutral(),
+                // ),
+                Text(
+                  "$neutral",
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    color: _getColor(isNeutral),
+                  ),
+                ),
+              ],
+            ),
           ),
-          Column(
-            children: <Widget>[
-              IconButton(
-                icon: Icon(
-                  Icons.thumb_down,
-                  color: _getColor(isDislike),
+          Padding(
+            padding: const EdgeInsets.only(
+                left: 15.0, right: 15.0, top: 5.0, bottom: 5.0),
+            child: Row(
+              children: <Widget>[
+                InkWell(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Transform.rotate(
+                      angle: 160,
+                      child: ImageIcon(
+                        AssetImage(
+                          "res/icons/like.png",
+                        ),
+                        color: _getColor(isDislike),
+                        size: 32.0,
+                      ),
+                    ),
+                  ),
+                  onTap: () => _dislike(),
                 ),
-                onPressed: () => _dislike(),
-              ),
-              Text("$dislikes"),
-            ],
+                // IconButton(
+                //   icon: Icon(
+                //     Icons.thumb_down,
+                //     color: _getColor(isDislike),
+                //   ),
+                //   onPressed: () => _dislike(),
+                // ),
+                Text(
+                  "$dislikes",
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    color: _getColor(isDislike),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),

@@ -77,7 +77,7 @@ class _NewChannelPageState extends State<NewChannelPage> {
     _fetchCategories();
 
     setState(() {
-      _priceController.text = 1.99.toString();
+      _priceController.text = 1.0.toString();
     });
   }
 
@@ -350,7 +350,7 @@ class _NewChannelPageState extends State<NewChannelPage> {
       ..coverImage = coverImage.data
       ..createdDate = Timestamp.fromDate(DateTime.now())
       ..subscriberCount = 0
-      ..price = double.parse(_priceController.text) ?? 0.0
+      ..price = double.parse(_priceController.text) ?? 1.0
       ..targetFund = targetFund
       ..currentFund = 0
       ..percentage = 0.0;

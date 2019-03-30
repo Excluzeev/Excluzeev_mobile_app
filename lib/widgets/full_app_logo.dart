@@ -20,10 +20,14 @@ class FullAppLogo extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: <Widget>[
-                Image.asset("res/icons/logo/logo_transparent.png",),
+                Image.asset(
+                  "res/icons/logo/logo_transparent.png",
+                ),
                 SizedBox(height: 16.0),
                 SloganWidget(),
-                SizedBox(height: 8.0,),
+                SizedBox(
+                  height: 8.0,
+                ),
               ],
             ),
           ),
@@ -53,9 +57,10 @@ class SizedAppLogo extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               SizedBox(
-                height: size,
-                  child: Image.asset("res/icons/logo/logo_transparent.png",)
-              ),
+                  height: size,
+                  child: Image.asset(
+                    "res/icons/logo/logo_bottom_name.png",
+                  )),
               SizedBox(height: 8.0),
             ],
           ),

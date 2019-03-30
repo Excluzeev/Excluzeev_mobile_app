@@ -6,6 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firestore_ui/animated_firestore_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
 import 'package:trenstop/i18n/translation.dart';
 import 'package:trenstop/managers/auth_manager.dart';
 import 'package:trenstop/managers/channel_manager.dart';
@@ -19,6 +20,7 @@ import 'package:trenstop/models/trailer.dart';
 import 'package:trenstop/models/user.dart';
 import 'package:trenstop/pages/home/widgets/information.dart';
 import 'package:trenstop/pages/trailer/widgets/trailer_comments_widget.dart';
+import 'package:trenstop/pages/trailer/widgets/trailer_title_detail_widget.dart';
 import 'package:trenstop/pages/trailer/widgets/trailer_title_widget.dart';
 import 'package:trenstop/widgets/like_dislike_neutral.dart';
 import 'package:trenstop/widgets/rounded_button.dart';
@@ -266,9 +268,14 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
   _subscribeButton() {
     return _showSubscribe
         ? widget.trailer.channelType != "CrowdFunding"
-            ? RoundedButton(
-                text: translation.subscribe,
-                onPressed: () => _startSubscribe(false),
+            ? Container(
+                margin: const EdgeInsets.all(16.0),
+                child: RoundedButton(
+                  maxLength: true,
+                  margin: true,
+                  text: "${translation.subscribe}",
+                  onPressed: () => _startSubscribe(false),
+                ),
               )
             : Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -300,46 +307,75 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
 //      appBar: WhiteAppBar(),
       body: CustomScrollView(slivers: <Widget>[
         SliverToBoxAdapter(
-          child: Column(children: [
-            SizedBox(
-              height: 24.0,
-            ),
-            AspectRatio(
-              aspectRatio: aspectRatio,
-              child: Platform.isIOS
-                  ? VideoPlayer(_videoPlayerController)
-                  : Chewie(
-                      _videoPlayerController,
-                      aspectRatio: aspectRatio,
-                      autoPlay: false,
-                      placeholder:
-                          Image.asset('res/icons/thumbnail_placeholder.png'),
-                      key: Key(widget.trailer.trailerId),
-                    ),
-            ),
-            TrailerTitleWidget(
-              trailer: widget.trailer,
-            ),
-            LikeDislikeNeutral(
-              id: widget.trailer.trailerId,
-              type: "t",
-              likes: widget.trailer.likes,
-              dislikes: widget.trailer.dislikes,
-              neutral: widget.trailer.neutral,
-            ),
-            SizedBox(
-              height: 8.0,
-            ),
-            _subscribeButton(),
-            Container(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                widget.trailer.description,
-                style: textTheme.subtitle,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 24.0,
               ),
-            ),
-            _buildAddCommentWidget(),
-          ]),
+              AspectRatio(
+                aspectRatio: aspectRatio,
+                child: Platform.isIOS
+                    ? VideoPlayer(_videoPlayerController)
+                    : Chewie(
+                        _videoPlayerController,
+                        aspectRatio: aspectRatio,
+                        autoPlay: false,
+                        placeholder:
+                            Image.asset('res/icons/thumbnail_placeholder.png'),
+                        key: Key(widget.trailer.trailerId),
+                      ),
+              ),
+              TrailerTitleDetailWidget(
+                trailer: widget.trailer,
+              ),
+              LikeDislikeNeutral(
+                id: widget.trailer.trailerId,
+                type: "t",
+                likes: widget.trailer.likes,
+                dislikes: widget.trailer.dislikes,
+                neutral: widget.trailer.neutral,
+              ),
+              SizedBox(
+                height: 8.0,
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  children: <Widget>[
+                    CircleAvatar(
+                      backgroundColor: Colors.black26,
+                      backgroundImage: AdvancedNetworkImage(
+                        widget.trailer.image,
+                        useDiskCache: true,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        widget.trailer.channelName,
+                        style: TextStyle(
+                          fontSize: 18.0,
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              _subscribeButton(),
+              Container(
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  widget.trailer.description,
+                  style: textTheme.subtitle,
+                ),
+              ),
+            ],
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: _buildAddCommentWidget(),
         ),
         SliverToBoxAdapter(
           child: FirestoreAnimatedList(

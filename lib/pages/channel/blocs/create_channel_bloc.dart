@@ -10,61 +10,51 @@ class CreateChannelBlocValidator {
 
   CreateChannelBlocValidator(this.translation) : assert(translation != null);
 
-  StreamTransformer<String, String> get validateEmpty => 
-      StreamTransformer<String, String>.fromHandlers(
-        handleData: (data, sink) {
-          if(data.isEmpty) {
-            sink.addError(translation.cannotBeEmpty);
-          } else {
-            sink.add(data);
-          }
+  StreamTransformer<String, String> get validateEmpty =>
+      StreamTransformer<String, String>.fromHandlers(handleData: (data, sink) {
+        if (data.isEmpty) {
+          sink.addError(translation.cannotBeEmpty);
+        } else {
+          sink.add(data);
         }
-      );
+      });
 
   StreamTransformer<String, String> get validateChannelType =>
-      StreamTransformer<String, String>.fromHandlers(
-        handleData: (data, sink) {
-          if(data.isEmpty) {
-            sink.addError(translation.cannotBeEmpty);
-          } else {
-            sink.add(data);
-          }
+      StreamTransformer<String, String>.fromHandlers(handleData: (data, sink) {
+        if (data.isEmpty) {
+          sink.addError(translation.cannotBeEmpty);
+        } else {
+          sink.add(data);
         }
-      );
+      });
 
   StreamTransformer<int, String> get validateEmptyInt =>
-      StreamTransformer<int, String>.fromHandlers(
-        handleData: (data, sink) {
-          if(data == null) {
-            sink.addError(translation.cannotBeEmpty);
-          } else {
-            sink.add(data.toString());
-          }
+      StreamTransformer<int, String>.fromHandlers(handleData: (data, sink) {
+        if (data == null) {
+          sink.addError(translation.cannotBeEmpty);
+        } else {
+          sink.add(data.toString());
         }
-      );
+      });
   StreamTransformer<double, String> get validateTargetFund =>
-      StreamTransformer<double, String>.fromHandlers(
-        handleData: (data, sink) {
-          if(data == null) {
-            sink.add("0");
-          } else {
-            sink.add(data.toString());
-          }
+      StreamTransformer<double, String>.fromHandlers(handleData: (data, sink) {
+        if (data == null) {
+          sink.add("0");
+        } else {
+          sink.add(data.toString());
         }
-      );
+      });
 
   StreamTransformer<double, String> get validatePriceInt =>
-      StreamTransformer<double, String>.fromHandlers(
-        handleData: (data, sink) {
-          if(data == null) {
-            sink.addError(translation.cannotBeEmpty);
-          } else if(data <= 10 && data >= 1) {
-            sink.add(data.toString());
-          } else  {
-            sink.addError(translation.priceError);
-          }
+      StreamTransformer<double, String>.fromHandlers(handleData: (data, sink) {
+        if (data == null) {
+          sink.addError(translation.cannotBeEmpty);
+        } else if (data <= 10 && data >= 1) {
+          sink.add(data.toString());
+        } else {
+          sink.addError(translation.priceError);
         }
-      );
+      });
 }
 
 class CreateChannelBloc extends BlocBase {
@@ -81,21 +71,26 @@ class CreateChannelBloc extends BlocBase {
   final _priceSubject = BehaviorSubject<double>();
   final _targetFundSubject = BehaviorSubject<double>();
 
-  Stream<String> get categoryName => _categoryNameSubject.stream.transform(validator.validateEmpty);
-  Stream<String> get type => _typeSubject.stream.transform(validator.validateEmpty);
-  Stream<String> get title => _titleSubject.stream.transform(validator.validateEmpty);
-  Stream<String> get description => _descriptionSubject.stream.transform(validator.validateEmpty);
-  Stream<String> get price => _priceSubject.stream.transform(validator.validatePriceInt);
-  Stream<String> get targetFund => _targetFundSubject.stream.transform(validator.validateTargetFund);
+  Stream<String> get categoryName =>
+      _categoryNameSubject.stream.transform(validator.validateEmpty);
+  Stream<String> get type =>
+      _typeSubject.stream.transform(validator.validateEmpty);
+  Stream<String> get title =>
+      _titleSubject.stream.transform(validator.validateEmpty);
+  Stream<String> get description =>
+      _descriptionSubject.stream.transform(validator.validateEmpty);
+  Stream<String> get price =>
+      _priceSubject.stream.transform(validator.validatePriceInt);
+  Stream<String> get targetFund =>
+      _targetFundSubject.stream.transform(validator.validateTargetFund);
 
-
-
-
-  Stream<bool> get submitValid =>
-      Observable.combineLatest4(
-          categoryName, title, description, price,
-              (c, title, d, p) =>
-                  !c.isEmpty && !title.isEmpty && !d.isEmpty && (price != null));
+  Stream<bool> get submitValid => Observable.combineLatest4(
+      categoryName,
+      title,
+      description,
+      price,
+      (c, title, d, p) =>
+          !c.isEmpty && !title.isEmpty && !d.isEmpty && (price != null));
 
   Function(String) get updateCategoryName => _categoryNameSubject.sink.add;
   Function(String) get updateType => _typeSubject.sink.add;

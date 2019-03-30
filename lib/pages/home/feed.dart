@@ -213,6 +213,11 @@ class _FeedPageState extends State<FeedPage> {
       key: _scaffoldKey,
       backgroundColor: Colors.white,
       appBar: WhiteAppBar(
+        iconTheme: IconThemeData(color: Palette.primary),
+        textTheme: TextTheme(
+            title: Theme.of(context).textTheme.title.copyWith(
+                  color: Palette.primary,
+                )),
         centerTitle: true,
         title: Text(
           translation.appNameTrailers,

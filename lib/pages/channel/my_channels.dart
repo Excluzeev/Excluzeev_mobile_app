@@ -69,7 +69,7 @@ class _MyChannelsPageState extends State<MyChannelsPage> {
 
   _createChannel() {
     WidgetUtils.showCreateChannelPage(context);
-  }©
+  }
 
   @override
   Widget build(BuildContext context) {
