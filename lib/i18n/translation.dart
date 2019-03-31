@@ -307,7 +307,7 @@ class Translation {
         name: 'errorEmptyChannels',
       );
   String get addCommentLabel => Intl.message(
-        "Add Comment",
+        "Type something here to comment",
         name: 'addCommentLabel',
       );
   String get addMessageLabel => Intl.message(

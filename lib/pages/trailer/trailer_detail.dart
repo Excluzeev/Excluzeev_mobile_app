@@ -14,6 +14,7 @@ import 'package:trenstop/managers/snapshot.dart';
 import 'package:trenstop/managers/trailer_manager.dart';
 import 'package:trenstop/misc/iuid.dart';
 import 'package:trenstop/misc/logger.dart';
+import 'package:trenstop/misc/palette.dart';
 import 'package:trenstop/misc/widget_utils.dart';
 import 'package:trenstop/models/comments.dart';
 import 'package:trenstop/models/trailer.dart';
@@ -243,11 +244,38 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
         onSubmitted: (text) => _comment(),
         decoration: InputDecoration(
           enabled: !_publishingComment,
-          contentPadding: const EdgeInsets.all(16.0),
+          contentPadding: const EdgeInsets.only(
+            top: 8.0,
+            left: 16.0,
+            right: 16.0,
+            bottom: 8.0,
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(32.0),
+            borderSide: BorderSide(
+              width: 1.0,
+              style: BorderStyle.solid,
+              color: Palette.primary,
+            ),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(32.0),
+            borderSide: BorderSide(
+              width: 0.8,
+              style: BorderStyle.solid,
+              color: Palette.primary,
+            ),
+          ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(32.0),
+            borderSide: BorderSide(
+              width: 0.2,
+              style: BorderStyle.solid,
+              color: Palette.primary,
+            ),
           ),
           hintText: translation.addCommentLabel,
+          hintStyle: TextStyle(fontSize: 14.0),
           suffixIcon: IconButton(
             icon: _publishingComment
                 ? SizedBox.fromSize(
@@ -256,7 +284,10 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
                       strokeWidth: 2.0,
                     ),
                   )
-                : Icon(Icons.send),
+                : Icon(
+                    Icons.send,
+                    color: Palette.primary,
+                  ),
             tooltip: translation.addCommentLabel,
             onPressed: _comment,
           ),
@@ -265,34 +296,103 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
     );
   }
 
+  _donateButton() {
+    return _showSubscribe
+        ? widget.trailer.channelType != "CrowdFunding"
+            ? Container()
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  RaisedButton(
+                    shape: StadiumBorder(),
+                    padding: const EdgeInsets.only(
+                      top: 8.0,
+                      bottom: 8.0,
+                      left: 24.0,
+                      right: 24.0,
+                    ),
+                    textColor: Colors.white,
+                    child: Text(
+                      "${translation.donate5}",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    color: Palette.primary,
+                    onPressed: () => _startSubscribe(true, price: 5),
+                  ),
+                  RaisedButton(
+                    shape: StadiumBorder(),
+                    padding: const EdgeInsets.only(
+                      top: 8.0,
+                      bottom: 8.0,
+                      left: 24.0,
+                      right: 24.0,
+                    ),
+                    textColor: Colors.white,
+                    child: Text(
+                      "${translation.donate10}",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    color: Palette.primary,
+                    onPressed: () => _startSubscribe(true, price: 10),
+                  ),
+                ],
+              )
+        : Container();
+  }
+
   _subscribeButton() {
     return _showSubscribe
         ? widget.trailer.channelType != "CrowdFunding"
             ? Container(
                 margin: const EdgeInsets.all(16.0),
-                child: RoundedButton(
-                  maxLength: true,
-                  margin: true,
-                  text: "${translation.subscribe}",
+                child: RaisedButton(
+                  shape: StadiumBorder(),
+                  padding: const EdgeInsets.only(
+                    top: 8.0,
+                    bottom: 8.0,
+                    left: 24.0,
+                    right: 24.0,
+                  ),
+                  textColor: Colors.white,
+                  child: Text(
+                    "${translation.subscribe}",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  color: Palette.primary,
                   onPressed: () => _startSubscribe(false),
                 ),
               )
-            : Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  RoundedButton(
-                    text: translation.donate5,
-                    onPressed: () => _startSubscribe(true, price: 5),
-                  ),
-                  RoundedButton(
-                    text: translation.donate10,
-                    onPressed: () => _startSubscribe(true, price: 10),
-                  )
-                ],
-              )
-        : RoundedButton(
-            text: translation.subscribed,
-            onPressed: null,
+            : Container()
+        : RaisedButton(
+            shape: StadiumBorder(),
+            padding: const EdgeInsets.only(
+              top: 8.0,
+              bottom: 8.0,
+              left: 24.0,
+              right: 24.0,
+            ),
+            textColor: Palette.primary,
+            child: Text(
+              "${translation.subscribed}",
+              style: TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            color: Colors.white,
+            onPressed: () {},
           );
   }
 
@@ -329,6 +429,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
               TrailerTitleDetailWidget(
                 trailer: widget.trailer,
               ),
+              Divider(),
               LikeDislikeNeutral(
                 id: widget.trailer.trailerId,
                 type: "t",
@@ -336,39 +437,55 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
                 dislikes: widget.trailer.dislikes,
                 neutral: widget.trailer.neutral,
               ),
-              SizedBox(
-                height: 8.0,
-              ),
+              Divider(),
               Container(
-                width: MediaQuery.of(context).size.width,
-                padding: const EdgeInsets.all(16.0),
+                padding: EdgeInsets.only(
+                  bottom: 8.0,
+                  left: 16.0,
+                  right: 16.0,
+                ),
                 child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    CircleAvatar(
-                      backgroundColor: Colors.black26,
-                      backgroundImage: AdvancedNetworkImage(
-                        widget.trailer.image,
-                        useDiskCache: true,
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(
-                        widget.trailer.channelName,
-                        style: TextStyle(
-                          fontSize: 18.0,
+                    Row(
+                      children: <Widget>[
+                        CircleAvatar(
+                          backgroundColor: Colors.black26,
+                          backgroundImage: AdvancedNetworkImage(
+                            widget.trailer.image,
+                            useDiskCache: true,
+                          ),
                         ),
-                      ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            widget.trailer.channelName,
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Flexible(
+                      child: _subscribeButton(),
                     )
                   ],
                 ),
               ),
-              _subscribeButton(),
+              _donateButton(),
               Container(
-                padding: const EdgeInsets.all(16.0),
+                padding: const EdgeInsets.only(
+                  bottom: 8.0,
+                  left: 16.0,
+                  right: 16.0,
+                ),
                 child: Text(
                   widget.trailer.description,
-                  style: textTheme.subtitle,
+                  style: TextStyle(
+                    fontSize: 14.0,
+                  ),
                 ),
               ),
             ],

@@ -170,7 +170,9 @@ class _LikeDislikeNeutralState extends State<LikeDislikeNeutral> {
         children: <Widget>[
           Padding(
             padding: const EdgeInsets.only(
-                left: 10.0, right: 15.0, top: 5.0, bottom: 5.0),
+              left: 10.0,
+              right: 15.0,
+            ),
             child: Row(
               children: <Widget>[
                 InkWell(
@@ -186,13 +188,6 @@ class _LikeDislikeNeutralState extends State<LikeDislikeNeutral> {
                   ),
                   onTap: () => _like(),
                 ),
-                // IconButton(
-                //   icon: Icon(
-                //     Icons.thumb_up,
-                //     color: _getColor(isLike),
-                //   ),
-                //   onPressed: () => _like(),
-                // ),
                 Text(
                   "$likes",
                   style: TextStyle(
@@ -204,8 +199,7 @@ class _LikeDislikeNeutralState extends State<LikeDislikeNeutral> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(
-                left: 15.0, right: 15.0, top: 5.0, bottom: 5.0),
+            padding: const EdgeInsets.only(left: 15.0, right: 15.0),
             child: Row(
               children: <Widget>[
                 InkWell(
@@ -224,13 +218,6 @@ class _LikeDislikeNeutralState extends State<LikeDislikeNeutral> {
                   ),
                   onTap: () => _neutral(),
                 ),
-                // IconButton(
-                //   icon: Icon(
-                //     Icons.sentiment_neutral,
-                //     color: _getColor(isNeutral),
-                //   ),
-                //   onPressed: () => _neutral(),
-                // ),
                 Text(
                   "$neutral",
                   style: TextStyle(
@@ -242,8 +229,7 @@ class _LikeDislikeNeutralState extends State<LikeDislikeNeutral> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(
-                left: 15.0, right: 15.0, top: 5.0, bottom: 5.0),
+            padding: const EdgeInsets.only(left: 15.0, right: 15.0),
             child: Row(
               children: <Widget>[
                 InkWell(
@@ -262,13 +248,6 @@ class _LikeDislikeNeutralState extends State<LikeDislikeNeutral> {
                   ),
                   onTap: () => _dislike(),
                 ),
-                // IconButton(
-                //   icon: Icon(
-                //     Icons.thumb_down,
-                //     color: _getColor(isDislike),
-                //   ),
-                //   onPressed: () => _dislike(),
-                // ),
                 Text(
                   "$dislikes",
                   style: TextStyle(

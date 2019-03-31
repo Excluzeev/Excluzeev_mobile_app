@@ -23,7 +23,12 @@ class TrailerTitleDetailWidget extends StatelessWidget {
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Container(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.only(
+          top: 8.0,
+          bottom: 8.0,
+          left: 16.0,
+          right: 16.0,
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.min,
@@ -41,7 +46,6 @@ class TrailerTitleDetailWidget extends StatelessWidget {
                         softWrap: true,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.title.copyWith(
-                              fontWeight: FontWeight.bold,
                               fontSize: 24.0,
                               color: Palette.primary,
                             ),
@@ -53,10 +57,10 @@ class TrailerTitleDetailWidget extends StatelessWidget {
                         "${trailer.views} views • $daysAgo",
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.caption.copyWith(
-                              fontWeight: FontWeight.normal,
-                              fontSize: 14.0,
-                            ),
+                        style: TextStyle(
+                          fontWeight: FontWeight.normal,
+                          fontSize: 14.0,
+                        ),
                       ),
                     ],
                   ),
