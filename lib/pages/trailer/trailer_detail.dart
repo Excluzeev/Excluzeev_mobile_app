@@ -452,7 +452,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
                         CircleAvatar(
                           backgroundColor: Colors.black26,
                           backgroundImage: AdvancedNetworkImage(
-                            widget.trailer.image,
+                            widget.trailer.channelImage,
                             useDiskCache: true,
                           ),
                         ),
@@ -474,7 +474,6 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
                   ],
                 ),
               ),
-              _donateButton(),
               Container(
                 padding: const EdgeInsets.only(
                   bottom: 8.0,
@@ -488,6 +487,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
                   ),
                 ),
               ),
+              _donateButton(),
             ],
           ),
         ),

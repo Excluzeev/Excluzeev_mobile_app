@@ -96,11 +96,15 @@ class _NewChannelPageState extends State<NewChannelPage> {
         children: <Widget>[
           Text(
             translation.categoryNameLabel,
-            style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+              color: Palette.primary,
+            ),
           ),
           DropdownButton<Category>(
             value: selectedCategory,
-            hint: Text(translation.categoryNameLabel),
+            hint: Text(translation.categoryNameHintLabel),
             isExpanded: true,
             items: _listCategories.map((Category category) {
               return DropdownMenuItem<Category>(
@@ -112,6 +116,7 @@ class _NewChannelPageState extends State<NewChannelPage> {
               bloc.updateCategoryName(cat.name);
               setState(() {
                 selectedCategory = cat;
+                selectedType = "VOD";
               });
             },
           ),
@@ -129,7 +134,11 @@ class _NewChannelPageState extends State<NewChannelPage> {
         children: <Widget>[
           Text(
             translation.channelTypeLabel,
-            style: TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+              color: Palette.primary,
+            ),
           ),
           DropdownButton<String>(
             value: selectedType,
@@ -399,6 +408,17 @@ class _NewChannelPageState extends State<NewChannelPage> {
                           ? _buildTypeDropDown()
                           : Container(),
                       Padding(
+                        padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                        child: Text(
+                          translation.channelLabel,
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                            color: Palette.primary,
+                          ),
+                        ),
+                      ),
+                      Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: RoundedBorder(
                           child: StreamBuilder(
@@ -412,12 +432,23 @@ class _NewChannelPageState extends State<NewChannelPage> {
                                     filled: true,
                                     border: InputBorder.none,
                                     errorText: snapshot.error,
-                                    hintText: translation.titleLabel,
+                                    hintText: translation.channelHintLabel,
                                   ),
                                   inputFormatters: [
                                     LengthLimitingTextInputFormatter(32)
                                   ],
                                 ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                        child: Text(
+                          translation.descriptionLabel,
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                            color: Palette.primary,
                           ),
                         ),
                       ),
@@ -436,12 +467,25 @@ class _NewChannelPageState extends State<NewChannelPage> {
                                     filled: true,
                                     border: InputBorder.none,
                                     errorText: snapshot.error,
-                                    hintText: translation.descriptionLabel,
+                                    hintText: translation.descriptionHintLabel,
                                   ),
                                   inputFormatters: [
                                     LengthLimitingTextInputFormatter(255)
                                   ],
                                 ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                        child: Text(
+                          selectedType != "CrowdFunding"
+                              ? translation.priceLabel
+                              : translation.targetFundLabel,
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                            color: Palette.primary,
                           ),
                         ),
                       ),
@@ -463,6 +507,11 @@ class _NewChannelPageState extends State<NewChannelPage> {
                                           border: InputBorder.none,
                                           errorText: snapshot.error,
                                           hintText: translation.priceLabel,
+                                          suffixText:
+                                              translation.priceSuffixLabel,
+                                          suffixStyle: TextStyle(
+                                            color: Palette.primary,
+                                          ),
                                         ),
                                         keyboardType: TextInputType.number,
                                       ),
@@ -500,7 +549,10 @@ class _NewChannelPageState extends State<NewChannelPage> {
                         child: Text(
                           translation.thumbnailLabel,
                           style: TextStyle(
-                              fontSize: 14.0, fontWeight: FontWeight.bold),
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                            color: Palette.primary,
+                          ),
                         ),
                       ),
                       _uploadThumbnailWidget(),
@@ -509,7 +561,10 @@ class _NewChannelPageState extends State<NewChannelPage> {
                         child: Text(
                           translation.coverImageLabel,
                           style: TextStyle(
-                              fontSize: 14.0, fontWeight: FontWeight.bold),
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                            color: Palette.primary,
+                          ),
                         ),
                       ),
                       _uploadCoverWidget(),
@@ -517,7 +572,13 @@ class _NewChannelPageState extends State<NewChannelPage> {
                         stream: bloc.submitValid,
                         builder: (context, snapshot) => RoundedButton(
                               enabled: snapshot.hasData,
-                              text: translation.addChannel.toUpperCase(),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  translation.createNow.toUpperCase(),
+                                ),
+                              ),
+                              text: translation.createNow.toUpperCase(),
                               onPressed: () => snapshot.hasData
                                   ? _addChannel()
                                   : _showSnackBar(translation.errorEmptyField),

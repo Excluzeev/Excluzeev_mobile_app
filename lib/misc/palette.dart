@@ -11,7 +11,7 @@ class Palette {
   static const Color lightYellow = Color(0xFFF9BB49);
   static const Color darkBlue = Color(0xFF2D3258);
   static const Color facebookBlue = Color(0xFF4267B2);
-  static const Color disabled = Color(0xFFBDBDBD);
+  static const Color disabled = Color(0xFFE0E0E0);
 
   static Color ok = Colors.green[500];
   static Color error = Colors.red[400];

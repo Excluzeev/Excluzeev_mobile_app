@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
+import 'package:trenstop/misc/palette.dart';
 import 'package:trenstop/models/subscription.dart';
 // ignore: duplicate_import
 import 'package:trenstop/models/subscription.dart';
 
 class SubscriptionWidget extends StatelessWidget {
-
-  const SubscriptionWidget({
-    Key key,
-    @required this.subscription,
-    this.onTap,
-    this.onUnsubscribe
-  }) : super(key: key);
+  const SubscriptionWidget(
+      {Key key, @required this.subscription, this.onTap, this.onUnsubscribe})
+      : super(key: key);
 
   final Subscription subscription;
   final Function(Subscription) onTap;
@@ -30,8 +27,11 @@ class SubscriptionWidget extends StatelessWidget {
             InkWell(
 //            onTap: () => _showProfile(context),
               child: CircleAvatar(
-                backgroundImage:
-                AdvancedNetworkImage(subscription.channelImage, retryLimit: 1, useDiskCache: true),
+                backgroundImage: AdvancedNetworkImage(
+                  subscription.channelImage,
+                  retryLimit: 1,
+                  useDiskCache: true,
+                ),
               ),
             ),
             Expanded(
@@ -45,8 +45,8 @@ class SubscriptionWidget extends StatelessWidget {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.title.copyWith(
-                        fontWeight: FontWeight.normal,
-                      ),
+                            fontWeight: FontWeight.normal,
+                          ),
                     ),
                     SizedBox(
                       height: 4.0,
@@ -54,8 +54,8 @@ class SubscriptionWidget extends StatelessWidget {
                     Text(
                       "Expires in ${subscription.expiryDate.difference(DateTime.now()).inDays} days",
                       style: Theme.of(context).textTheme.subtitle.copyWith(
-                        fontWeight: FontWeight.normal,
-                      ),
+                            fontWeight: FontWeight.normal,
+                          ),
                     )
                   ],
                 ),
@@ -64,10 +64,10 @@ class SubscriptionWidget extends StatelessWidget {
             IconButton(
               icon: Icon(
                 Icons.delete_forever,
-                color: Colors.red,
+                color: Palette.primary,
               ),
               onPressed: () => onUnsubscribe?.call(subscription),
-              tooltip: "Un Subscribe ${subscription.channelName}",
+              tooltip: "Unsubscribe ${subscription.channelName}",
             )
           ],
         ),

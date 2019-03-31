@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:trenstop/misc/palette.dart';
 
 const double _kLeadingWidth =
     kToolbarHeight; // So the leading button is square.
@@ -326,9 +327,13 @@ class _WhiteAppBarState extends State<WhiteAppBar> {
     final bool useCloseButton =
         parentRoute is PageRoute<dynamic> && parentRoute.fullscreenDialog;
 
-    IconThemeData appBarIconTheme = widget.iconTheme ?? themeData.iconTheme;
+    IconThemeData appBarIconTheme = widget.iconTheme ??
+        themeData.iconTheme.copyWith(
+          color: Palette.primary,
+        );
     TextStyle centerStyle = widget.textTheme?.title ??
-        themeData.textTheme.title.copyWith(fontWeight: FontWeight.bold);
+        themeData.textTheme.title
+            .copyWith(fontWeight: FontWeight.bold, color: Palette.primary);
     TextStyle sideStyle = widget.textTheme?.body1 ?? themeData.textTheme.body1;
 
     if (widget.toolbarOpacity != 1.0) {
@@ -342,7 +347,9 @@ class _WhiteAppBarState extends State<WhiteAppBar> {
         sideStyle =
             sideStyle.copyWith(color: sideStyle.color.withOpacity(opacity));
       appBarIconTheme = appBarIconTheme.copyWith(
-          opacity: opacity * (appBarIconTheme.opacity ?? 1.0));
+        opacity: opacity * (appBarIconTheme.opacity ?? 1.0),
+        color: Palette.primary,
+      );
     }
 
     Widget leading = widget.leading;

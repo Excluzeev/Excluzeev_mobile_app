@@ -14,6 +14,7 @@ import 'package:trenstop/managers/storage_manager.dart';
 import 'package:trenstop/managers/video_manager.dart';
 import 'package:trenstop/misc/iuid.dart';
 import 'package:trenstop/misc/logger.dart';
+import 'package:trenstop/misc/palette.dart';
 import 'package:trenstop/models/channel.dart';
 import 'package:trenstop/models/user.dart';
 import 'package:trenstop/models/video.dart';
@@ -135,10 +136,7 @@ class _AddVideoPageState extends State<AddVideoPage> {
                 : Stack(
                     children: <Widget>[
                       SizedBox.expand(
-                        child: AspectRatio(
-                          aspectRatio: _videoController.value.aspectRatio,
-                          child: VideoPlayer(_videoController),
-                        ),
+                        child: VideoPlayer(_videoController),
                       ),
                       Align(
                         alignment: Alignment.topRight,
@@ -268,6 +266,17 @@ class _AddVideoPageState extends State<AddVideoPage> {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                        child: Text(
+                          translation.titleLabel,
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                            color: Palette.primary,
+                          ),
+                        ),
+                      ),
                       RoundedBorder(
                         child: StreamBuilder(
                           stream: bloc.title,
@@ -280,7 +289,7 @@ class _AddVideoPageState extends State<AddVideoPage> {
                                   filled: true,
                                   border: InputBorder.none,
                                   errorText: snapshot.error,
-                                  hintText: translation.titleLabel,
+                                  hintText: translation.titleVideoHintLabel,
                                 ),
                                 inputFormatters: [
                                   LengthLimitingTextInputFormatter(32)
@@ -290,6 +299,17 @@ class _AddVideoPageState extends State<AddVideoPage> {
                       ),
                       SizedBox(
                         height: 16.0,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                        child: Text(
+                          translation.descriptionLabel,
+                          style: TextStyle(
+                            fontSize: 18.0,
+                            fontWeight: FontWeight.bold,
+                            color: Palette.primary,
+                          ),
+                        ),
                       ),
                       RoundedBorder(
                         child: StreamBuilder(
@@ -304,7 +324,8 @@ class _AddVideoPageState extends State<AddVideoPage> {
                                   filled: true,
                                   border: InputBorder.none,
                                   errorText: snapshot.error,
-                                  hintText: translation.descriptionLabel,
+                                  hintText:
+                                      translation.descriptionVideoHintLabel,
                                 ),
                                 inputFormatters: [
                                   LengthLimitingTextInputFormatter(255)

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
+import 'package:trenstop/misc/palette.dart';
 import 'package:trenstop/models/channel.dart';
 
 class ChannelWidget extends StatelessWidget {
@@ -75,7 +76,7 @@ class ChannelWidget extends StatelessWidget {
                 : IconButton(
                     icon: Icon(
                       Icons.delete_forever,
-                      color: Colors.red,
+                      color: Palette.primary,
                     ),
                     onPressed: () => onDelete?.call(channel),
                     tooltip: "Delete ${channel.title}",

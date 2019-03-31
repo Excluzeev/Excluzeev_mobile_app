@@ -29,8 +29,10 @@ class TrailerTitleWidget extends StatelessWidget {
                 InkWell(
 //                  onTap: () => _showProfile(context),
                   child: CircleAvatar(
-                    backgroundImage: AdvancedNetworkImage(trailer.channelImage,
-                        useDiskCache: true),
+                    backgroundImage: AdvancedNetworkImage(
+                      trailer.channelImage,
+                      useDiskCache: true,
+                    ),
                   ),
                 ),
                 Container(
@@ -53,14 +55,24 @@ class TrailerTitleWidget extends StatelessWidget {
                       SizedBox(
                         height: 4.0,
                       ),
-                      Text(
-                        "${trailer.channelName} • ${trailer.views} views • $daysAgo",
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.caption.copyWith(
-                              fontWeight: FontWeight.normal,
-                              fontSize: 12.0,
-                            ),
+                      Text.rich(
+                        TextSpan(
+                          text: "${trailer.channelName}",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12.0,
+                          ),
+                          children: <TextSpan>[
+                            TextSpan(
+                              text: " • ${trailer.views} views • $daysAgo",
+                              style:
+                                  Theme.of(context).textTheme.caption.copyWith(
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 12.0,
+                                      ),
+                            )
+                          ],
+                        ),
                       ),
                     ],
                   ),

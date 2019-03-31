@@ -85,7 +85,7 @@ class _MyChannelsPageState extends State<MyChannelsPage> {
             icon: Icon(
               Icons.add,
             ),
-            onPressed: () => _createChannel,
+            onPressed: () => _createChannel(),
           ),
         ],
       ),

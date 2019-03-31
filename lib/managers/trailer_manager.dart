@@ -28,7 +28,7 @@ class TrailerManager {
   Query trailersByUserChannelQuery(String channelId, String userId) {
     return trailersCollection
         .where("channelId", isEqualTo: channelId)
-        .where("userId", isEqualTo: userId)
+        // .where("userId", isEqualTo: userId)
         .orderBy("createdDate", descending: true);
   }
 

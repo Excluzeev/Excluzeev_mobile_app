@@ -65,9 +65,13 @@ class _FeedPageState extends State<FeedPage> {
             ? Container()
             : FlatButton(
                 onPressed: _contentCreator,
-                child: Text(
-                  translation.signUpContentCreator,
-                  style: drawerItemTextStyle,
+                child: SizedBox(
+                  width: double.infinity,
+                  child: Text(
+                    translation.signUpContentCreator,
+                    style: drawerItemTextStyle,
+                    textAlign: TextAlign.left,
+                  ),
                 ),
               );
   }
@@ -96,29 +100,44 @@ class _FeedPageState extends State<FeedPage> {
 
   _createMenu() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: <Widget>[
         FlatButton(
           onPressed: _myChannels,
-          child: Text(
-            translation.myChannels,
-            style: drawerItemTextStyle,
+          child: SizedBox(
+            width: double.infinity,
+            child: Text(
+              translation.myChannels,
+              style: drawerItemTextStyle,
+              textAlign: TextAlign.left,
+            ),
           ),
         ),
         FlatButton(
           onPressed: _mySubscriptions,
-          child: Text(
-            translation.mySubscriptions,
-            style: drawerItemTextStyle,
+          child: SizedBox(
+            width: double.infinity,
+            child: Text(
+              translation.mySubscriptions,
+              style: drawerItemTextStyle,
+              textAlign: TextAlign.left,
+            ),
           ),
         ),
-        FlatButton(
-          onPressed: _createChannel,
-          child: Text(
-            translation.createChannel,
-            style: drawerItemTextStyle,
+        SizedBox(
+          width: double.infinity,
+          child: FlatButton(
+            onPressed: _createChannel,
+            child: SizedBox(
+              width: double.infinity,
+              child: Text(
+                translation.createChannel,
+                style: drawerItemTextStyle,
+                textAlign: TextAlign.left,
+              ),
+            ),
           ),
-        )
+        ),
       ],
     );
   }
@@ -215,9 +234,10 @@ class _FeedPageState extends State<FeedPage> {
       appBar: WhiteAppBar(
         iconTheme: IconThemeData(color: Palette.primary),
         textTheme: TextTheme(
-            title: Theme.of(context).textTheme.title.copyWith(
-                  color: Palette.primary,
-                )),
+          title: Theme.of(context).textTheme.title.copyWith(
+                color: Palette.primary,
+              ),
+        ),
         centerTitle: true,
         title: Text(
           translation.appNameTrailers,

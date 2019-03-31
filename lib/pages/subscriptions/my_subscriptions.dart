@@ -50,7 +50,7 @@ class _MySubscriptionsPageState extends State<MySubscriptionsPage> {
     showDialog(
         context: context,
         builder: (BuildContext context) => AlertDialog(
-              title: Text("Un Subscribe"),
+              title: Text("Unsubscribe"),
               content: Text(
                   "Do you want to unsubscribe from ${subscription.channelName} you still have ${subscription.expiryDate.difference(DateTime.now()).inDays} day(s) Left.\n\nYou are not able to view the videos once you unsubscribe."),
               actions: <Widget>[
@@ -78,8 +78,11 @@ class _MySubscriptionsPageState extends State<MySubscriptionsPage> {
           ? SubscriptionWidget(
               subscription: subscription,
               onTap: _onTapSubscription,
-              onUnsubscribe: _onUnsubscribe)
-          : Center(child: CircularProgressIndicator()),
+              onUnsubscribe: _onUnsubscribe,
+            )
+          : Center(
+              child: CircularProgressIndicator(),
+            ),
     );
   }
 
@@ -109,20 +112,6 @@ class _MySubscriptionsPageState extends State<MySubscriptionsPage> {
                   'res/icons/empty-subscribe.png',
                   fit: BoxFit.fill,
                 ),
-                // Column(
-                //   mainAxisAlignment: MainAxisAlignment.center,
-                //   crossAxisAlignment: CrossAxisAlignment.center,
-                //   children: <Widget>[
-                //     Padding(
-                //       padding: const EdgeInsets.all(8.0),
-                //       child: Text(
-                //         translation.errorEmptySubscriptions,
-                //         style: textTheme.title,
-                //         textAlign: TextAlign.center,
-                //       ),
-                //     ),
-                //   ],
-                // ),
                 itemBuilder: _buildItem,
               ),
       ),

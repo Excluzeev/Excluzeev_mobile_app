@@ -79,7 +79,7 @@ class Translation {
         name: "signUp",
       );
   String get signUpContentCreator => Intl.message(
-        "Sign Up for Content Creator",
+        "Sign Up as Content Creator",
         name: "signUpContentCreator",
       );
   String get resetPassword => Intl.message(
@@ -202,6 +202,10 @@ class Translation {
         "Category",
         name: 'categoryNameLabel',
       );
+  String get categoryNameHintLabel => Intl.message(
+        "Select a Category",
+        name: 'categoryNameHintLabel',
+      );
   String get channelTypeLabel => Intl.message(
         "Channel Type",
         name: 'channelTypeLabel',
@@ -210,9 +214,33 @@ class Translation {
         "Title",
         name: 'titleLabel',
       );
+  String get titleVideoHintLabel => Intl.message(
+        "Please enter your Video Title",
+        name: 'titleVideoHintLabel',
+      );
+  String get channelLabel => Intl.message(
+        "Channel Name",
+        name: 'channelLabel',
+      );
+  String get channelHintLabel => Intl.message(
+        "Please enter your Channel Name",
+        name: 'channelHintLabel',
+      );
   String get descriptionLabel => Intl.message(
         "Description",
         name: 'descriptionLabel',
+      );
+  String get descriptionHintLabel => Intl.message(
+        "Please enter your Channel Description",
+        name: 'descriptionHintLabel',
+      );
+  String get descriptionVideoHintLabel => Intl.message(
+        "Please enter your Video Description",
+        name: 'descriptionVideoHintLabel',
+      );
+  String get priceSuffixLabel => Intl.message(
+        "CAD \$ per subscription",
+        name: 'priceSuffixLabel',
       );
   String get thumbnailLabel => Intl.message(
         "Thumbnail",
@@ -225,6 +253,10 @@ class Translation {
   String get coverImageLabel => Intl.message(
         "Cover Image",
         name: 'coverImageLabel',
+      );
+  String get subscriptionPriceLabel => Intl.message(
+        "Subscription Price",
+        name: 'subscriptionPriceLabel',
       );
   String get priceLabel => Intl.message(
         "Price",
@@ -243,8 +275,12 @@ class Translation {
         name: 'errorCropPhoto',
       );
   String get addChannel => Intl.message(
-        "Add Channel",
+        "Create a Channel",
         name: 'addChannel',
+      );
+  String get createNow => Intl.message(
+        "Create Now",
+        name: 'createNow',
       );
   String get trailerTitle => Intl.message(
         "Add a trailer",
@@ -255,7 +291,7 @@ class Translation {
         name: 'trailers',
       );
   String get videoTitle => Intl.message(
-        "Add a video",
+        "Upload a video",
         name: 'videoTitle',
       );
   String get liveTitle => Intl.message(
@@ -275,7 +311,7 @@ class Translation {
         name: 'videos',
       );
   String get addVideo => Intl.message(
-        "Add Video",
+        "Upload Now",
         name: 'addVideo',
       );
   String get addTrailer => Intl.message(

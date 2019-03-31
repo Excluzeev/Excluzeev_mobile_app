@@ -129,7 +129,7 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> {
             ],
           ),
           actions: <Widget>[
-            widget.channel.isDeleted
+            widget.channel.isDeleted || widget.channel.userId != widget.user.uid
                 ? Container()
                 : IconButton(
                     icon: Icon(Icons.add),
@@ -154,22 +154,23 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> {
           ],
         ),
         backgroundColor: Colors.white,
-        floatingActionButton: widget.channel.isDeleted
-            ? Container()
-            : FloatingActionButton.extended(
-                icon: Image.asset(
-                  'res/icons/logo_live_e.png',
-                  color: Colors.white,
-                ),
-                label: Text(
-                  translation.excluzeevLive,
-                  style: TextStyle(
-                    color: Colors.white,
+        floatingActionButton:
+            widget.channel.isDeleted || widget.channel.userId != widget.user.uid
+                ? Container()
+                : FloatingActionButton.extended(
+                    icon: Image.asset(
+                      'res/icons/logo_live_e.png',
+                      color: Colors.white,
+                    ),
+                    label: Text(
+                      translation.excluzeevLive,
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    onPressed: () => requestPermission(),
+                    isExtended: true,
                   ),
-                ),
-                onPressed: () => requestPermission(),
-                isExtended: true,
-              ),
         body: TabBarView(
           children: <Widget>[
             _getChannelTrailers(),

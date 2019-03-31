@@ -28,7 +28,7 @@ class VideoManager {
   Query videosByUserInChannelQuery(String userId, String channelId) {
     return videosCollection
         .where("channelId", isEqualTo: channelId)
-        .where("userId", isEqualTo: userId)
+        // .where("userId", isEqualTo: userId)
         .orderBy("createdDate", descending: true);
   }
 

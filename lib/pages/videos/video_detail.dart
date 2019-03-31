@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
 import 'package:trenstop/i18n/translation.dart';
 import 'package:trenstop/managers/auth_manager.dart';
 import 'package:trenstop/managers/channel_manager.dart';
@@ -12,6 +13,7 @@ import 'package:trenstop/models/user.dart';
 import 'package:trenstop/models/video.dart';
 import 'package:trenstop/pages/videos/widgets/CommentWidget.dart';
 import 'package:trenstop/pages/videos/widgets/LiveChat.dart';
+import 'package:trenstop/pages/videos/widgets/video_title_detail_widget.dart';
 import 'package:trenstop/pages/videos/widgets/video_title_widget.dart';
 import 'package:trenstop/widgets/like_dislike_neutral.dart';
 import 'package:trenstop/widgets/rounded_button.dart';
@@ -140,7 +142,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
 
   void _setStreamButton() async {
     FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    if (widget.video.userId == user.uid) {
+    if (widget.video.userId == user.uid && widget.video.type == "Live") {
       setState(() {
         _showStartStream =
             DateTime.now().difference(widget.video.createdDate.toDate()) <
@@ -249,81 +251,115 @@ class _VideoDetailPageState extends State<VideoDetailPage>
           SliverToBoxAdapter(
             child: Stack(
               children: <Widget>[
-                Column(children: <Widget>[
-                  SizedBox(
-                    height: 24.0,
-                  ),
-                  Container(
-                    child: AspectRatio(
-                      aspectRatio: aspectRatio,
+                Column(
+                  children: <Widget>[
+                    SizedBox(
+                      height: 24.0,
+                    ),
+                    Container(
+                      child: AspectRatio(
+                        aspectRatio: aspectRatio,
 //              child: VideoPlayer(_controller),
-                      child: _isLoading
-                          ? Center(
-                              child: _isError
-                                  ? Icon(Icons.error)
-                                  : CircularProgressIndicator(),
-                            )
-                          : widget.video.later == "later"
-                              ? Center(
-                                  child: Image.asset(
-                                      'res/icons/thumbnail_placeholder.png'),
-                                )
-                              : Platform.isIOS
-                                  ? VideoPlayer(_videoPlayerController)
-                                  : Chewie(
-                                      _videoPlayerController,
-                                      aspectRatio: aspectRatio,
-                                      autoPlay: false,
-                                      looping: false,
-                                      placeholder: Image.asset(
-                                        'res/icons/thumbnail_placeholder.png',
-                                        key: Key(widget.video.videoId),
+                        child: _isLoading
+                            ? Center(
+                                child: _isError
+                                    ? Icon(Icons.error)
+                                    : CircularProgressIndicator(),
+                              )
+                            : widget.video.later == "later"
+                                ? Center(
+                                    child: Image.asset(
+                                        'res/icons/thumbnail_placeholder.png'),
+                                  )
+                                : Platform.isIOS
+                                    ? VideoPlayer(_videoPlayerController)
+                                    : Chewie(
+                                        _videoPlayerController,
+                                        aspectRatio: aspectRatio,
+                                        autoPlay: false,
+                                        looping: false,
+                                        placeholder: Image.asset(
+                                          'res/icons/thumbnail_placeholder.png',
+                                          key: Key(widget.video.videoId),
+                                        ),
                                       ),
-                                    ),
 //                  Chewie(
 //                    controller: _chewieController,
 //                  ),
+                      ),
                     ),
-                  ),
-                  VideoTitleWidget(
-                    video: widget.video,
-                  ),
-                  LikeDislikeNeutral(
-                    id: widget.video.videoId,
-                    type: 'v',
-                    likes: widget.video.likes,
-                    dislikes: widget.video.dislikes,
-                    neutral: widget.video.neutral,
-                  ),
-                  SizedBox(
-                    height: 8.0,
-                  ),
-                  _startStreamButton(),
-                  SizedBox(
-                    height: 8.0,
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text(
-                      widget.video.description,
-                      style: textTheme.subtitle,
+                    VideoTitleDetailWidget(
+                      video: widget.video,
                     ),
-                  ),
-                  SizedBox(
-                    height: .5,
-                    child: Container(
-                      color: Colors.grey[500],
+                    Divider(),
+                    LikeDislikeNeutral(
+                      id: widget.video.videoId,
+                      type: 'v',
+                      likes: widget.video.likes,
+                      dislikes: widget.video.dislikes,
+                      neutral: widget.video.neutral,
                     ),
-                  ),
-                ]),
+                    Container(
+                      padding: EdgeInsets.only(
+                        bottom: 8.0,
+                        left: 16.0,
+                        right: 16.0,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Row(
+                            children: <Widget>[
+                              CircleAvatar(
+                                backgroundColor: Colors.black26,
+                                backgroundImage: AdvancedNetworkImage(
+                                  widget.video.channelImage,
+                                  useDiskCache: true,
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  widget.video.channelName,
+                                  style: TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    _startStreamButton(),
+                    SizedBox(
+                      height: 2.0,
+                    ),
+                    Container(
+                      padding: EdgeInsets.only(
+                        bottom: 8.0,
+                        left: 16.0,
+                        right: 16.0,
+                      ),
+                      child: Text(
+                        widget.video.description,
+                        style: textTheme.subtitle,
+                      ),
+                    ),
+                    Divider(),
+                  ],
+                ),
                 Positioned(
                   top: 30.0,
                   right: 8.0,
-                  child: IconButton(
-                    icon: Icon(Icons.delete),
-                    color: Colors.white,
-                    onPressed: _delete,
-                  ),
+                  child: widget.video.userId == widget.user.uid
+                      ? IconButton(
+                          icon: Icon(Icons.delete),
+                          color: Colors.white,
+                          onPressed: _delete,
+                        )
+                      : Container(),
                 ),
               ],
             ),
