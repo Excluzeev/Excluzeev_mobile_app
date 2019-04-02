@@ -160,7 +160,6 @@ class _PaymentPageState extends State<PaymentPage> {
   @override
   void initState() {
     super.initState();
-
     flutterWebViewPlugin.onUrlChanged.listen((String url) {
       Logger.log(PaymentPage.TAG, message: url);
       print(url.contains("/pagePaymentSuccess"));
