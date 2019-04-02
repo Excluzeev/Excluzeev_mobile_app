@@ -23,6 +23,7 @@ import 'package:trenstop/pages/home/widgets/information.dart';
 import 'package:trenstop/pages/trailer/widgets/trailer_comments_widget.dart';
 import 'package:trenstop/pages/trailer/widgets/trailer_title_detail_widget.dart';
 import 'package:trenstop/pages/trailer/widgets/trailer_title_widget.dart';
+import 'package:trenstop/widgets/readmore_text_widget.dart';
 import 'package:trenstop/widgets/like_dislike_neutral.dart';
 import 'package:trenstop/widgets/rounded_button.dart';
 import 'package:trenstop/widgets/white_app_bar.dart';
@@ -88,6 +89,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
         }
         break;
       case AppLifecycleState.resumed:
+        _checkSubscription();
         break;
     }
   }
@@ -352,7 +354,6 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
     return _showSubscribe
         ? widget.trailer.channelType != "CrowdFunding"
             ? Container(
-                margin: const EdgeInsets.all(16.0),
                 child: RaisedButton(
                   shape: StadiumBorder(),
                   padding: const EdgeInsets.only(
@@ -404,18 +405,20 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
     return Scaffold(
       backgroundColor: Colors.white,
       key: _scaffoldKey,
-     appBar: Platform.isIOS ? WhiteAppBar() : PreferredSize(
-       preferredSize: Size(0.0, 0.0),
-       child: Container(),
-     ),
+      appBar: Platform.isIOS
+          ? WhiteAppBar()
+          : PreferredSize(
+              preferredSize: Size(0.0, 0.0),
+              child: Container(),
+            ),
       body: CustomScrollView(slivers: <Widget>[
         SliverToBoxAdapter(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                height: 24.0,
-              ),
+              // SizedBox(
+              //   height: 24.0,
+              // ),
               AspectRatio(
                 aspectRatio: aspectRatio,
                 child: Platform.isIOS
@@ -442,6 +445,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
               ),
               Divider(),
               Container(
+                width: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.only(
                   bottom: 8.0,
                   left: 16.0,
@@ -450,30 +454,34 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        CircleAvatar(
-                          backgroundColor: Colors.black26,
-                          backgroundImage: AdvancedNetworkImage(
-                            widget.trailer.channelImage,
-                            useDiskCache: true,
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            widget.trailer.channelName,
-                            style: TextStyle(
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.w500,
+                    Container(
+                      width: MediaQuery.of(context).size.width - 180,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          CircleAvatar(
+                            backgroundColor: Colors.black26,
+                            backgroundImage: AdvancedNetworkImage(
+                              widget.trailer.channelImage,
+                              useDiskCache: true,
                             ),
                           ),
-                        ),
-                      ],
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                widget.trailer.channelName,
+                                style: TextStyle(
+                                  fontSize: 18.0,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    Flexible(
-                      child: _subscribeButton(),
-                    )
+                    _subscribeButton(),
                   ],
                 ),
               ),
@@ -483,12 +491,16 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
                   left: 16.0,
                   right: 16.0,
                 ),
-                child: Text(
-                  widget.trailer.description,
-                  style: TextStyle(
-                    fontSize: 14.0,
-                  ),
+                child: ReadMoreTextWidget(
+                  text: widget.trailer.description,
                 ),
+
+                // Text(
+                //   widget.trailer.description,
+                //   style: TextStyle(
+                //     fontSize: 14.0,
+                //   ),
+                // ),
               ),
               _donateButton(),
             ],

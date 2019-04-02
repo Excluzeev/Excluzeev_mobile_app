@@ -24,11 +24,16 @@ class ChannelDetailPage extends StatefulWidget {
   _ChannelDetailPageState createState() => _ChannelDetailPageState();
 }
 
-class _ChannelDetailPageState extends State<ChannelDetailPage> {
+class _ChannelDetailPageState extends State<ChannelDetailPage>
+    with TickerProviderStateMixin {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   Translation translation;
 
   bool _isPreparingStream = false;
+
+  int changedIndex = 0;
+
+  TabController _tabController;
 
   requestPermission() async {
     List<PermissionGroup> permissionGroups = [];
@@ -69,6 +74,10 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> {
     WidgetUtils.showAddVideo(context, widget.user, widget.channel);
   }
 
+  _showAddTrailer() {
+    WidgetUtils.showAddTrailer(context, widget.channel);
+  }
+
   _showStartLive() {
     WidgetUtils.showAddVideo(context, widget.user, widget.channel,
         hideVideoUpload: true);
@@ -104,37 +113,52 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _tabController = TabController(
+      length: 2,
+      vsync: this,
+      initialIndex: 0,
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     if (translation == null) translation = Translation.of(context);
 
-    return DefaultTabController(
-      length: 2,
-      initialIndex: 0,
-      child: Scaffold(
-        key: _scaffoldKey,
-        appBar: WhiteAppBar(
-          title: Text(widget.channel.title),
-          centerTitle: true,
-          bottom: TabBar(
-            indicatorColor: Palette.primary,
-            labelColor: Palette.primary,
-            unselectedLabelColor: Colors.black,
-            tabs: <Widget>[
-              Tab(
-                text: translation.trailers,
-              ),
-              Tab(
-                text: translation.videos,
-              ),
-            ],
-          ),
-          actions: <Widget>[
-            widget.channel.isDeleted || widget.channel.userId != widget.user.uid
-                ? Container()
-                : IconButton(
-                    icon: Icon(Icons.add),
-                    onPressed: _showAddVideo,
-                  ),
+    return Scaffold(
+      key: _scaffoldKey,
+      appBar: WhiteAppBar(
+        title: Text(widget.channel.title),
+        centerTitle: true,
+        bottom: TabBar(
+          controller: _tabController,
+          indicatorColor: Palette.primary,
+          labelColor: Palette.primary,
+          unselectedLabelColor: Colors.black,
+          onTap: (index) {
+            changedIndex = index;
+          },
+          tabs: <Widget>[
+            Tab(
+              text: translation.trailers,
+            ),
+            Tab(
+              text: translation.videos,
+            ),
+          ],
+        ),
+        actions: <Widget>[
+          widget.channel.isDeleted || widget.channel.userId != widget.user.uid
+              ? Container()
+              : IconButton(
+                  icon: Icon(Icons.add),
+                  onPressed: () {
+                    _tabController.index == 0
+                        ? _showAddTrailer()
+                        : _showAddVideo();
+                  },
+                ),
 //            _isPreparingStream ?
 //                Padding(
 //                  padding: const EdgeInsets.all(18.0),
@@ -151,32 +175,32 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> {
 //              ),
 //              onPressed: () => requestPermission(),
 //            )
-          ],
-        ),
-        backgroundColor: Colors.white,
-        floatingActionButton:
-            widget.channel.isDeleted || widget.channel.userId != widget.user.uid
-                ? Container()
-                : FloatingActionButton.extended(
-                    icon: Image.asset(
-                      'res/icons/logo_live_e.png',
+        ],
+      ),
+      backgroundColor: Colors.white,
+      floatingActionButton:
+          widget.channel.isDeleted || widget.channel.userId != widget.user.uid
+              ? Container()
+              : FloatingActionButton.extended(
+                  icon: Image.asset(
+                    'res/icons/logo_live_e.png',
+                    color: Colors.white,
+                  ),
+                  label: Text(
+                    translation.excluzeevLive,
+                    style: TextStyle(
                       color: Colors.white,
                     ),
-                    label: Text(
-                      translation.excluzeevLive,
-                      style: TextStyle(
-                        color: Colors.white,
-                      ),
-                    ),
-                    onPressed: () => requestPermission(),
-                    isExtended: true,
                   ),
-        body: TabBarView(
-          children: <Widget>[
-            _getChannelTrailers(),
-            _getChannelVideos(),
-          ],
-        ),
+                  onPressed: () => requestPermission(),
+                  isExtended: true,
+                ),
+      body: TabBarView(
+        controller: _tabController,
+        children: <Widget>[
+          _getChannelTrailers(),
+          _getChannelVideos(),
+        ],
       ),
     );
   }

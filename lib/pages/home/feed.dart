@@ -9,6 +9,7 @@ import 'package:trenstop/models/user.dart';
 import 'package:trenstop/pages/home/home.dart';
 import 'package:trenstop/widgets/full_app_logo.dart';
 import 'package:trenstop/widgets/white_app_bar.dart';
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 
 class FeedPage extends StatefulWidget {
   static const String TAG = "HOME_PAGE";
@@ -27,6 +28,27 @@ class _FeedPageState extends State<FeedPage> {
 
   Translation translation;
   User user;
+
+  void _launchURL(BuildContext context, String url) async {
+    try {
+      await launch(
+        url,
+        option: new CustomTabsOption(
+          toolbarColor: Theme.of(context).primaryColor,
+          enableDefaultShare: true,
+          enableUrlBarHiding: true,
+          showPageTitle: true,
+          animation: new CustomTabsAnimation.slideIn(),
+          extraCustomTabs: <String>[
+            'org.mozilla.firefox',
+            'com.microsoft.emmx',
+          ],
+        ),
+      );
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
 
   @override
   void initState() {
@@ -191,7 +213,9 @@ class _FeedPageState extends State<FeedPage> {
             ),
             Positioned(
               bottom: 20.0,
+              width: MediaQuery.of(context).size.width * 0.6,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   user != null
                       ? FlatButton(
@@ -208,13 +232,18 @@ class _FeedPageState extends State<FeedPage> {
                                 style: drawerItemTextStyle,
                               )),
                         ),
-                  Text(
+                  InkWell(
+                    child: Text(
                       translation.copyrights,
                       style: TextStyle(
                         fontSize: 12.0,
-
                       ),
                     ),
+                    onTap: () {
+                      _launchURL(
+                          context, "https://excluzeev.com/license-agreement");
+                    },
+                  ),
                 ],
               ),
             )

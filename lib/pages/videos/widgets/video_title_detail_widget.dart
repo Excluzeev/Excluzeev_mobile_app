@@ -29,45 +29,35 @@ class VideoTitleDetailWidget extends StatelessWidget {
           left: 16.0,
           right: 16.0,
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.7,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        video.title,
-                        maxLines: 2,
-                        softWrap: true,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.title.copyWith(
-                              fontSize: 24.0,
-                              color: Palette.primary,
-                            ),
-                      ),
-                      SizedBox(
-                        height: 4.0,
-                      ),
-                      Text(
-                        "${video.views} views • $daysAgo",
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontWeight: FontWeight.normal,
-                          fontSize: 14.0,
-                        ),
-                      ),
-                    ],
-                  ),
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                video.title,
+                maxLines: 2,
+                softWrap: true,
+                overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.title.copyWith(
+                      fontSize: 18.0,
+                      color: Palette.primary,
+                    ),
+              ),
+              SizedBox(
+                height: 4.0,
+              ),
+              Text(
+                "${video.views} views • $daysAgo",
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontWeight: FontWeight.normal,
+                  fontSize: 14.0,
                 ),
-              ],
-            ),
-          ],
+              ),
+            ],
+          ),
         ),
       ),
     );

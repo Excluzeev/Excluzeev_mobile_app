@@ -36,7 +36,7 @@ class TrailerTitleDetailWidget extends StatelessWidget {
             Row(
               children: <Widget>[
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.7,
+                  width: MediaQuery.of(context).size.width - 32.0,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -46,7 +46,7 @@ class TrailerTitleDetailWidget extends StatelessWidget {
                         softWrap: true,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.title.copyWith(
-                              fontSize: 24.0,
+                              fontSize: 18.0,
                               color: Palette.primary,
                             ),
                       ),

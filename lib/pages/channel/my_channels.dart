@@ -120,7 +120,7 @@ class _MyChannelsPageState extends State<MyChannelsPage> {
                           fontSize: 24.0,
                         ),
                       ),
-                      onPressed: () => _createChannel,
+                      onPressed: () => _createChannel(),
                     ),
                     Image.asset(
                       'res/icons/empty-create-channel.png',

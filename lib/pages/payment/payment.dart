@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:trenstop/i18n/translation.dart';
 import 'package:trenstop/managers/auth_manager.dart';
 import 'package:trenstop/misc/logger.dart';
+import 'package:trenstop/misc/widget_utils.dart';
 import 'package:trenstop/models/trailer.dart';
 import 'package:trenstop/models/user.dart';
 import 'package:trenstop/widgets/white_app_bar.dart';
@@ -153,7 +154,8 @@ class _PaymentPageState extends State<PaymentPage> {
         await _authManager.getUser(firebaseUser: firebaseUser, force: true);
 
     if (user.subscribedChannels.contains(widget.trailer.channelId)) {
-      Navigator.of(context).pop();
+      // Navigator.of(context).pop();
+      WidgetUtils.showSubscriptions(context, user);
     }
   }
 
