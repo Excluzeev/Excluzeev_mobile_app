@@ -17,6 +17,7 @@ import 'package:trenstop/pages/videos/widgets/video_title_detail_widget.dart';
 import 'package:trenstop/pages/videos/widgets/video_title_widget.dart';
 import 'package:trenstop/widgets/like_dislike_neutral.dart';
 import 'package:trenstop/widgets/rounded_button.dart';
+import 'package:trenstop/widgets/white_app_bar.dart';
 import 'package:video_player/video_player.dart';
 import 'package:screen/screen.dart';
 import 'package:flutter_rtmp_publisher/flutter_rtmp_publisher.dart';
@@ -244,7 +245,10 @@ class _VideoDetailPageState extends State<VideoDetailPage>
       backgroundColor: Colors.white,
       key: _scaffoldKey,
       resizeToAvoidBottomPadding: true,
-//      appBar: WhiteAppBar(),
+     appBar:  Platform.isIOS ? WhiteAppBar() : PreferredSize(
+       preferredSize: Size(0.0, 0.0),
+       child: Container(),
+     ),
       body: CustomScrollView(
         physics: BouncingScrollPhysics(),
         slivers: [

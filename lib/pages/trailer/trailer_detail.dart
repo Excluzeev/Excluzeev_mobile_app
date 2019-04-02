@@ -27,7 +27,7 @@ import 'package:trenstop/widgets/like_dislike_neutral.dart';
 import 'package:trenstop/widgets/rounded_button.dart';
 import 'package:trenstop/widgets/white_app_bar.dart';
 import 'package:video_player/video_player.dart';
-//import 'package:chewie/chewie.dart';
+// import 'package:chewie/chewie.dart';
 import 'package:custom_chewie/custom_chewie.dart';
 import 'package:screen/screen.dart';
 import 'package:http/http.dart' as http;
@@ -404,7 +404,10 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
     return Scaffold(
       backgroundColor: Colors.white,
       key: _scaffoldKey,
-//      appBar: WhiteAppBar(),
+     appBar: Platform.isIOS ? WhiteAppBar() : PreferredSize(
+       preferredSize: Size(0.0, 0.0),
+       child: Container(),
+     ),
       body: CustomScrollView(slivers: <Widget>[
         SliverToBoxAdapter(
           child: Column(

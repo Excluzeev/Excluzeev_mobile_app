@@ -34,7 +34,7 @@ class Translation {
   }
 
   String get appName => 'Excluzeev';
-  String get appNameTrailers => 'Excluzeev Trailers';
+  String get appNameTrailers => 'Excluzeev Preview';
 
   String get dot => '•';
 

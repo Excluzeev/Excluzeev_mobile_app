@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>5</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
@@ -29,25 +29,25 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
-	<key>NSCameraUsageDescription</key>
-	<string>In order broadcast a stream app requires this permission</string>
-	<key>NSMicrophoneUsageDescription</key>
-	<string>In order broadcast a stream app requires this permission</string>
-	<key>NSContactsUsageDescription</key>
+	<key>NSAppleMusicUsageDescription</key>
 	<string>In order to function the app correctly the app requires the following permission</string>
 	<key>NSCalendarsUsageDescription</key>
 	<string>In order to function the app correctly the app requires the following permission</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>In order to function the app correctly the app requires the following permission</string>
-	<key>NSAppleMusicUsageDescription</key>
-	<string>In order to function the app correctly the app requires the following permission</string>
-	<key>NSMotionUsageDescription</key>
-	<string>In order to function the app correctly the app requires the following permission</string>
-	<key>NSSpeechRecognitionUsageDescription</key>
+	<key>NSCameraUsageDescription</key>
+	<string>In order broadcast a stream app requires this permission</string>
+	<key>NSContactsUsageDescription</key>
 	<string>In order to function the app correctly the app requires the following permission</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>In order to function the app correctly the app requires the following permission</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>In order to function the app correctly the app requires the following permission</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>In order broadcast a stream app requires this permission</string>
+	<key>NSMotionUsageDescription</key>
+	<string>In order to function the app correctly the app requires the following permission</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>In order to function the app correctly the app requires the following permission</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
 	<string>In order to function the app correctly the app requires the following permission</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>

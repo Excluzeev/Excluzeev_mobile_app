@@ -338,6 +338,7 @@ class _AddVideoPageState extends State<AddVideoPage> {
                           : _uploadVideoWidget(),
                       widget.hideVideoUpload
                           ? ListView(
+                            primary: false,
                               shrinkWrap: true,
                               children: <Widget>[
                                 CheckboxListTile(

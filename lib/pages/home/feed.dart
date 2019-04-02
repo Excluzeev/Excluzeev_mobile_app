@@ -23,7 +23,7 @@ class _FeedPageState extends State<FeedPage> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   final AuthManager _authManager = AuthManager();
   TextStyle drawerItemTextStyle =
-      TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0);
+      TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0);
 
   Translation translation;
   User user;
@@ -208,13 +208,13 @@ class _FeedPageState extends State<FeedPage> {
                                 style: drawerItemTextStyle,
                               )),
                         ),
-                  FlatButton(
-                    onPressed: null,
-                    child: Text(
+                  Text(
                       translation.copyrights,
-                      style: drawerItemTextStyle,
+                      style: TextStyle(
+                        fontSize: 12.0,
+
+                      ),
                     ),
-                  ),
                 ],
               ),
             )
