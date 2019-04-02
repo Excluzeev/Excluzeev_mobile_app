@@ -108,6 +108,7 @@ class _PaymentPageState extends State<PaymentPage> {
       scrollBar: true,
       withZoom: true,
       disableBack: true,
+      rect: Rect.fromLTWH(0.0, 0.0, MediaQuery.of(context).size.width, MediaQuery.of(context).size.height)
     );
   }
 
@@ -124,7 +125,7 @@ class _PaymentPageState extends State<PaymentPage> {
         "https://us-central1-trenstop-2033f.cloudfunctions.net/subscribeToChannel",
         body: body);
 
-    Logger.log(PaymentPage.TAG, message: response.body);
+    // Logger.log(PaymentPage.TAG, message: response.body);
     var res = json.decode(response.body);
 
     if (res['error']) {
@@ -194,6 +195,11 @@ class _PaymentPageState extends State<PaymentPage> {
     _preparePayment();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    flutterWebViewPlugin.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     if (translation == null) translation = Translation.of(context);
