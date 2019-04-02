@@ -1,7 +1,7 @@
 name: trenstop
 description: Excluzeev
 
-version: 1.0.7+10
+version: 1.0.8+11
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -41,6 +41,7 @@ dependencies:
   flutter_rtmp_publisher:
     path: plugins/flutter_rtmp_publisher
   screen: ^0.0.5
+  flutter_custom_tabs: "^0.6.0"
 
 # dependency_overrides:
 #   chewie: ^0.9.6

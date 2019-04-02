@@ -30,6 +30,8 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> {
 
   bool _isPreparingStream = false;
 
+  int changedIndex = 0;
+
   requestPermission() async {
     List<PermissionGroup> permissionGroups = [];
 
@@ -67,6 +69,10 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> {
 
   _showAddVideo() {
     WidgetUtils.showAddVideo(context, widget.user, widget.channel);
+  }
+
+  _showAddTrailer() {
+    WidgetUtils.showAddTrailer(context, widget.channel);
   }
 
   _showStartLive() {
@@ -119,6 +125,9 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> {
             indicatorColor: Palette.primary,
             labelColor: Palette.primary,
             unselectedLabelColor: Colors.black,
+            onTap: (index) {
+              changedIndex = index;
+            },
             tabs: <Widget>[
               Tab(
                 text: translation.trailers,
@@ -133,7 +142,9 @@ class _ChannelDetailPageState extends State<ChannelDetailPage> {
                 ? Container()
                 : IconButton(
                     icon: Icon(Icons.add),
-                    onPressed: _showAddVideo,
+                    onPressed: () {
+                      changedIndex == 0 ? _showAddTrailer() : _showAddVideo();
+                    },
                   ),
 //            _isPreparingStream ?
 //                Padding(

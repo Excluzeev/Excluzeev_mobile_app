@@ -16,6 +16,7 @@ import 'package:trenstop/pages/videos/widgets/LiveChat.dart';
 import 'package:trenstop/pages/videos/widgets/video_title_detail_widget.dart';
 import 'package:trenstop/pages/videos/widgets/video_title_widget.dart';
 import 'package:trenstop/widgets/like_dislike_neutral.dart';
+import 'package:trenstop/widgets/readmore_text_widget.dart';
 import 'package:trenstop/widgets/rounded_button.dart';
 import 'package:trenstop/widgets/white_app_bar.dart';
 import 'package:video_player/video_player.dart';
@@ -245,10 +246,12 @@ class _VideoDetailPageState extends State<VideoDetailPage>
       backgroundColor: Colors.white,
       key: _scaffoldKey,
       resizeToAvoidBottomPadding: true,
-     appBar:  Platform.isIOS ? WhiteAppBar() : PreferredSize(
-       preferredSize: Size(0.0, 0.0),
-       child: Container(),
-     ),
+      appBar: Platform.isIOS
+          ? WhiteAppBar()
+          : PreferredSize(
+              preferredSize: Size(0.0, 0.0),
+              child: Container(),
+            ),
       body: CustomScrollView(
         physics: BouncingScrollPhysics(),
         slivers: [
@@ -257,9 +260,6 @@ class _VideoDetailPageState extends State<VideoDetailPage>
               children: <Widget>[
                 Column(
                   children: <Widget>[
-                    SizedBox(
-                      height: 24.0,
-                    ),
                     Container(
                       child: AspectRatio(
                         aspectRatio: aspectRatio,
@@ -303,6 +303,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
                       dislikes: widget.video.dislikes,
                       neutral: widget.video.neutral,
                     ),
+                    Divider(),
                     Container(
                       padding: EdgeInsets.only(
                         bottom: 8.0,
@@ -346,9 +347,8 @@ class _VideoDetailPageState extends State<VideoDetailPage>
                         left: 16.0,
                         right: 16.0,
                       ),
-                      child: Text(
-                        widget.video.description,
-                        style: textTheme.subtitle,
+                      child: ReadMoreTextWidget(
+                        text: widget.video.description,
                       ),
                     ),
                     Divider(),

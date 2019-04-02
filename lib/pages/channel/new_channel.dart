@@ -397,194 +397,215 @@ class _NewChannelPageState extends State<NewChannelPage> {
                 child: CircularProgressIndicator(),
               )
             : SingleChildScrollView(
-                child: Container(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      _buildCategoryDropDown(),
-                      selectedCategory != null &&
-                              selectedCategory.name == "Call-to-Action"
-                          ? _buildTypeDropDown()
-                          : Container(),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                        child: Text(
-                          translation.channelLabel,
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                            color: Palette.primary,
+                child: GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () {
+                    FocusScope.of(context).requestFocus(new FocusNode());
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        _buildCategoryDropDown(),
+                        selectedCategory != null &&
+                                selectedCategory.name == "Call-to-Action"
+                            ? _buildTypeDropDown()
+                            : Container(),
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(left: 16.0, right: 16.0),
+                          child: Text(
+                            translation.channelLabel,
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                              color: Palette.primary,
+                            ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: RoundedBorder(
-                          child: StreamBuilder(
-                            stream: bloc.title,
-                            builder: (context, snapshot) => TextField(
-                                  controller: _titleController,
-                                  onChanged: bloc.updateTitle,
-                                  decoration: InputDecoration(
-                                    fillColor: Colors.white,
-                                    contentPadding: EdgeInsets.zero,
-                                    filled: true,
-                                    border: InputBorder.none,
-                                    errorText: snapshot.error,
-                                    hintText: translation.channelHintLabel,
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: RoundedBorder(
+                            child: StreamBuilder(
+                              stream: bloc.title,
+                              builder: (context, snapshot) => TextField(
+                                    controller: _titleController,
+                                    onChanged: bloc.updateTitle,
+                                    decoration: InputDecoration(
+                                      fillColor: Colors.white,
+                                      contentPadding: EdgeInsets.zero,
+                                      filled: true,
+                                      border: InputBorder.none,
+                                      errorText: snapshot.error,
+                                      hintText: translation.channelHintLabel,
+                                    ),
+                                    inputFormatters: [
+                                      LengthLimitingTextInputFormatter(32)
+                                    ],
                                   ),
-                                  inputFormatters: [
-                                    LengthLimitingTextInputFormatter(32)
-                                  ],
-                                ),
+                            ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                        child: Text(
-                          translation.descriptionLabel,
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                            color: Palette.primary,
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(left: 16.0, right: 16.0),
+                          child: Text(
+                            translation.descriptionLabel,
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                              color: Palette.primary,
+                            ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: RoundedBorder(
-                          child: StreamBuilder(
-                            stream: bloc.description,
-                            builder: (context, snapshot) => TextField(
-                                  controller: _descriptionController,
-                                  onChanged: bloc.updateDescription,
-                                  maxLines: 3,
-                                  decoration: InputDecoration(
-                                    fillColor: Colors.white,
-                                    contentPadding: EdgeInsets.zero,
-                                    filled: true,
-                                    border: InputBorder.none,
-                                    errorText: snapshot.error,
-                                    hintText: translation.descriptionHintLabel,
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: RoundedBorder(
+                            child: StreamBuilder(
+                              stream: bloc.description,
+                              builder: (context, snapshot) => TextField(
+                                    controller: _descriptionController,
+                                    onChanged: bloc.updateDescription,
+                                    maxLines: 3,
+                                    decoration: InputDecoration(
+                                      fillColor: Colors.white,
+                                      contentPadding: EdgeInsets.zero,
+                                      filled: true,
+                                      border: InputBorder.none,
+                                      errorText: snapshot.error,
+                                      hintText:
+                                          translation.descriptionHintLabel,
+                                    ),
+                                    inputFormatters: [
+                                      LengthLimitingTextInputFormatter(255)
+                                    ],
                                   ),
-                                  inputFormatters: [
-                                    LengthLimitingTextInputFormatter(255)
-                                  ],
-                                ),
+                            ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                        child: Text(
-                          selectedType != "CrowdFunding"
-                              ? translation.priceLabel
-                              : translation.targetFundLabel,
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                            color: Palette.primary,
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(left: 16.0, right: 16.0),
+                          child: Text(
+                            selectedType != "CrowdFunding"
+                                ? translation.priceLabel
+                                : translation.targetFundLabel,
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                              color: Palette.primary,
+                            ),
                           ),
                         ),
-                      ),
-                      selectedType != "CrowdFunding"
-                          ? Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: RoundedBorder(
-                                child: StreamBuilder(
-                                  stream: bloc.price,
-                                  builder: (context, snapshot) => TextField(
-                                        controller: _priceController,
-                                        onChanged: (p) =>
-                                            bloc.updatePrice(double.parse(p)),
-                                        maxLines: 1,
-                                        decoration: InputDecoration(
-                                          fillColor: Colors.white,
-                                          contentPadding: EdgeInsets.zero,
-                                          filled: true,
-                                          border: InputBorder.none,
-                                          errorText: snapshot.error,
-                                          hintText: translation.priceLabel,
-                                          suffixText:
-                                              translation.priceSuffixLabel,
-                                          suffixStyle: TextStyle(
-                                            color: Palette.primary,
+                        selectedType != "CrowdFunding"
+                            ? Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: RoundedBorder(
+                                  child: StreamBuilder(
+                                    stream: bloc.price,
+                                    builder: (context, snapshot) => TextField(
+                                          controller: _priceController,
+                                          onChanged: (p) =>
+                                              bloc.updatePrice(double.parse(p)),
+                                          maxLines: 1,
+                                          decoration: InputDecoration(
+                                            fillColor: Colors.white,
+                                            contentPadding: EdgeInsets.zero,
+                                            filled: true,
+                                            border: InputBorder.none,
+                                            errorText: snapshot.error,
+                                            hintText: translation.priceLabel,
+                                            suffixText:
+                                                translation.priceSuffixLabel,
+                                            suffixStyle: TextStyle(
+                                              color: Palette.primary,
+                                            ),
+                                          ),
+                                          keyboardType:
+                                              TextInputType.numberWithOptions(
+                                            decimal: true,
                                           ),
                                         ),
-                                        keyboardType: TextInputType.number,
-                                      ),
+                                  ),
                                 ),
-                              ),
-                            )
-                          : Container(),
-                      selectedType == "CrowdFunding"
-                          ? Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: RoundedBorder(
-                                child: StreamBuilder(
-                                  stream: bloc.targetFund,
-                                  builder: (context, snapshot) => TextField(
-                                        controller: _targetFundController,
-                                        onChanged: (p) => bloc
-                                            .updateTargetFund(double.parse(p)),
-                                        maxLines: 1,
-                                        decoration: InputDecoration(
-                                          fillColor: Colors.white,
-                                          contentPadding: EdgeInsets.zero,
-                                          filled: true,
-                                          border: InputBorder.none,
-                                          errorText: snapshot.error,
-                                          hintText: translation.targetFundLabel,
-                                        ),
-                                        keyboardType: TextInputType.number,
-                                      ),
-                                ),
-                              ),
-                            )
-                          : Container(),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                        child: Text(
-                          translation.thumbnailLabel,
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                            color: Palette.primary,
-                          ),
-                        ),
-                      ),
-                      _uploadThumbnailWidget(),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                        child: Text(
-                          translation.coverImageLabel,
-                          style: TextStyle(
-                            fontSize: 18.0,
-                            fontWeight: FontWeight.bold,
-                            color: Palette.primary,
-                          ),
-                        ),
-                      ),
-                      _uploadCoverWidget(),
-                      StreamBuilder(
-                        stream: bloc.submitValid,
-                        builder: (context, snapshot) => RoundedButton(
-                              enabled: snapshot.hasData,
-                              child: Padding(
+                              )
+                            : Container(),
+                        selectedType == "CrowdFunding"
+                            ? Padding(
                                 padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  translation.createNow.toUpperCase(),
+                                child: RoundedBorder(
+                                  child: StreamBuilder(
+                                    stream: bloc.targetFund,
+                                    builder: (context, snapshot) => TextField(
+                                          controller: _targetFundController,
+                                          onChanged: (p) =>
+                                              bloc.updateTargetFund(
+                                                  double.parse(p)),
+                                          maxLines: 1,
+                                          decoration: InputDecoration(
+                                            fillColor: Colors.white,
+                                            contentPadding: EdgeInsets.zero,
+                                            filled: true,
+                                            border: InputBorder.none,
+                                            errorText: snapshot.error,
+                                            hintText:
+                                                translation.targetFundLabel,
+                                          ),
+                                          keyboardType:
+                                              TextInputType.numberWithOptions(
+                                            decimal: true,
+                                          ),
+                                        ),
+                                  ),
                                 ),
-                              ),
-                              text: translation.createNow.toUpperCase(),
-                              onPressed: () => snapshot.hasData
-                                  ? _addChannel()
-                                  : _showSnackBar(translation.errorEmptyField),
+                              )
+                            : Container(),
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(left: 16.0, right: 16.0),
+                          child: Text(
+                            translation.thumbnailLabel,
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                              color: Palette.primary,
                             ),
-                      ),
-                    ],
+                          ),
+                        ),
+                        _uploadThumbnailWidget(),
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(left: 16.0, right: 16.0),
+                          child: Text(
+                            translation.coverImageLabel,
+                            style: TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold,
+                              color: Palette.primary,
+                            ),
+                          ),
+                        ),
+                        _uploadCoverWidget(),
+                        StreamBuilder(
+                          stream: bloc.submitValid,
+                          builder: (context, snapshot) => RoundedButton(
+                                enabled: snapshot.hasData,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    translation.createNow.toUpperCase(),
+                                  ),
+                                ),
+                                text: translation.createNow.toUpperCase(),
+                                onPressed: () => snapshot.hasData
+                                    ? _addChannel()
+                                    : _showSnackBar(
+                                        translation.errorEmptyField),
+                              ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

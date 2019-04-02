@@ -4,12 +4,14 @@ import 'package:trenstop/managers/user_manager.dart';
 import 'package:trenstop/widgets/full_app_logo.dart';
 import 'package:trenstop/widgets/rounded_button.dart';
 import 'package:trenstop/widgets/white_app_bar.dart';
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 
 class ContentCreatorSignUpPage extends StatefulWidget {
   static String TAG = "CONTENT_CREATOR_SIGNUP_PAGE";
 
   @override
-  _ContentCreatorSignUpPageState createState() => _ContentCreatorSignUpPageState();
+  _ContentCreatorSignUpPageState createState() =>
+      _ContentCreatorSignUpPageState();
 }
 
 class _ContentCreatorSignUpPageState extends State<ContentCreatorSignUpPage> {
@@ -22,6 +24,27 @@ class _ContentCreatorSignUpPageState extends State<ContentCreatorSignUpPage> {
   bool upload = true;
 
   bool isLoading = false;
+
+  void _launchURL(BuildContext context, String url) async {
+    try {
+      await launch(
+        url,
+        option: new CustomTabsOption(
+          toolbarColor: Theme.of(context).primaryColor,
+          enableDefaultShare: true,
+          enableUrlBarHiding: true,
+          showPageTitle: true,
+          animation: new CustomTabsAnimation.slideIn(),
+          extraCustomTabs: <String>[
+            'org.mozilla.firefox',
+            'com.microsoft.emmx',
+          ],
+        ),
+      );
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
 
   _updateLoading(val) {
     setState(() {
@@ -38,33 +61,30 @@ class _ContentCreatorSignUpPageState extends State<ContentCreatorSignUpPage> {
   }
 
   _checkUpdateUser() {
-
-    if(!terms) {
+    if (!terms) {
       _showSnackBar("Please accept Terms");
       return;
     }
 
-    if(!policy) {
+    if (!policy) {
       _showSnackBar("Please accept Policy");
       return;
     }
 
-    if(!upload) {
+    if (!upload) {
       _showSnackBar("Please accept Upload Policy");
       return;
     }
 
-    if(terms && policy && upload) {
+    if (terms && policy && upload) {
       _updateLoading(true);
       Navigator.of(context).pop(true);
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
-
-    if(translation == null) translation = Translation.of(context);
+    if (translation == null) translation = Translation.of(context);
 
     return Scaffold(
       key: _scaffoldKey,
@@ -75,7 +95,9 @@ class _ContentCreatorSignUpPageState extends State<ContentCreatorSignUpPage> {
         child: Column(
           children: <Widget>[
             FullAppLogo(),
-            SizedBox(height: 8.0,),
+            SizedBox(
+              height: 8.0,
+            ),
             CheckboxListTile(
               value: terms,
               onChanged: (value) {
@@ -83,8 +105,14 @@ class _ContentCreatorSignUpPageState extends State<ContentCreatorSignUpPage> {
                   terms = value;
                 });
               },
-              title: Text(
-                "Accept Terms"
+              title: InkWell(
+                child: Text(
+                  "Accept Terms",
+                ),
+                onTap: () {
+                  _launchURL(
+                      context, "https://excluzeev.com/license-agreement");
+                },
               ),
             ),
             CheckboxListTile(
@@ -94,8 +122,13 @@ class _ContentCreatorSignUpPageState extends State<ContentCreatorSignUpPage> {
                   policy = value;
                 });
               },
-              title: Text(
-                  "Accept Policy"
+              title: InkWell(
+                child: Text(
+                  "Accept Policy",
+                ),
+                onTap: () {
+                  _launchURL(context, "https://excluzeev.com/privacy-policy");
+                },
               ),
             ),
             CheckboxListTile(
@@ -105,12 +138,19 @@ class _ContentCreatorSignUpPageState extends State<ContentCreatorSignUpPage> {
                   upload = value;
                 });
               },
-              title: Text(
-                  "Upload Policy"
+              title: InkWell(
+                child: Text(
+                  "Upload Policy",
+                ),
+                onTap: () {
+                  _launchURL(
+                      context, "https://excluzeev.com/content-creator-policy");
+                },
               ),
             ),
-
-            SizedBox(height: 8.0,),
+            SizedBox(
+              height: 8.0,
+            ),
             RoundedButton(
               onPressed: _checkUpdateUser,
               text: translation.contentCreatorAuthSave,

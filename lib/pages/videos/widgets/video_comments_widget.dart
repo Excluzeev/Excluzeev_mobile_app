@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
 import 'package:trenstop/misc/date_utils.dart';
+import 'package:trenstop/misc/palette.dart';
 import 'package:trenstop/models/comments.dart';
 import 'package:trenstop/models/trailer.dart';
 
 class VideoCommentsWidget extends StatelessWidget {
-
   const VideoCommentsWidget({
     Key key,
     @required this.comment,
@@ -16,15 +16,25 @@ class VideoCommentsWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16.0),
+      padding: const EdgeInsets.only(
+        left: 16.0,
+        right: 16.0,
+        top: 8.0,
+      ),
       width: MediaQuery.of(context).size.width,
       child: Row(
         children: <Widget>[
           InkWell(
 //                  onTap: () => _showProfile(context),
             child: CircleAvatar(
-              backgroundImage:
-              AdvancedNetworkImage(comment.userPhoto, useDiskCache: true),
+              backgroundImage: comment.userPhoto.isNotEmpty
+                  ? AdvancedNetworkImage(
+                      comment.userPhoto,
+                      useDiskCache: true,
+                    )
+                  : AssetImage(
+                      "res/icons/avatar.png",
+                    ),
             ),
           ),
           Container(
@@ -37,8 +47,10 @@ class VideoCommentsWidget extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.title.copyWith(
-                    fontWeight: FontWeight.normal,
-                  ),
+                        fontWeight: FontWeight.normal,
+                        fontSize: 18.0,
+                        color: Palette.primary,
+                      ),
                 ),
                 SizedBox(
                   height: 4.0,
@@ -48,19 +60,20 @@ class VideoCommentsWidget extends StatelessWidget {
                   maxLines: null,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.subtitle.copyWith(
-                    fontWeight: FontWeight.normal,
-                  ),
+                        fontWeight: FontWeight.normal,
+                      ),
                 ),
                 SizedBox(
                   height: 4.0,
                 ),
                 Text(
-                  DateUtils.getLocalizedTimeAgo(comment.createdDate.toDate(), locale: Localizations.localeOf(context)),
+                  DateUtils.getLocalizedTimeAgo(comment.createdDate.toDate(),
+                      locale: Localizations.localeOf(context)),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.caption.copyWith(
-                    fontWeight: FontWeight.normal,
-                  ),
+                        fontWeight: FontWeight.normal,
+                      ),
                 ),
               ],
             ),

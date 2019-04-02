@@ -26,10 +26,10 @@ class WidgetUtils {
   static const String TAG = "WIDGET_UTILS";
 
   static void proceedToAuth(
-      BuildContext context, {
-        bool replaceAll = false,
-        String invite,
-      }) async {
+    BuildContext context, {
+    bool replaceAll = false,
+    String invite,
+  }) async {
     String tag;
     Widget page;
 
@@ -63,10 +63,10 @@ class WidgetUtils {
   }
 
   static void proceedToHome(
-      BuildContext context, {
-        bool replaceAll = false,
-        String invite,
-      }) async {
+    BuildContext context, {
+    bool replaceAll = false,
+    String invite,
+  }) async {
     String tag;
     Widget page;
 
@@ -87,12 +87,11 @@ class WidgetUtils {
   }
 
   static void goToAuth(
-      BuildContext context, {
-        bool replaceAll = false,
-      }) async {
+    BuildContext context, {
+    bool replaceAll = false,
+  }) async {
     String tag;
     Widget page;
-
 
     tag = SignInPage.TAG;
     page = SignInPage();
@@ -123,7 +122,7 @@ class WidgetUtils {
     );
     bool isDone = await Navigator.of(context).push(route) ?? false;
 
-    if(isDone) {
+    if (isDone) {
       await showContentCreatorEmail(context);
     }
     return true;
@@ -155,7 +154,8 @@ class WidgetUtils {
     Navigator.of(context).push(route);
   }
 
-  static void showCreateTrailerPage(BuildContext context, Channel channel) async {
+  static void showCreateTrailerPage(
+      BuildContext context, Channel channel) async {
     String tag = AddTrailerPage.TAG;
     Widget page = AddTrailerPage(channel);
 
@@ -202,9 +202,10 @@ class WidgetUtils {
     Navigator.of(context).push(route);
   }
 
-  static void showChannelDetails(BuildContext context, User user, Channel channel) async {
+  static void showChannelDetails(
+      BuildContext context, User user, Channel channel) async {
     String tag = ChannelDetailPage.TAG;
-    Widget page = ChannelDetailPage(channel: channel,user: user);
+    Widget page = ChannelDetailPage(channel: channel, user: user);
 
     final route = CupertinoPageRoute<bool>(
       maintainState: true,
@@ -214,9 +215,14 @@ class WidgetUtils {
     Navigator.of(context).push(route);
   }
 
-  static void showAddVideo(BuildContext context, User user, Channel channel, {bool hideVideoUpload = false}) async {
+  static void showAddVideo(BuildContext context, User user, Channel channel,
+      {bool hideVideoUpload = false}) async {
     String tag = AddVideoPage.TAG;
-    Widget page = AddVideoPage(channel: channel,user: user, hideVideoUpload: hideVideoUpload,);
+    Widget page = AddVideoPage(
+      channel: channel,
+      user: user,
+      hideVideoUpload: hideVideoUpload,
+    );
 
     final route = CupertinoPageRoute<bool>(
       maintainState: true,
@@ -226,7 +232,20 @@ class WidgetUtils {
     Navigator.of(context).push(route);
   }
 
-  static void showVideoDetails(BuildContext context, Video video, User user) async {
+  static void showAddTrailer(BuildContext context, Channel channel) async {
+    String tag = AddTrailerPage.TAG;
+    Widget page = AddTrailerPage(channel);
+
+    final route = CupertinoPageRoute<bool>(
+      maintainState: true,
+      settings: RouteSettings(name: tag),
+      builder: (context) => page,
+    );
+    Navigator.of(context).push(route);
+  }
+
+  static void showVideoDetails(
+      BuildContext context, Video video, User user) async {
     String tag = VideoDetailPage.TAG;
     Widget page = VideoDetailPage(video, user);
 
@@ -237,7 +256,9 @@ class WidgetUtils {
     Navigator.of(context).push(route);
   }
 
-  static void showPaymentScreen(BuildContext context, Trailer trailer, User user, bool isDonate, {int price}) async {
+  static void showPaymentScreen(
+      BuildContext context, Trailer trailer, User user, bool isDonate,
+      {int price}) async {
     String tag = PaymentPage.TAG;
     Widget page = PaymentPage(trailer, user, isDonate, price: price);
 
@@ -248,7 +269,6 @@ class WidgetUtils {
     );
     Navigator.of(context).push(route);
   }
-
 
 //  static void launchUrl(String url) async {
 //    if (url != null && url.isNotEmpty) {
@@ -277,6 +297,8 @@ class WidgetUtils {
   }
 
   static bool isValidUrl(String url) {
-    return RegExp(r"^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$").hasMatch(url);
+    return RegExp(
+            r"^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$")
+        .hasMatch(url);
   }
 }

@@ -8,6 +8,7 @@ import 'package:trenstop/managers/auth_manager.dart';
 import 'package:trenstop/managers/snapshot.dart';
 import 'package:trenstop/managers/video_manager.dart';
 import 'package:trenstop/misc/iuid.dart';
+import 'package:trenstop/misc/palette.dart';
 import 'package:trenstop/models/comments.dart';
 import 'package:trenstop/models/user.dart';
 import 'package:trenstop/models/video.dart';
@@ -15,7 +16,6 @@ import 'package:trenstop/pages/home/widgets/information.dart';
 import 'package:trenstop/pages/videos/widgets/video_comments_widget.dart';
 
 class CommentWidget extends StatefulWidget {
-
   final Video video;
 
   CommentWidget(this.video);
@@ -25,7 +25,6 @@ class CommentWidget extends StatefulWidget {
 }
 
 class _CommentWidgetState extends State<CommentWidget> {
-
   final VideoManager _videoManager = VideoManager.instance;
   final AuthManager _authManager = AuthManager.instance;
   final TextEditingController _commentController = TextEditingController();
@@ -62,7 +61,7 @@ class _CommentWidgetState extends State<CommentWidget> {
       ..commentId = commentId;
 
     Snapshot<Comments> snapshot =
-    await _videoManager.addComment(commentsBuilder.build());
+        await _videoManager.addComment(commentsBuilder.build());
 
     if (snapshot.hasError) {
       return;
@@ -84,8 +83,8 @@ class _CommentWidgetState extends State<CommentWidget> {
       opacity: animation,
       child: comment != null
           ? VideoCommentsWidget(
-        comment: comment,
-      )
+              comment: comment,
+            )
           : Center(child: CircularProgressIndicator()),
     );
   }
@@ -101,20 +100,48 @@ class _CommentWidgetState extends State<CommentWidget> {
         onSubmitted: (text) => _comment(),
         decoration: InputDecoration(
           enabled: !_publishingComment,
-          contentPadding: const EdgeInsets.all(16.0),
+          contentPadding: const EdgeInsets.only(
+            top: 8.0,
+            left: 16.0,
+            right: 16.0,
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(32.0),
+            borderSide: BorderSide(
+              width: 1.0,
+              style: BorderStyle.solid,
+              color: Palette.primary,
+            ),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(32.0),
+            borderSide: BorderSide(
+              width: 0.8,
+              style: BorderStyle.solid,
+              color: Palette.primary,
+            ),
+          ),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(32.0),
+            borderSide: BorderSide(
+              width: 0.2,
+              style: BorderStyle.solid,
+              color: Palette.primary,
+            ),
           ),
           hintText: translation.addCommentLabel,
           suffixIcon: IconButton(
             icon: _publishingComment
                 ? SizedBox.fromSize(
-              size: Size.fromRadius(10.0),
-              child: CircularProgressIndicator(
-                strokeWidth: 2.0,
-              ),
-            )
-                : Icon(Icons.send),
+                    size: Size.fromRadius(10.0),
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2.0,
+                    ),
+                  )
+                : Icon(
+                    Icons.send,
+                    color: Palette.primary,
+                  ),
             tooltip: translation.addCommentLabel,
             onPressed: _comment,
           ),
@@ -122,7 +149,6 @@ class _CommentWidgetState extends State<CommentWidget> {
       ),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {

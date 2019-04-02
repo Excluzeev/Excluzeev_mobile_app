@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
+import 'package:intl/intl.dart';
 import 'package:trenstop/misc/date_utils.dart';
 import 'package:trenstop/misc/palette.dart';
 import 'package:trenstop/models/trailer.dart';
@@ -14,8 +15,13 @@ class TrailerTitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var daysAgo = DateUtils.getLocalizedTimeAgo(trailer.createdDate.toDate(),
-        locale: Localizations.localeOf(context));
+    var formatter = new DateFormat("d MMM y • hh:mm aaa");
+    var daysAgo =
+        DateTime.now().difference(trailer.createdDate.toDate()).inDays < 8
+            ? DateUtils.getLocalizedTimeAgo(trailer.createdDate.toDate(),
+                locale: Localizations.localeOf(context))
+            : formatter.format(trailer.createdDate.toDate());
+
     return SizedBox(
       width: MediaQuery.of(context).size.width,
       child: Container(
@@ -36,7 +42,7 @@ class TrailerTitleWidget extends StatelessWidget {
                   ),
                 ),
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.7,
+                  width: MediaQuery.of(context).size.width * 0.8,
                   padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

@@ -99,32 +99,28 @@ class _AddTrailerPageState extends State<AddTrailerPage> {
           color: Colors.grey[300],
           child: InkWell(
             onTap: _addVideo,
-            child: videoFile == null ?
-            AddWidget(label: translation.videoLabel)
-                :
-            Stack(
-              children: <Widget>[
-                SizedBox.expand(
-                  child: AspectRatio(
-                    aspectRatio: _videoController.value.aspectRatio,
-                    child: VideoPlayer(_videoController),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Container(
-                    margin: EdgeInsets.all(8.0),
-                    child: CircleAvatar(
-                      backgroundColor: Colors.white,
-                      child: IconButton(
-                        icon: Icon(Icons.close, color: Colors.black),
-//                        onPressed: () => _removeThumbnailImage(),
+            child: videoFile == null
+                ? AddWidget(label: translation.videoLabel)
+                : Stack(
+                    children: <Widget>[
+                      SizedBox.expand(
+                        child: VideoPlayer(_videoController),
                       ),
-                    ),
+                      Align(
+                        alignment: Alignment.topRight,
+                        child: Container(
+                          margin: EdgeInsets.all(8.0),
+                          child: CircleAvatar(
+                            backgroundColor: Colors.white,
+                            child: IconButton(
+                              icon: Icon(Icons.close, color: Colors.black),
+//                        onPressed: () => _removeThumbnailImage(),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
           ),
         ),
       ),
@@ -132,7 +128,6 @@ class _AddTrailerPageState extends State<AddTrailerPage> {
   }
 
   _addTrailer() async {
-
     _updateLoading(true);
 
     FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
@@ -140,29 +135,31 @@ class _AddTrailerPageState extends State<AddTrailerPage> {
     User user = await _authManager.getUser(firebaseUser: firebaseUser);
     String trailerId = IUID.string;
 
-    Snapshot video = await _storageManager.uploadTrailerVideo(firebaseUser.uid, widget.channel.channelId, trailerId, videoFile);
-    if(video.error != null) {
+    Snapshot video = await _storageManager.uploadTrailerVideo(
+        firebaseUser.uid, widget.channel.channelId, trailerId, videoFile);
+    if (video.error != null) {
       _showSnackBar(video.error);
       return;
     }
 
     TrailerBuilder trailerBuilder = TrailerBuilder()
-        ..trailerId = trailerId
-        ..categoryName = widget.channel.categoryName
-        ..categoryId = widget.channel.categoryId
-        ..userId = widget.channel.userId
-        ..channelId = widget.channel.channelId
-        ..channelName = widget.channel.title
-        ..channelType = widget.channel.channelType
-        ..title = _titleController.text
-        ..description = _descriptionController.text
-        ..videoUrl = video.data
-        ..createdDate = Timestamp.fromDate(DateTime.now())
-        ..createdBy = user.displayName;
+      ..trailerId = trailerId
+      ..categoryName = widget.channel.categoryName
+      ..categoryId = widget.channel.categoryId
+      ..userId = widget.channel.userId
+      ..channelId = widget.channel.channelId
+      ..channelName = widget.channel.title
+      ..channelType = widget.channel.channelType
+      ..title = _titleController.text
+      ..description = _descriptionController.text
+      ..videoUrl = video.data
+      ..createdDate = Timestamp.fromDate(DateTime.now())
+      ..createdBy = user.displayName;
 
-    Snapshot<Trailer> snapshot = await _trailerManager.addTrailer(trailerBuilder.build());
+    Snapshot<Trailer> snapshot =
+        await _trailerManager.addTrailer(trailerBuilder.build());
 
-    if(snapshot.error != null) {
+    if (snapshot.error != null) {
       _showSnackBar(snapshot.error);
       return;
     }
@@ -188,75 +185,74 @@ class _AddTrailerPageState extends State<AddTrailerPage> {
           centerTitle: true,
         ),
         body: _isLoading
-            ?
-        Center(
-          child: CircularProgressIndicator(),
-        )
-            :
-        SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                RoundedBorder(
-                  child: StreamBuilder(
-                    stream: bloc.title,
-                    builder: (context, snapshot) => TextField(
-                      controller: _titleController,
-                      onChanged: bloc.updateTitle,
-                      decoration: InputDecoration(
-                        fillColor: Colors.white,
-                        contentPadding: EdgeInsets.zero,
-                        filled: true,
-                        border: InputBorder.none,
-                        errorText: snapshot.error,
-                        hintText: translation.titleLabel,
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : SingleChildScrollView(
+                child: Container(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      RoundedBorder(
+                        child: StreamBuilder(
+                          stream: bloc.title,
+                          builder: (context, snapshot) => TextField(
+                                controller: _titleController,
+                                onChanged: bloc.updateTitle,
+                                decoration: InputDecoration(
+                                  fillColor: Colors.white,
+                                  contentPadding: EdgeInsets.zero,
+                                  filled: true,
+                                  border: InputBorder.none,
+                                  errorText: snapshot.error,
+                                  hintText: translation.titleLabel,
+                                ),
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(32)
+                                ],
+                              ),
+                        ),
                       ),
-                      inputFormatters: [
-                        LengthLimitingTextInputFormatter(32)
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 16.0,
-                ),
-                RoundedBorder(
-                  child: StreamBuilder(
-                    stream: bloc.description,
-                    builder: (context, snapshot) => TextField(
-                      controller: _descriptionController,
-                      onChanged: bloc.updateDescription,
-                      maxLines: 3,
-                      decoration: InputDecoration(
-                        fillColor: Colors.white,
-                        contentPadding: EdgeInsets.zero,
-                        filled: true,
-                        border: InputBorder.none,
-                        errorText: snapshot.error,
-                        hintText: translation.descriptionLabel,
+                      SizedBox(
+                        height: 16.0,
                       ),
-                      inputFormatters: [
-                        LengthLimitingTextInputFormatter(255)
-                      ],
-                    ),
+                      RoundedBorder(
+                        child: StreamBuilder(
+                          stream: bloc.description,
+                          builder: (context, snapshot) => TextField(
+                                controller: _descriptionController,
+                                onChanged: bloc.updateDescription,
+                                maxLines: 3,
+                                decoration: InputDecoration(
+                                  fillColor: Colors.white,
+                                  contentPadding: EdgeInsets.zero,
+                                  filled: true,
+                                  border: InputBorder.none,
+                                  errorText: snapshot.error,
+                                  hintText: translation.descriptionLabel,
+                                ),
+                                inputFormatters: [
+                                  LengthLimitingTextInputFormatter(255)
+                                ],
+                              ),
+                        ),
+                      ),
+                      _uploadTrailerWidget(),
+                      StreamBuilder(
+                        stream: bloc.submitValid,
+                        builder: (context, snapshot) => RoundedButton(
+                              enabled: snapshot.hasData,
+                              text: translation.addTrailer.toUpperCase(),
+                              onPressed: () => snapshot.hasData
+                                  ? _addTrailer()
+                                  : _showSnackBar(translation.errorFields),
+                            ),
+                      ),
+                    ],
                   ),
                 ),
-                _uploadTrailerWidget(),
-                StreamBuilder(
-                  stream: bloc.submitValid,
-                  builder: (context, snapshot) => RoundedButton(
-                    enabled: snapshot.hasData,
-                    text: translation.addTrailer.toUpperCase(),
-                    onPressed: () => snapshot.hasData ?  _addTrailer() : _showSnackBar(translation.errorFields),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        )
-        ,
+              ),
       ),
     );
   }

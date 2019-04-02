@@ -62,7 +62,9 @@ class CreateChannelBloc extends BlocBase {
 
   final CreateChannelBlocValidator validator;
 
-  CreateChannelBloc({@required this.validator}) : assert(validator != null);
+  CreateChannelBloc({@required this.validator}) : assert(validator != null) {
+    _priceSubject.add(1.0);
+  }
 
   final _categoryNameSubject = BehaviorSubject<String>();
   final _typeSubject = BehaviorSubject<String>();

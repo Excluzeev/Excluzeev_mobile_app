@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
+import 'package:intl/intl.dart';
 import 'package:trenstop/misc/date_utils.dart';
+import 'package:trenstop/misc/palette.dart';
 import 'package:trenstop/models/video.dart';
 
 class VideoTitleWidget extends StatelessWidget {
@@ -13,8 +15,12 @@ class VideoTitleWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var daysAgo = DateUtils.getLocalizedTimeAgo(video.createdDate.toDate(),
-        locale: Localizations.localeOf(context));
+    var formatter = new DateFormat("d MMM y • hh:mm aaa");
+    var daysAgo =
+        DateTime.now().difference(video.createdDate.toDate()).inDays < 8
+            ? DateUtils.getLocalizedTimeAgo(video.createdDate.toDate(),
+                locale: Localizations.localeOf(context))
+            : formatter.format(video.createdDate.toDate());
 
     return Container(
       padding: const EdgeInsets.all(16.0),
@@ -29,12 +35,14 @@ class VideoTitleWidget extends StatelessWidget {
               InkWell(
 //                  onTap: () => _showProfile(context),
                 child: CircleAvatar(
-                  backgroundImage: AdvancedNetworkImage(video.channelImage,
-                      useDiskCache: true),
+                  backgroundImage: AdvancedNetworkImage(
+                    video.channelImage,
+                    useDiskCache: true,
+                  ),
                 ),
               ),
               Container(
-                width: MediaQuery.of(context).size.width * 0.7,
+                width: MediaQuery.of(context).size.width * 0.8,
                 padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,21 +50,34 @@ class VideoTitleWidget extends StatelessWidget {
                     Text(
                       video.title,
                       maxLines: 2,
+                      softWrap: true,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.title.copyWith(
-                            fontWeight: FontWeight.normal,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15.0,
+                            color: Palette.primary,
                           ),
                     ),
                     SizedBox(
                       height: 4.0,
                     ),
-                    Text(
-                      "${video.channelName} • ${video.views} views • $daysAgo",
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.subtitle.copyWith(
-                            fontWeight: FontWeight.normal,
-                          ),
+                    Text.rich(
+                      TextSpan(
+                        text: "${video.channelName}",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12.0,
+                        ),
+                        children: <TextSpan>[
+                          TextSpan(
+                            text: " • ${video.views} views • $daysAgo",
+                            style: Theme.of(context).textTheme.caption.copyWith(
+                                  fontWeight: FontWeight.normal,
+                                  fontSize: 12.0,
+                                ),
+                          )
+                        ],
+                      ),
                     ),
                   ],
                 ),
