@@ -153,9 +153,11 @@ class _PaymentPageState extends State<PaymentPage> {
     User user =
         await _authManager.getUser(firebaseUser: firebaseUser, force: true);
 
+    Logger.log("PAYMENT", message: user.toString());
     if (user.subscribedChannels.contains(widget.trailer.channelId)) {
       // Navigator.of(context).pop();
-      WidgetUtils.showSubscriptions(context, user);
+      Logger.log("PAYMENT", message: "RecordPayment");
+      WidgetUtils.goToAuth(context, replaceAll: true);
     }
   }
 
@@ -164,11 +166,11 @@ class _PaymentPageState extends State<PaymentPage> {
     super.initState();
     flutterWebViewPlugin.onUrlChanged.listen((String url) {
       Logger.log(PaymentPage.TAG, message: url);
-      print(url.contains("/pagePaymentSuccess"));
-      if (url.contains("/pagePaymentSuccess")) {
+      print(url.contains("/paymentSuccess"));
+      if (url.contains("/paymentSuccess")) {
         flutterWebViewPlugin.close();
         _recordPayment();
-      } else if (url.contains("/pagePaymentCanceled")) {
+      } else if (url.contains("/paymentFailed")) {
         flutterWebViewPlugin.close();
         showDialog(
             context: context,
