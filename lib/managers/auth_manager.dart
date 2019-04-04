@@ -49,21 +49,17 @@ class AuthManager {
     return true;
   }
 
-
   Future<User> getUser({FirebaseUser firebaseUser, bool force = false}) async {
     if (firebaseUser == null) firebaseUser = await currentUser;
     if (firebaseUser == null) return null;
 
     int lastFetched = await Prefs.getInt(PreferenceKey.lastFetched);
     Logger.log(TAG, message: "lastFetched $lastFetched");
-    if(lastFetched != 0 && force != true) {
-      lastFetched = lastFetched + 60 * 60 * 1000;
+    if (lastFetched != 0 && force != true) {
+      lastFetched = lastFetched + 5 * 60 * 1000;
       print(lastFetched);
       Logger.log(TAG, message: "again lastFetched $lastFetched");
-      if (lastFetched > DateTime
-          .now()
-          .millisecondsSinceEpoch) {
-
+      if (lastFetched > DateTime.now().millisecondsSinceEpoch) {
         String userData = await Prefs.getString(PreferenceKey.user);
         Uint8List data = base64Decode(userData);
         print(String.fromCharCodes(data));
@@ -85,13 +81,13 @@ class AuthManager {
       user = null;
       Logger.log(TAG, message: "Snapshot is null");
     } else {
-
       Logger.log(TAG, message: "Snapshot exsits");
       user = User.fromDocumentSnapshot(snapshot);
 
       List<int> encoded = Utf8Encoder().convert(json.encode(user.toMap));
       Prefs.setString(PreferenceKey.user, base64Encode(encoded));
-      Prefs.setInt(PreferenceKey.lastFetched, DateTime.now().millisecondsSinceEpoch);
+      Prefs.setInt(
+          PreferenceKey.lastFetched, DateTime.now().millisecondsSinceEpoch);
     }
     Logger.log(TAG, message: "Received user data: ${user != null}");
     return user;
@@ -101,7 +97,7 @@ class AuthManager {
     bool isOkay = true;
     try {
       await _auth.sendPasswordResetEmail(email: email);
-    } catch(exception) {
+    } catch (exception) {
       isOkay = false;
       Logger.log(TAG, message: "Error occurred: $exception");
     }
@@ -111,7 +107,8 @@ class AuthManager {
     );
   }
 
-  connectWithEmailAndPassword(bool isSignUp, Translation translation, {String email, String password}) async {
+  connectWithEmailAndPassword(bool isSignUp, Translation translation,
+      {String email, String password}) async {
     String error;
     FirebaseUser firebaseUser;
     User user;
@@ -143,14 +140,13 @@ class AuthManager {
 
     if (isSignUp && (user == null)) {
       user = User.fromEmail(firebaseUser);
-      if(user == null) error = translation.unknownError;
+      if (user == null) error = translation.unknownError;
     }
 
     return Snapshot<User>(
       data: user,
       error: error,
     );
-
   }
 
   CollectionReference get collection => _store.collection(COLLECTION_TAG);
@@ -197,5 +193,4 @@ class AuthManager {
       error: error,
     );
   }
-
 }
