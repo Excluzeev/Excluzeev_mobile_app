@@ -15,6 +15,7 @@ import 'package:trenstop/managers/trailer_manager.dart';
 import 'package:trenstop/misc/iuid.dart';
 import 'package:trenstop/misc/logger.dart';
 import 'package:trenstop/misc/palette.dart';
+import 'package:trenstop/misc/prefs.dart';
 import 'package:trenstop/misc/widget_utils.dart';
 import 'package:trenstop/models/comments.dart';
 import 'package:trenstop/models/trailer.dart';
@@ -27,6 +28,7 @@ import 'package:trenstop/widgets/readmore_text_widget.dart';
 import 'package:trenstop/widgets/like_dislike_neutral.dart';
 import 'package:trenstop/widgets/rounded_button.dart';
 import 'package:trenstop/widgets/white_app_bar.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 // import 'package:chewie/chewie.dart';
 import 'package:custom_chewie/custom_chewie.dart';
@@ -159,6 +161,41 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
     }
 
     _videoPlayerController.pause();
+
+    if (Platform.isIOS) {
+      String subWarning = await Prefs.getString(PreferenceKey.subWarning);
+      await showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            content: Text(subWarning),
+            actions: <Widget>[
+              FlatButton(
+                child: Text("Go Web"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  String url =
+                      "https://excluzeev.com/trailers/${widget.trailer.trailerId}";
+                  if (isDonate) {
+                    url =
+                        "https://excluzeev.com/crowd/${widget.trailer.trailerId}";
+                  }
+                  launch(url);
+                },
+              ),
+              FlatButton(
+                child: Text("Cancel"),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            ],
+          );
+        },
+      );
+
+      return;
+    }
 
     User user = await _authManager.getUser(firebaseUser: firebaseUser);
     WidgetUtils.showPaymentScreen(context, widget.trailer, user, isDonate,

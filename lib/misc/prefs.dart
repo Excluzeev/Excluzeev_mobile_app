@@ -26,9 +26,10 @@ import 'dart:async';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PreferenceKey {
-
   static const String lastFetched = 'lastFetched';
   static const String user = 'user';
+  static const String subWarning = "sub_warning";
+  static const String lastSubWarn = "last_sub_warn";
 
   // User data
   static const String username = 'username';
@@ -37,7 +38,6 @@ class PreferenceKey {
   static const String isContentCreator = 'isContentCreator';
   static const String subscribedChannels = 'subscribedChannels';
   static const String uid = 'uid';
-
 
   // Notification
   static const String notificationCount = "notification_count";

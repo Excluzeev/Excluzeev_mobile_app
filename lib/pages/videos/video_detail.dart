@@ -259,6 +259,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
             child: Stack(
               children: <Widget>[
                 Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Container(
                       child: AspectRatio(
