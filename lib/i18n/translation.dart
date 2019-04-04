@@ -500,7 +500,7 @@ class Translation {
       );
 
   String get aboutData => Intl.message(
-    'Excluzeev was created to be a hub for content creators. There are many steps In the process of content production ,and Excluzeev connects all these steps together on its platform.Content creators can now crowd fund, launch , and Interact with there supporters here. ',
+    'Excluzeev was created to be a hub for content creators. There are many steps In the process of content production, and Excluzeev connects all these steps together on its platform. Content creators can now crowd fund, launch, and Interact with there supporters here.',
     name: 'aboutData'
   );
 

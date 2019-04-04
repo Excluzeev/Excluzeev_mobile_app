@@ -46,18 +46,6 @@ class LeagalLinks extends StatelessWidget {
         child: Column(
         children: <Widget>[
           FlatButton(
-            onPressed: () { _launchURL(context, "https://excluzeev.com/faqs"); },
-            child: SizedBox(
-              width: double.infinity,
-              child: Text(
-                translation.faqs,
-                style: drawerItemTextStyle,
-                textAlign: TextAlign.left,
-              ),
-            ),
-          ),
-          Divider(),
-          FlatButton(
             onPressed: () { _launchURL(context, "https://excluzeev.com/license-agreement"); },
             child: SizedBox(
               width: double.infinity,

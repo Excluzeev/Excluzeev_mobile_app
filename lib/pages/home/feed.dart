@@ -166,31 +166,18 @@ class _FeedPageState extends State<FeedPage> {
     );
   }
 
-  _socialIcons() {
-    return Row(
-      children: <Widget>[
-        IconButton(
-          onPressed: () {
-            uLaunch.launch("https://www.facebook.com/excluzeev");
-            },
-          icon: ImageIcon(
-            AssetImage("res/icons/facebook.png"),
-            size: 32.0,
-            color: Palette.primary,
-          )
-        ),
-        IconButton(
-          onPressed: () {
-            uLaunch.launch("https://www.instagram.com/excluzeev/");
-            },
-          icon: ImageIcon(
-            AssetImage("res/icons/instagram.png"),
-            size: 32.0,
-            color: Palette.primary,
-          )
-        ),
-      ],
-    );
+  _faqMenu() {
+    return FlatButton(
+            onPressed: () { _launchURL(context, "https://excluzeev.com/faqs"); },
+            child: SizedBox(
+              width: double.infinity,
+              child: Text(
+                translation.faqs,
+                style: drawerItemTextStyle,
+                textAlign: TextAlign.left,
+              ),
+            ),
+          );
   }
 
   _policyMenu() {
@@ -198,6 +185,7 @@ class _FeedPageState extends State<FeedPage> {
       children: <Widget>[
         FlatButton(
           onPressed: () {
+            Navigator.of(context).pop();
             WidgetUtils.goAbout(context);
           },
           child: SizedBox(
@@ -211,6 +199,7 @@ class _FeedPageState extends State<FeedPage> {
         ),
         FlatButton(
           onPressed: () { 
+            Navigator.of(context).pop();
             WidgetUtils.goLegalDocs(context);
           },
           child: SizedBox(
@@ -240,83 +229,88 @@ class _FeedPageState extends State<FeedPage> {
   }
 
   _drawerWidget() {
-    return Drawer(
-      child: Container(
-        padding: const EdgeInsets.only(left: 16.0),
-        color: Colors.white,
-        child: Stack(
-          children: <Widget>[
-            Container(
-              margin: const EdgeInsets.only(bottom: 75.0),
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    // SizedBox(
-                    //   height: 32.0,
-                    // ),
-                    SizedAppLogo(),
-                    // SizedBox(
-                    //   height: 14.0,
-                    // ),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      color: Palette.primary,
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: Text(
-                          user == null
-                              ? "Welcome".toUpperCase()
-                              : user.displayName.toUpperCase(),
-                          style: TextStyle(color: Colors.white),
+    return Container(
+      width: MediaQuery.of(context).size.width * 0.7,
+      child: Drawer(
+        child: Container(
+      padding: const EdgeInsets.only(left: 16.0),
+      color: Colors.white,
+          child: Stack(
+            children: <Widget>[
+              Container(
+                margin: const EdgeInsets.only(bottom: 75.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      // SizedBox(
+                      //   height: 32.0,
+                      // ),
+                      SizedAppLogo(
+                        size: 150.0
+                      ),
+                      // SizedBox(
+                      //   height: 14.0,
+                      // ),
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        color: Palette.primary,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: Text(
+                            user == null
+                                ? "Welcome".toUpperCase()
+                                : user.displayName.toUpperCase(),
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
                       ),
-                    ),
-                    _contentCreatorMenu(),
-                    _createMenu(),
-                    _policyMenu(),
-                    _socialIcons(),
-                  ],
+                      _contentCreatorMenu(),
+                      _createMenu(),
+                      _policyMenu(),
+                      _faqMenu(),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Positioned(
-              bottom: 20.0,
-              width: MediaQuery.of(context).size.width * 0.6,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  user != null
-                      ? FlatButton(
-                          onPressed: _logout,
-                          child: Text(
-                            translation.logout,
-                            style: drawerItemTextStyle,
-                          ))
-                      : Container(
-                          child: FlatButton(
-                              onPressed: () => _login(),
-                              child: Text(
-                                translation.login,
-                                style: drawerItemTextStyle,
-                              )),
+              Positioned(
+                bottom: 20.0,
+                width: MediaQuery.of(context).size.width * 0.6,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    user != null
+                        ? FlatButton(
+                            onPressed: _logout,
+                            child: Text(
+                              translation.logout,
+                              style: drawerItemTextStyle,
+                            ))
+                        : Container(
+                            child: FlatButton(
+                                onPressed: () => _login(),
+                                child: Text(
+                                  translation.login,
+                                  style: drawerItemTextStyle,
+                                )),
+                          ),
+                    InkWell(
+                      child: Text(
+                        translation.copyrights,
+                        style: TextStyle(
+                          fontSize: 12.0,
                         ),
-                  InkWell(
-                    child: Text(
-                      translation.copyrights,
-                      style: TextStyle(
-                        fontSize: 12.0,
                       ),
+                      onTap: () {
+                        _launchURL(
+                            context, "https://excluzeev.com/license-agreement");
+                      },
                     ),
-                    onTap: () {
-                      _launchURL(
-                          context, "https://excluzeev.com/license-agreement");
-                    },
-                  ),
-                ],
-              ),
-            )
-          ],
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

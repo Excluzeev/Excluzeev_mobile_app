@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firestore_ui/animated_firestore_list.dart';
@@ -171,7 +170,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
             content: Text(subWarning),
             actions: <Widget>[
               FlatButton(
-                child: Text("Go Web"),
+                child: Text("Proceed"),
                 onPressed: () {
                   Navigator.of(context).pop();
                   String url =
