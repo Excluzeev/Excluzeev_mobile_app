@@ -11,6 +11,8 @@ import 'package:trenstop/widgets/full_app_logo.dart';
 import 'package:trenstop/widgets/white_app_bar.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 
+import 'package:url_launcher/url_launcher.dart' as uLaunch;
+
 class FeedPage extends StatefulWidget {
   static const String TAG = "HOME_PAGE";
 
@@ -164,6 +166,66 @@ class _FeedPageState extends State<FeedPage> {
     );
   }
 
+  _socialIcons() {
+    return Row(
+      children: <Widget>[
+        IconButton(
+          onPressed: () {
+            uLaunch.launch("https://www.facebook.com/excluzeev");
+            },
+          icon: ImageIcon(
+            AssetImage("res/icons/facebook.png"),
+            size: 32.0,
+            color: Palette.primary,
+          )
+        ),
+        IconButton(
+          onPressed: () {
+            uLaunch.launch("https://www.instagram.com/excluzeev/");
+            },
+          icon: ImageIcon(
+            AssetImage("res/icons/instagram.png"),
+            size: 32.0,
+            color: Palette.primary,
+          )
+        ),
+      ],
+    );
+  }
+
+  _policyMenu() {
+    return Column(
+      children: <Widget>[
+        FlatButton(
+          onPressed: () {
+            WidgetUtils.goAbout(context);
+          },
+          child: SizedBox(
+            width: double.infinity,
+            child: Text(
+              translation.aboutUs,
+              style: drawerItemTextStyle,
+              textAlign: TextAlign.left,
+            ),
+          ),
+        ),
+        FlatButton(
+          onPressed: () { 
+            WidgetUtils.goLegalDocs(context);
+          },
+          child: SizedBox(
+            width: double.infinity,
+            child: Text(
+              translation.legalDocs,
+              style: drawerItemTextStyle,
+              textAlign: TextAlign.left,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   _logout() async {
     FirebaseAuth firebaseAuth = FirebaseAuth.instance;
     await firebaseAuth.signOut();
@@ -184,32 +246,39 @@ class _FeedPageState extends State<FeedPage> {
         color: Colors.white,
         child: Stack(
           children: <Widget>[
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                SizedBox(
-                  height: 32.0,
-                ),
-                SizedAppLogo(),
-                SizedBox(
-                  height: 14.0,
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width,
-                  color: Palette.primary,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text(
-                      user == null
-                          ? "Welcome".toUpperCase()
-                          : user.displayName.toUpperCase(),
-                      style: TextStyle(color: Colors.white),
+            Container(
+              margin: const EdgeInsets.only(bottom: 75.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    // SizedBox(
+                    //   height: 32.0,
+                    // ),
+                    SizedAppLogo(),
+                    // SizedBox(
+                    //   height: 14.0,
+                    // ),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      color: Palette.primary,
+                      child: Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Text(
+                          user == null
+                              ? "Welcome".toUpperCase()
+                              : user.displayName.toUpperCase(),
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ),
                     ),
-                  ),
+                    _contentCreatorMenu(),
+                    _createMenu(),
+                    _policyMenu(),
+                    _socialIcons(),
+                  ],
                 ),
-                _contentCreatorMenu(),
-                _createMenu(),
-              ],
+              ),
             ),
             Positioned(
               bottom: 20.0,

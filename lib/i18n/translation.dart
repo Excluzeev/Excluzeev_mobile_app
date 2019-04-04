@@ -34,7 +34,7 @@ class Translation {
   }
 
   String get appName => 'Excluzeev';
-  String get appNameTrailers => 'Excluzeev Preview';
+  String get appNameTrailers => 'Excluzeev Previews';
 
   String get dot => '•';
 
@@ -79,7 +79,7 @@ class Translation {
         name: "signUp",
       );
   String get signUpContentCreator => Intl.message(
-        "Sign Up as Content Creator",
+        "Become a Content Creator",
         name: "signUpContentCreator",
       );
   String get resetPassword => Intl.message(
@@ -469,6 +469,41 @@ class Translation {
         name: 'deleteDialogContent',
         args: [title],
       );
+
+  String get aboutUs => Intl.message(
+        'About Us',
+        name: 'aboutUs'
+      );
+  String get faqs => Intl.message(
+        'Faq\'s',
+        name: 'faqs'
+      );
+  String get privacyPolicy => Intl.message(
+        'Privacy Policy',
+        name: 'privacyPolicy'
+      );
+  String get cookiePolicy => Intl.message(
+        'Cookie Policy',
+        name: 'cookiePolicy'
+      );
+  String get contentCreatorPolicy => Intl.message(
+        'Content Creator Policy',
+        name: 'contentCreatorPolicy'
+      );
+  String get termsOfUse => Intl.message(
+        'Terms of Use',
+        name: 'termsOfUse'
+      );
+  String get legalDocs => Intl.message(
+        'Legal',
+        name: 'legalDocs'
+      );
+
+  String get aboutData => Intl.message(
+    'Excluzeev was created to be a hub for content creators. There are many steps In the process of content production ,and Excluzeev connects all these steps together on its platform.Content creators can now crowd fund, launch , and Interact with there supporters here. ',
+    name: 'aboutData'
+  );
+
 }
 
 class _TranslationDelegate extends LocalizationsDelegate<Translation> {

@@ -9,6 +9,8 @@ import 'package:trenstop/models/trailer.dart';
 import 'package:trenstop/models/user.dart';
 import 'package:trenstop/models/video.dart';
 import 'package:trenstop/pages/auth/sign_in_page.dart';
+import 'package:trenstop/pages/home/about.dart';
+import 'package:trenstop/pages/home/legal.dart';
 import 'package:trenstop/pages/payment/payment.dart';
 import 'package:trenstop/pages/subscriptions/my_subscriptions.dart';
 import 'package:trenstop/pages/trailer/add_trailer.dart';
@@ -300,5 +302,29 @@ class WidgetUtils {
     return RegExp(
             r"^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$")
         .hasMatch(url);
+  }
+
+  static void goLegalDocs(BuildContext context) {
+    String tag = LeagalLinks.TAG;
+    Widget page = LeagalLinks();
+
+    final route = CupertinoPageRoute<bool>(
+      maintainState: true,
+      settings: RouteSettings(name: tag),
+      builder: (context) => page,
+    );
+    Navigator.of(context).push(route);
+  }
+
+  static void goAbout(BuildContext context) {
+    String tag = AboutPage.TAG;
+    Widget page = AboutPage();
+
+    final route = CupertinoPageRoute<bool>(
+      maintainState: true,
+      settings: RouteSettings(name: tag),
+      builder: (context) => page,
+    );
+    Navigator.of(context).push(route);
   }
 }

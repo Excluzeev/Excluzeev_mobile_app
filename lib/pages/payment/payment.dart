@@ -153,10 +153,8 @@ class _PaymentPageState extends State<PaymentPage> {
     User user =
         await _authManager.getUser(firebaseUser: firebaseUser, force: true);
 
-    Logger.log("PAYMENT", message: user.toString());
     if (user.subscribedChannels.contains(widget.trailer.channelId)) {
       // Navigator.of(context).pop();
-      Logger.log("PAYMENT", message: "RecordPayment");
       WidgetUtils.goToAuth(context, replaceAll: true);
     }
   }

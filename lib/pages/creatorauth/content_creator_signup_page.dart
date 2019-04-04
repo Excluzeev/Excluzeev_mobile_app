@@ -107,7 +107,7 @@ class _ContentCreatorSignUpPageState extends State<ContentCreatorSignUpPage> {
               },
               title: InkWell(
                 child: Text(
-                  "Accept Terms",
+                  translation.termsOfUse,
                 ),
                 onTap: () {
                   _launchURL(
@@ -124,7 +124,7 @@ class _ContentCreatorSignUpPageState extends State<ContentCreatorSignUpPage> {
               },
               title: InkWell(
                 child: Text(
-                  "Accept Policy",
+                  translation.privacyPolicy,
                 ),
                 onTap: () {
                   _launchURL(context, "https://excluzeev.com/privacy-policy");
@@ -140,7 +140,7 @@ class _ContentCreatorSignUpPageState extends State<ContentCreatorSignUpPage> {
               },
               title: InkWell(
                 child: Text(
-                  "Upload Policy",
+                   translation.contentCreatorPolicy,
                 ),
                 onTap: () {
                   _launchURL(
