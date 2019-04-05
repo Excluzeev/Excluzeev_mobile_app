@@ -180,6 +180,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
                   "Proceed",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
+                    fontSize: 16.0,
                   ),
                 ),
                 onPressed: () {
@@ -198,6 +199,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
                   "Cancel",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
+                    fontSize: 16.0,
                   ),
                 ),
                 onPressed: () {
