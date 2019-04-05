@@ -90,6 +90,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
         }
         break;
       case AppLifecycleState.resumed:
+        _videoPlayerController.pause();
         _checkSubscription();
         break;
     }
