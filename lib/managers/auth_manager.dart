@@ -54,15 +54,15 @@ class AuthManager {
     if (firebaseUser == null) return null;
 
     int lastFetched = await Prefs.getInt(PreferenceKey.lastFetched);
-    Logger.log(TAG, message: "lastFetched $lastFetched");
+    // Logger.log(TAG, message: "lastFetched $lastFetched");
     if (lastFetched != 0 && force != true) {
       lastFetched = lastFetched + 5 * 60 * 1000;
-      print(lastFetched);
-      Logger.log(TAG, message: "again lastFetched $lastFetched");
+      // print(lastFetched);
+      // Logger.log(TAG, message: "again lastFetched $lastFetched");
       if (lastFetched > DateTime.now().millisecondsSinceEpoch) {
         String userData = await Prefs.getString(PreferenceKey.user);
         Uint8List data = base64Decode(userData);
-        print(String.fromCharCodes(data));
+        // print(String.fromCharCodes(data));
         Map<String, dynamic> jsonData = json.decode(String.fromCharCodes(data));
         User user = User.fromMap(jsonData);
 
@@ -89,7 +89,7 @@ class AuthManager {
       Prefs.setInt(
           PreferenceKey.lastFetched, DateTime.now().millisecondsSinceEpoch);
     }
-    Logger.log(TAG, message: "Received user data: ${user != null}");
+    // Logger.log(TAG, message: "Received user data: ${user != null}");
     return user;
   }
 

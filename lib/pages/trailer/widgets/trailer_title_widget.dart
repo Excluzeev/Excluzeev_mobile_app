@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
 import 'package:intl/intl.dart';
+import 'package:trenstop/managers/auth_manager.dart';
 import 'package:trenstop/misc/date_utils.dart';
+import 'package:trenstop/misc/iuid.dart';
 import 'package:trenstop/misc/palette.dart';
+import 'package:trenstop/misc/widget_utils.dart';
 import 'package:trenstop/models/trailer.dart';
+import 'package:trenstop/models/user.dart';
+import 'package:trenstop/widgets/reason_chip_choice.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-class TrailerTitleWidget extends StatelessWidget {
+class TrailerTitleWidget extends StatefulWidget {
   const TrailerTitleWidget({
     Key key,
     @required this.trailer,
@@ -14,41 +21,171 @@ class TrailerTitleWidget extends StatelessWidget {
   final Trailer trailer;
 
   @override
+  _TrailerTitleWidgetState createState() => _TrailerTitleWidgetState();
+}
+
+class _TrailerTitleWidgetState extends State<TrailerTitleWidget> {
+  AuthManager _authManager = AuthManager.instance;
+
+  String reasonString = "";
+  List selectReasonList;
+
+  _showLogin() {
+    WidgetUtils.goToAuth(context);
+  }
+
+  _reportReason() async {
+    if (selectReasonList.isEmpty) {
+      Fluttertoast.showToast(
+        msg: "Please select the reason",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 1,
+        fontSize: 16.0,
+      );
+      return;
+    }
+
+    if (selectReasonList.contains("Other") && reasonString.isEmpty) {
+      Fluttertoast.showToast(
+        msg: "Please select the reason",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIos: 1,
+        fontSize: 16.0,
+      );
+      return;
+    } else {
+      selectReasonList.remove("Other");
+      selectReasonList.add(reasonString);
+    }
+
+    Map updateData = Map<String, dynamic>();
+
+    User user = await _authManager.getUser();
+
+    updateData["id"] = widget.trailer.trailerId;
+    updateData["type"] = "trailer";
+    updateData["userName"] = user.displayName;
+    updateData["userId"] = user.uid;
+    updateData["reason"] = selectReasonList;
+
+    String reportId = IUID.string;
+
+    DocumentReference reportRef =
+        Firestore.instance.collection("reports").document(reportId);
+
+    await reportRef.setData(updateData);
+
+    Fluttertoast.showToast(
+      msg: "Trailer Reported succesfully.",
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      timeInSecForIos: 1,
+      fontSize: 16.0,
+    );
+  }
+
+  _showReasonDialog() async {
+    User user = await _authManager.getUser();
+    if (user == null) {
+      _showLogin();
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Reason"),
+            content: MultiChipChoice(
+              onChanged: (List reasonList) {
+                selectReasonList = reasonList;
+              },
+              onResonEnter: (String reason) {
+                reasonString = reason;
+              },
+            ),
+            actions: <Widget>[
+              FlatButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  "Cancel",
+                ),
+              ),
+              FlatButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _reportReason();
+                },
+                child: Text(
+                  "Report",
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  Widget _buildResonWidget() {
+    return PopupMenuButton<String>(
+      onSelected: (String result) {
+        _showReasonDialog();
+      },
+      itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+            const PopupMenuItem<String>(
+              value: "Report",
+              child: Text(
+                'Report',
+                style: TextStyle(
+                  fontSize: 14.0,
+                ),
+              ),
+            ),
+          ],
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     var formatter = new DateFormat("d MMM y • hh:mm aaa");
     var daysAgo =
-        DateTime.now().difference(trailer.createdDate.toDate()).inDays < 8
-            ? DateUtils.getLocalizedTimeAgo(trailer.createdDate.toDate(),
+        DateTime.now().difference(widget.trailer.createdDate.toDate()).inDays <
+                8
+            ? DateUtils.getLocalizedTimeAgo(widget.trailer.createdDate.toDate(),
                 locale: Localizations.localeOf(context))
-            : formatter.format(trailer.createdDate.toDate());
+            : formatter.format(widget.trailer.createdDate.toDate());
 
-    return SizedBox(
+    return Container(
       width: MediaQuery.of(context).size.width,
-      child: Container(
-        padding: const EdgeInsets.all(16.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            Row(
+      padding: const EdgeInsets.all(16.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisSize: MainAxisSize.max,
+        children: <Widget>[
+          Expanded(
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
               children: <Widget>[
                 InkWell(
 //                  onTap: () => _showProfile(context),
                   child: CircleAvatar(
                     backgroundImage: AdvancedNetworkImage(
-                      trailer.channelImage,
+                      widget.trailer.channelImage,
                       useDiskCache: true,
                     ),
                   ),
                 ),
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.8,
+                  // width: MediaQuery.of(context).size.width * 0.6,
                   padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Text(
-                        trailer.title,
+                        widget.trailer.title,
                         maxLines: 2,
                         softWrap: true,
                         overflow: TextOverflow.ellipsis,
@@ -63,14 +200,14 @@ class TrailerTitleWidget extends StatelessWidget {
                       ),
                       Text.rich(
                         TextSpan(
-                          text: "${trailer.channelName}",
+                          text: "${widget.trailer.channelName}\n",
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 12.0,
                           ),
                           children: <TextSpan>[
                             TextSpan(
-                              text: " • ${trailer.views} views • $daysAgo",
+                              text: "${widget.trailer.views} views • $daysAgo",
                               style:
                                   Theme.of(context).textTheme.caption.copyWith(
                                         fontWeight: FontWeight.normal,
@@ -85,8 +222,9 @@ class TrailerTitleWidget extends StatelessWidget {
                 ),
               ],
             ),
-          ],
-        ),
+          ),
+          _buildResonWidget(),
+        ],
       ),
     );
   }

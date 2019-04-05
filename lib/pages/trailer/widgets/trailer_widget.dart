@@ -11,7 +11,6 @@ import 'package:trenstop/pages/trailer/widgets/trailer_title_widget.dart';
 import 'package:trenstop/widgets/image_display.dart';
 
 class TrailerWidget extends StatelessWidget {
-
   static const String TAG = "TRAILER_WIDGET";
 
   final Trailer trailer;
@@ -37,7 +36,7 @@ class TrailerWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           AspectRatio(
-            aspectRatio: 16.0/9.0,
+            aspectRatio: 16.0 / 9.0,
             child: Stack(
               alignment: Alignment.center,
               fit: StackFit.expand,
@@ -49,39 +48,37 @@ class TrailerWidget extends StatelessWidget {
                     key: Key(trailer.trailerId),
                   ),
                 ),
-                showShare ?
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: CircleAvatar(
-                      radius: 26.0,
-                      backgroundColor: Colors.black38,
-                      child: FittedBox(
-                        child: InkWell(
-                          onTap: () {
-                            onShare(trailer);
-                          },
-                          child: Icon(
-                            Platform.isAndroid ? Icons.share : CupertinoIcons.share,
-                            color: Colors.white,
+                showShare
+                    ? Align(
+                        alignment: Alignment.topLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.all(16.0),
+                          child: CircleAvatar(
+                            radius: 26.0,
+                            backgroundColor: Colors.black38,
+                            child: FittedBox(
+                              child: InkWell(
+                                onTap: () {
+                                  onShare(trailer);
+                                },
+                                child: Icon(
+                                  Platform.isAndroid
+                                      ? Icons.share
+                                      : CupertinoIcons.share,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
-                )
-                    :
-                    Container(),
+                      )
+                    : Container(),
               ],
             ),
           ),
-
           TrailerTitleWidget(trailer: trailer)
         ],
       ),
     );
   }
 }
-
-

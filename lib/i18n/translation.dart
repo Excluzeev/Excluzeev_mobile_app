@@ -470,40 +470,39 @@ class Translation {
         args: [title],
       );
 
-  String get aboutUs => Intl.message(
-        'About Us',
-        name: 'aboutUs'
-      );
-  String get faqs => Intl.message(
-        'Faq\'s',
-        name: 'faqs'
-      );
-  String get privacyPolicy => Intl.message(
-        'Privacy Policy',
-        name: 'privacyPolicy'
-      );
-  String get cookiePolicy => Intl.message(
-        'Cookie Policy',
-        name: 'cookiePolicy'
-      );
-  String get contentCreatorPolicy => Intl.message(
-        'Content Creator Policy',
-        name: 'contentCreatorPolicy'
-      );
-  String get termsOfUse => Intl.message(
-        'Terms of Use',
-        name: 'termsOfUse'
-      );
-  String get legalDocs => Intl.message(
-        'Legal',
-        name: 'legalDocs'
-      );
+  String get aboutUs => Intl.message('About Us', name: 'aboutUs');
+  String get faqs => Intl.message('Faq\'s', name: 'faqs');
+  String get privacyPolicy =>
+      Intl.message('Privacy Policy', name: 'privacyPolicy');
+  String get cookiePolicy =>
+      Intl.message('Cookie Policy', name: 'cookiePolicy');
+  String get contentCreatorPolicy =>
+      Intl.message('Content Creator Policy', name: 'contentCreatorPolicy');
+  String get termsOfUse => Intl.message('Terms of Use', name: 'termsOfUse');
+  String get legalDocs => Intl.message('Legal', name: 'legalDocs');
 
   String get aboutData => Intl.message(
-    'Excluzeev was created to be a hub for content creators. There are many steps In the process of content production, and Excluzeev connects all these steps together on its platform. Content creators can now crowd fund, launch, and Interact with there supporters here.',
-    name: 'aboutData'
-  );
+      'Excluzeev was created to be a hub for content creators. There are many steps In the process of content production, and Excluzeev connects all these steps together on its platform. Content creators can now crowd fund, launch, and Interact with there supporters here.',
+      name: 'aboutData');
 
+  String get notAppropriate =>
+      Intl.message('Not Appropriate', name: 'notAppropriate');
+
+  // Reasons
+  String get nudity => Intl.message('Nudity', name: 'nudity');
+  String get violence => Intl.message('Violence', name: 'Violence');
+  String get harassment => Intl.message('Harassment', name: 'Harassment');
+  String get suicide => Intl.message('Suicide', name: 'suicide');
+  String get selfInjury => Intl.message('Self Injury', name: 'selfInjury');
+  String get falseNews => Intl.message('False News', name: 'falseNews');
+  String get spam => Intl.message('Spam', name: 'spam');
+  String get unauthorisedSales =>
+      Intl.message('Unauthorised Sales', name: 'unauthorisedSales');
+  String get hateSpeech => Intl.message('Hate Speech', name: 'hateSpeech');
+  String get terrorism => Intl.message('Terrorism', name: 'terrorism');
+  String get other => Intl.message('Other', name: 'other');
+
+  String get typeReason => Intl.message('Type Reason', name: 'typeReason');
 }
 
 class _TranslationDelegate extends LocalizationsDelegate<Translation> {
