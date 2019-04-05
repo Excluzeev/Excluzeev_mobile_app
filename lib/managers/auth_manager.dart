@@ -193,4 +193,37 @@ class AuthManager {
       error: error,
     );
   }
+
+  Future<String> fetchMessages() async {
+    String allMessages = await Prefs.getString(PreferenceKey.subWarning);
+    int lastFetched = await Prefs.getInt(PreferenceKey.lastFetched);
+
+    if (lastFetched != 0) {
+      lastFetched = lastFetched + 60 * 60 * 1000;
+      if (lastFetched > DateTime.now().millisecondsSinceEpoch) {
+        await _fetchAppMessages();
+      }
+    }
+    allMessages = await Prefs.getString(PreferenceKey.subWarning);
+
+    if (allMessages.isEmpty) {
+      return await _fetchAppMessages();
+    }
+    return allMessages;
+  }
+
+  Future<String> _fetchAppMessages() async {
+    DocumentSnapshot data = await Firestore.instance
+        .collection("appmessages")
+        .document("all")
+        .get();
+
+    print(data.data["subscriptionWarning"]);
+    Prefs.setString(
+        PreferenceKey.subWarning, data.data["subscriptionWarning"].toString());
+
+    Prefs.setInt(
+        PreferenceKey.lastSubWarn, DateTime.now().millisecondsSinceEpoch);
+    return data.data["subscriptionWarning"];
+  }
 }

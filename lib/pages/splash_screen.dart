@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:trenstop/managers/auth_manager.dart';
 import 'package:trenstop/misc/palette.dart';
 import 'package:trenstop/misc/prefs.dart';
 import 'package:trenstop/misc/widget_utils.dart';
@@ -36,37 +37,10 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  _fetchAppMessages() async {
-    DocumentSnapshot data = await Firestore.instance
-        .collection("appmessages")
-        .document("all")
-        .get();
-
-    print(data.data["subscriptionWarning"]);
-    Prefs.setString(
-        PreferenceKey.subWarning, data.data["subscriptionWarning"].toString());
-
-    Prefs.setInt(
-        PreferenceKey.lastSubWarn, DateTime.now().millisecondsSinceEpoch);
-  }
-
   _firestoreConfig() async {
 //    InitFirestore();
-
-    String allMessages = await Prefs.getString(PreferenceKey.subWarning);
-    int lastFetched = await Prefs.getInt(PreferenceKey.lastFetched);
-
-    if (lastFetched != 0) {
-      lastFetched = lastFetched + 60 * 60 * 1000;
-      if (lastFetched > DateTime.now().millisecondsSinceEpoch) {
-        await _fetchAppMessages();
-      }
-    }
-    allMessages = await Prefs.getString(PreferenceKey.subWarning);
-
-    if (allMessages.isEmpty) {
-      await _fetchAppMessages();
-    }
+    AuthManager _authManager = AuthManager.instance;
+    await _authManager.fetchMessages();
   }
 
   @override

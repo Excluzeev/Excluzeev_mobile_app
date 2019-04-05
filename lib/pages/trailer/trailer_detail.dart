@@ -162,7 +162,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
     _videoPlayerController.pause();
 
     if (Platform.isIOS) {
-      String subWarning = await Prefs.getString(PreferenceKey.subWarning);
+      String subWarning = await _authManager.fetchMessages();
       await showDialog(
         context: context,
         builder: (context) {
