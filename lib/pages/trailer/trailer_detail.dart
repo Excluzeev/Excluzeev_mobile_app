@@ -393,50 +393,52 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
   }
 
   _subscribeButton() {
-    return _showSubscribe
-        ? widget.trailer.channelType != "CrowdFunding"
-            ? Container(
-                child: RaisedButton(
-                  shape: StadiumBorder(),
-                  padding: const EdgeInsets.only(
-                    top: 8.0,
-                    bottom: 8.0,
-                    left: 24.0,
-                    right: 24.0,
-                  ),
-                  textColor: Colors.white,
-                  child: Text(
-                    "${translation.subscribe}",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w600,
+    return Center(
+      child: _showSubscribe
+          ? widget.trailer.channelType != "CrowdFunding"
+              ? Container(
+                  child: RaisedButton(
+                    shape: StadiumBorder(),
+                    padding: const EdgeInsets.only(
+                      top: 8.0,
+                      bottom: 8.0,
+                      left: 24.0,
+                      right: 24.0,
                     ),
+                    textColor: Colors.white,
+                    child: Text(
+                      "${translation.subscribe}",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    color: Palette.primary,
+                    onPressed: () => _startSubscribe(false),
                   ),
-                  color: Palette.primary,
-                  onPressed: () => _startSubscribe(false),
-                ),
-              )
-            : Container()
-        : RaisedButton(
-            shape: StadiumBorder(),
-            padding: const EdgeInsets.only(
-              top: 8.0,
-              bottom: 8.0,
-              left: 24.0,
-              right: 24.0,
-            ),
-            textColor: Palette.primary,
-            child: Text(
-              "${translation.subscribed}",
-              style: TextStyle(
-                fontSize: 18.0,
-                fontWeight: FontWeight.w600,
+                )
+              : Container()
+          : RaisedButton(
+              shape: StadiumBorder(),
+              padding: const EdgeInsets.only(
+                top: 8.0,
+                bottom: 8.0,
+                left: 24.0,
+                right: 24.0,
               ),
+              textColor: Palette.primary,
+              child: Text(
+                "${translation.subscribed}",
+                style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              color: Colors.white,
+              onPressed: () {},
             ),
-            color: Colors.white,
-            onPressed: () {},
-          );
+    );
   }
 
   @override
@@ -489,7 +491,6 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
               Container(
                 width: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.only(
-                  bottom: 8.0,
                   left: 16.0,
                   right: 16.0,
                 ),
@@ -497,7 +498,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Container(
-                      width: MediaQuery.of(context).size.width - 180,
+                      width: MediaQuery.of(context).size.width - 80,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: <Widget>[
@@ -532,6 +533,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
                   bottom: 8.0,
                   left: 16.0,
                   right: 16.0,
+                  top: 4.0,
                 ),
                 child: ReadMoreTextWidget(
                   text: widget.trailer.description,
