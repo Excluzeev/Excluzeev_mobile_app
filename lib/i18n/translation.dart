@@ -371,11 +371,11 @@ class Translation {
         name: 'noChatsYet',
       );
   String get subscribe => Intl.message(
-        "Subscribe",
+        "Join this community",
         name: 'subscribe',
       );
   String get subscribed => Intl.message(
-        "Subscribed",
+        "Joined",
         name: 'subscribed',
       );
   String get donate => Intl.message(
@@ -445,7 +445,7 @@ class Translation {
         name: 'selectDate',
       );
   String get mySubscriptions => Intl.message(
-        "My Subscriptions",
+        "My Communities",
         name: 'mySubscriptions',
       );
   String get copyrights => Intl.message(

@@ -523,10 +523,10 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
                         ],
                       ),
                     ),
-                    _subscribeButton(),
                   ],
                 ),
               ),
+              _subscribeButton(),
               Container(
                 padding: const EdgeInsets.only(
                   bottom: 8.0,
