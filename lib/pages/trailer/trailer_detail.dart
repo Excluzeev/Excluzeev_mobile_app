@@ -119,7 +119,8 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
         }
       });
     _videoPlayerController.addListener(() async {
-      if (!_isViewTriggered &&
+      if (_videoPlayerController != null &&
+          !_isViewTriggered &&
           (await _videoPlayerController.position > Duration(seconds: 5))) {
         _triggerVideoView();
       }

@@ -167,15 +167,15 @@ class _TrailerTitleWidgetState extends State<TrailerTitleWidget> {
             : formatter.format(widget.trailer.createdDate.toDate());
 
     return Container(
-      width: MediaQuery.of(context).size.width,
+      // width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.all(16.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        mainAxisSize: MainAxisSize.max,
+        mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           Expanded(
             child: Row(
-              mainAxisSize: MainAxisSize.max,
+              mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 InkWell(
 //                  onTap: () => _showProfile(context),
@@ -186,46 +186,50 @@ class _TrailerTitleWidgetState extends State<TrailerTitleWidget> {
                     ),
                   ),
                 ),
-                Container(
-                  // width: MediaQuery.of(context).size.width * 0.6,
-                  padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        widget.trailer.title,
-                        maxLines: 2,
-                        softWrap: true,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.title.copyWith(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15.0,
-                              color: Palette.primary,
-                            ),
-                      ),
-                      SizedBox(
-                        height: 4.0,
-                      ),
-                      Text.rich(
-                        TextSpan(
-                          text: "${widget.trailer.channelName}\n",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12.0,
-                          ),
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: "${widget.trailer.views} views • $daysAgo",
-                              style:
-                                  Theme.of(context).textTheme.caption.copyWith(
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 12.0,
-                                      ),
-                            )
-                          ],
+                Flexible(
+                  child: Container(
+                    // width: MediaQuery.of(context).size.width * 0.65,
+                    padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          widget.trailer.title,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.title.copyWith(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15.0,
+                                color: Palette.primary,
+                              ),
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          height: 4.0,
+                        ),
+                        Text.rich(
+                          TextSpan(
+                            text: "${widget.trailer.channelName}\n",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12.0,
+                            ),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text:
+                                    "${widget.trailer.views} views • $daysAgo",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .caption
+                                    .copyWith(
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 12.0,
+                                    ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],
