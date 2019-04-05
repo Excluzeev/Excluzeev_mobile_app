@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
 import 'package:intl/intl.dart';
+import 'package:trenstop/i18n/translation.dart';
 import 'package:trenstop/managers/auth_manager.dart';
 import 'package:trenstop/misc/date_utils.dart';
 import 'package:trenstop/misc/iuid.dart';
@@ -26,6 +27,7 @@ class TrailerTitleWidget extends StatefulWidget {
 
 class _TrailerTitleWidgetState extends State<TrailerTitleWidget> {
   AuthManager _authManager = AuthManager.instance;
+  Translation translation;
 
   String reasonString = "";
   List selectReasonList;
@@ -37,7 +39,7 @@ class _TrailerTitleWidgetState extends State<TrailerTitleWidget> {
   _reportReason() async {
     if (selectReasonList.isEmpty) {
       Fluttertoast.showToast(
-        msg: "Please select the reason",
+        msg: translation.reasonError,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIos: 1,
@@ -48,14 +50,16 @@ class _TrailerTitleWidgetState extends State<TrailerTitleWidget> {
 
     if (selectReasonList.contains("Other") && reasonString.isEmpty) {
       Fluttertoast.showToast(
-        msg: "Please select the reason",
+        msg: translation.reasonError,
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
         timeInSecForIos: 1,
         fontSize: 16.0,
       );
       return;
-    } else {
+    }
+
+    if (reasonString.isNotEmpty) {
       selectReasonList.remove("Other");
       selectReasonList.add(reasonString);
     }
@@ -68,7 +72,7 @@ class _TrailerTitleWidgetState extends State<TrailerTitleWidget> {
     updateData["type"] = "trailer";
     updateData["userName"] = user.displayName;
     updateData["userId"] = user.uid;
-    updateData["reason"] = selectReasonList;
+    updateData["reasons"] = selectReasonList;
 
     String reportId = IUID.string;
 
@@ -77,8 +81,10 @@ class _TrailerTitleWidgetState extends State<TrailerTitleWidget> {
 
     await reportRef.setData(updateData);
 
+    selectReasonList.clear();
+    reasonString = "";
     Fluttertoast.showToast(
-      msg: "Trailer Reported succesfully.",
+      msg: translation.reportSuccessful,
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.BOTTOM,
       timeInSecForIos: 1,
@@ -150,6 +156,8 @@ class _TrailerTitleWidgetState extends State<TrailerTitleWidget> {
 
   @override
   Widget build(BuildContext context) {
+    translation = Translation.of(context);
+
     var formatter = new DateFormat("d MMM y • hh:mm aaa");
     var daysAgo =
         DateTime.now().difference(widget.trailer.createdDate.toDate()).inDays <

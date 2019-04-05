@@ -503,6 +503,12 @@ class Translation {
   String get other => Intl.message('Other', name: 'other');
 
   String get typeReason => Intl.message('Type Reason', name: 'typeReason');
+
+  String get reasonError =>
+      Intl.message("Please select the reason", name: "reasonError");
+
+  String get reportSuccessful =>
+      Intl.message("Trailer Reported succesfully.", name: "reportSuccessful");
 }
 
 class _TranslationDelegate extends LocalizationsDelegate<Translation> {
