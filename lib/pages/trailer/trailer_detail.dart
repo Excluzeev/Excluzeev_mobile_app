@@ -176,7 +176,12 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
             ),
             actions: <Widget>[
               FlatButton(
-                child: Text("Proceed"),
+                child: Text(
+                  "Proceed",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 onPressed: () {
                   Navigator.of(context).pop();
                   String url =
@@ -189,7 +194,12 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
                 },
               ),
               FlatButton(
-                child: Text("Cancel"),
+                child: Text(
+                  "Cancel",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
