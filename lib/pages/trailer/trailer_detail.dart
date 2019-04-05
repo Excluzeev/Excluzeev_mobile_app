@@ -168,14 +168,19 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
         context: context,
         builder: (context) {
           return AlertDialog(
-            content: Text(subWarning),
+            content: Text(
+              subWarning,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             actions: <Widget>[
               FlatButton(
                 child: Text("Proceed"),
                 onPressed: () {
                   Navigator.of(context).pop();
                   String url =
-                      "https://excluzeev.com/trailers/${widget.trailer.trailerId}";
+                      "https://excluzeev.com/trailer/${widget.trailer.trailerId}";
                   if (isDonate) {
                     url =
                         "https://excluzeev.com/crowd/${widget.trailer.trailerId}";
