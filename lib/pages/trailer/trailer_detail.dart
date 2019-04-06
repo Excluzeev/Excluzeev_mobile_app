@@ -178,7 +178,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
             actions: <Widget>[
               FlatButton(
                 child: Text(
-                  "Proceed",
+                  "Ok",
                   style: TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 16.0,
@@ -186,27 +186,8 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
                 ),
                 onPressed: () {
                   Navigator.of(context).pop();
-                  String url =
-                      "https://excluzeev.com/trailer/${widget.trailer.trailerId}";
-                  if (isDonate) {
-                    url =
-                        "https://excluzeev.com/crowd/${widget.trailer.trailerId}";
-                  }
-                  launch(url);
                 },
               ),
-              FlatButton(
-                child: Text(
-                  "Cancel",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
-                  ),
-                ),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              )
             ],
           );
         },
