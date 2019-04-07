@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:trenstop/i18n/translation.dart';
 import 'package:trenstop/managers/auth_manager.dart';
@@ -28,6 +31,8 @@ class _FeedPageState extends State<FeedPage> {
   TextStyle drawerItemTextStyle =
       TextStyle(fontWeight: FontWeight.bold, fontSize: 14.0);
 
+  RemoteConfig remoteConfig;
+
   Translation translation;
   User user;
 
@@ -52,9 +57,14 @@ class _FeedPageState extends State<FeedPage> {
     }
   }
 
+  _initRemoteConfig() async {
+    remoteConfig = await RemoteConfig.instance;
+  }
+
   @override
   void initState() {
     super.initState();
+    _initRemoteConfig();
     _getUser();
   }
 
@@ -83,6 +93,9 @@ class _FeedPageState extends State<FeedPage> {
   }
 
   _contentCreatorMenu() {
+    if (Platform.isIOS && !remoteConfig.getBool("showContentCreator")) {
+      return Container();
+    }
     return user == null
         ? Container()
         : user.isContentCreator
@@ -148,36 +161,40 @@ class _FeedPageState extends State<FeedPage> {
             ),
           ),
         ),
-        SizedBox(
-          width: double.infinity,
-          child: FlatButton(
-            onPressed: _createChannel,
-            child: SizedBox(
-              width: double.infinity,
-              child: Text(
-                translation.createChannel,
-                style: drawerItemTextStyle,
-                textAlign: TextAlign.left,
+        Platform.isIOS && !remoteConfig.getBool("showCreateChannel")
+            ? Container()
+            : SizedBox(
+                width: double.infinity,
+                child: FlatButton(
+                  onPressed: _createChannel,
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Text(
+                      translation.createChannel,
+                      style: drawerItemTextStyle,
+                      textAlign: TextAlign.left,
+                    ),
+                  ),
+                ),
               ),
-            ),
-          ),
-        ),
       ],
     );
   }
 
   _faqMenu() {
     return FlatButton(
-            onPressed: () { _launchURL(context, "https://excluzeev.com/faqs"); },
-            child: SizedBox(
-              width: double.infinity,
-              child: Text(
-                translation.faqs,
-                style: drawerItemTextStyle,
-                textAlign: TextAlign.left,
-              ),
-            ),
-          );
+      onPressed: () {
+        _launchURL(context, "https://excluzeev.com/faqs");
+      },
+      child: SizedBox(
+        width: double.infinity,
+        child: Text(
+          translation.faqs,
+          style: drawerItemTextStyle,
+          textAlign: TextAlign.left,
+        ),
+      ),
+    );
   }
 
   _policyMenu() {
@@ -198,7 +215,7 @@ class _FeedPageState extends State<FeedPage> {
           ),
         ),
         FlatButton(
-          onPressed: () { 
+          onPressed: () {
             Navigator.of(context).pop();
             WidgetUtils.goLegalDocs(context);
           },
@@ -233,8 +250,8 @@ class _FeedPageState extends State<FeedPage> {
       width: MediaQuery.of(context).size.width * 0.7,
       child: Drawer(
         child: Container(
-      padding: const EdgeInsets.only(left: 16.0),
-      color: Colors.white,
+          padding: const EdgeInsets.only(left: 16.0),
+          color: Colors.white,
           child: Stack(
             children: <Widget>[
               Container(
@@ -246,9 +263,7 @@ class _FeedPageState extends State<FeedPage> {
                       // SizedBox(
                       //   height: 32.0,
                       // ),
-                      SizedAppLogo(
-                        size: 150.0
-                      ),
+                      SizedAppLogo(size: 150.0),
                       // SizedBox(
                       //   height: 14.0,
                       // ),
@@ -319,6 +334,7 @@ class _FeedPageState extends State<FeedPage> {
   @override
   Widget build(BuildContext context) {
     if (translation == null) translation = Translation.of(context);
+    if (remoteConfig == null) _initRemoteConfig();
 
     return Scaffold(
       key: _scaffoldKey,

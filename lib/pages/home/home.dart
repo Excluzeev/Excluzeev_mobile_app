@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:flutter/material.dart';
 import 'package:trenstop/i18n/translation.dart';
 import 'package:firestore_ui/animated_firestore_list.dart';
@@ -24,32 +25,29 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
   Translation translation;
   ChannelManager _channelManager = ChannelManager.instance;
   TrailerManager _trailerManager = TrailerManager.instance;
-
 
   _show(Trailer trailer) {
     WidgetUtils.showTrailerDetails(context, trailer);
   }
 
-  _shareTrailer(Trailer trailer) {
+  _shareTrailer(Trailer trailer) {}
 
-  }
-
-  Widget _buildItem(BuildContext context, DocumentSnapshot snapshot, Animation animation, int index) {
+  Widget _buildItem(BuildContext context, DocumentSnapshot snapshot,
+      Animation animation, int index) {
     final trailer = Trailer.fromDocumentSnapshot(snapshot);
 
     return FadeTransition(
       opacity: animation,
       child: trailer != null
           ? TrailerWidget(
-        trailer: trailer,
-        onTap: _show,
-        onShare: _shareTrailer,
-        showShare: false,
-      )
+              trailer: trailer,
+              onTap: _show,
+              onShare: _shareTrailer,
+              showShare: false,
+            )
           : Center(child: CircularProgressIndicator()),
     );
   }

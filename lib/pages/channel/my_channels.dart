@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_remote_config/firebase_remote_config.dart';
 import 'package:firestore_ui/animated_firestore_list.dart';
 import 'package:flutter/material.dart';
 import 'package:trenstop/i18n/translation.dart';
@@ -24,6 +27,8 @@ class _MyChannelsPageState extends State<MyChannelsPage> {
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   ChannelManager _channelManager = ChannelManager.instance;
   Translation translation;
+
+  RemoteConfig remoteConfig;
 
   _onTapChannel(Channel channel) {
     WidgetUtils.showChannelDetails(context, widget.user, channel);
@@ -71,9 +76,22 @@ class _MyChannelsPageState extends State<MyChannelsPage> {
     WidgetUtils.showCreateChannelPage(context);
   }
 
+  _initRemoteConfig() async {
+    remoteConfig = await RemoteConfig.instance;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initRemoteConfig();
+  }
+
   @override
   Widget build(BuildContext context) {
     if (translation == null) translation = Translation.of(context);
+    if (remoteConfig == null) {
+      _initRemoteConfig();
+    }
 
     return Scaffold(
       key: _scaffoldKey,
@@ -81,12 +99,14 @@ class _MyChannelsPageState extends State<MyChannelsPage> {
         title: Text(translation.myChannels),
         centerTitle: true,
         actions: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.add,
-            ),
-            onPressed: () => _createChannel(),
-          ),
+          Platform.isIOS && !remoteConfig.getBool("showCreateChannel")
+              ? Container()
+              : IconButton(
+                  icon: Icon(
+                    Icons.add,
+                  ),
+                  onPressed: () => _createChannel(),
+                ),
         ],
       ),
       backgroundColor: Colors.white,
@@ -104,24 +124,26 @@ class _MyChannelsPageState extends State<MyChannelsPage> {
                 emptyChild: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    RaisedButton.icon(
-                      shape: new RoundedRectangleBorder(
-                        borderRadius: new BorderRadius.circular(30.0),
-                      ),
-                      materialTapTargetSize: MaterialTapTargetSize.padded,
-                      color: Colors.white,
-                      textColor: ThemeData().primaryColor,
-                      icon: Icon(
-                        Icons.add,
-                      ),
-                      label: Text(
-                        "Create a Channel",
-                        style: TextStyle(
-                          fontSize: 24.0,
-                        ),
-                      ),
-                      onPressed: () => _createChannel(),
-                    ),
+                    Platform.isIOS && !remoteConfig.getBool("showCreateChannel")
+                        ? Container()
+                        : RaisedButton.icon(
+                            shape: new RoundedRectangleBorder(
+                              borderRadius: new BorderRadius.circular(30.0),
+                            ),
+                            materialTapTargetSize: MaterialTapTargetSize.padded,
+                            color: Colors.white,
+                            textColor: ThemeData().primaryColor,
+                            icon: Icon(
+                              Icons.add,
+                            ),
+                            label: Text(
+                              "Create a Channel",
+                              style: TextStyle(
+                                fontSize: 24.0,
+                              ),
+                            ),
+                            onPressed: () => _createChannel(),
+                          ),
                     Image.asset(
                       'res/icons/empty-create-channel.png',
                       fit: BoxFit.cover,

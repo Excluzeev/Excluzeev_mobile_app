@@ -41,8 +41,9 @@ dependencies:
   flutter_rtmp_publisher:
     path: plugins/flutter_rtmp_publisher
   screen: ^0.0.5
-  flutter_custom_tabs: "^0.6.0"
+  flutter_custom_tabs: ^0.6.0
   fluttertoast: ^3.0.3
+  firebase_remote_config: ^0.1.0+2
 
 # dependency_overrides:
 #   chewie: ^0.9.6
