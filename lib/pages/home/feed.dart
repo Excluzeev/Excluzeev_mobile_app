@@ -37,6 +37,7 @@ class _FeedPageState extends State<FeedPage> {
   Translation translation;
   User user;
 
+  // Search Bar
   SearchBar searchBar;
 
   _performSearch(String searchQuery) {
@@ -54,6 +55,7 @@ class _FeedPageState extends State<FeedPage> {
       buildDefaultAppBar: _buildAppBar,
     );
   }
+  // Search Bar
 
   void _launchURL(BuildContext context, String url) async {
     try {
@@ -343,6 +345,7 @@ class _FeedPageState extends State<FeedPage> {
     );
   }
 
+// For Search Bar
   WhiteAppBar _buildAppBar(BuildContext context) {
     return WhiteAppBar(
       iconTheme: IconThemeData(color: Palette.primary),
@@ -359,6 +362,7 @@ class _FeedPageState extends State<FeedPage> {
       actions: <Widget>[searchBar.getSearchAction(context)],
     );
   }
+  // For Search Bar
 
   @override
   void initState() {
@@ -375,7 +379,7 @@ class _FeedPageState extends State<FeedPage> {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
-      appBar: searchBar.build(context),
+      appBar: searchBar.build(context), //Search bar
       drawer: _drawerWidget(),
       body: HomePage(user),
     );
