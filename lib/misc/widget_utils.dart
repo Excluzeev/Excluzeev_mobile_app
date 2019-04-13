@@ -11,6 +11,7 @@ import 'package:trenstop/models/video.dart';
 import 'package:trenstop/pages/auth/sign_in_page.dart';
 import 'package:trenstop/pages/home/about.dart';
 import 'package:trenstop/pages/home/legal.dart';
+import 'package:trenstop/pages/home/search_page.dart';
 import 'package:trenstop/pages/payment/payment.dart';
 import 'package:trenstop/pages/subscriptions/my_subscriptions.dart';
 import 'package:trenstop/pages/trailer/add_trailer.dart';
@@ -263,6 +264,19 @@ class WidgetUtils {
       {int price}) async {
     String tag = PaymentPage.TAG;
     Widget page = PaymentPage(trailer, user, isDonate, price: price);
+
+    final route = CupertinoPageRoute<bool>(
+      maintainState: true,
+      settings: RouteSettings(name: tag),
+      builder: (context) => page,
+    );
+    Navigator.of(context).push(route);
+  }
+
+  static void goSearchData(
+      BuildContext context, User user, String query) async {
+    String tag = SearchPage.TAG;
+    Widget page = SearchPage(user, query);
 
     final route = CupertinoPageRoute<bool>(
       maintainState: true,

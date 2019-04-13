@@ -40,6 +40,9 @@ dependencies:
     path: plugins/flutter_webview
   flutter_rtmp_publisher:
     path: plugins/flutter_rtmp_publisher
+  flutter_search_bar:
+    path: plugins/flutter_search_bar
+  # flutter_search_bar: any
   screen: ^0.0.5
   flutter_custom_tabs: ^0.6.0
   fluttertoast: ^3.0.3

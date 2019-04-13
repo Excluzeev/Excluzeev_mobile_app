@@ -13,6 +13,7 @@ import 'package:trenstop/pages/home/home.dart';
 import 'package:trenstop/widgets/full_app_logo.dart';
 import 'package:trenstop/widgets/white_app_bar.dart';
 import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
+import 'package:flutter_search_bar/flutter_search_bar.dart';
 
 import 'package:url_launcher/url_launcher.dart' as uLaunch;
 
@@ -35,6 +36,24 @@ class _FeedPageState extends State<FeedPage> {
 
   Translation translation;
   User user;
+
+  SearchBar searchBar;
+
+  _performSearch(String searchQuery) {
+    if (searchQuery.isNotEmpty) {
+      print(searchQuery);
+      WidgetUtils.goSearchData(context, user, searchQuery);
+    }
+  }
+
+  _FeedPageState() {
+    searchBar = new SearchBar(
+      inBar: true,
+      setState: setState,
+      onSubmitted: _performSearch,
+      buildDefaultAppBar: _buildAppBar,
+    );
+  }
 
   void _launchURL(BuildContext context, String url) async {
     try {
@@ -59,13 +78,6 @@ class _FeedPageState extends State<FeedPage> {
 
   _initRemoteConfig() async {
     remoteConfig = await RemoteConfig.instance;
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _initRemoteConfig();
-    _getUser();
   }
 
   _contentCreator() async {
@@ -331,6 +343,30 @@ class _FeedPageState extends State<FeedPage> {
     );
   }
 
+  WhiteAppBar _buildAppBar(BuildContext context) {
+    return WhiteAppBar(
+      iconTheme: IconThemeData(color: Palette.primary),
+      textTheme: TextTheme(
+        title: Theme.of(context).textTheme.title.copyWith(
+              color: Palette.primary,
+            ),
+      ),
+      centerTitle: true,
+      title: Text(
+        translation.appNameTrailers,
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      actions: <Widget>[searchBar.getSearchAction(context)],
+    );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _initRemoteConfig();
+    _getUser();
+  }
+
   @override
   Widget build(BuildContext context) {
     if (translation == null) translation = Translation.of(context);
@@ -339,19 +375,7 @@ class _FeedPageState extends State<FeedPage> {
     return Scaffold(
       key: _scaffoldKey,
       backgroundColor: Colors.white,
-      appBar: WhiteAppBar(
-        iconTheme: IconThemeData(color: Palette.primary),
-        textTheme: TextTheme(
-          title: Theme.of(context).textTheme.title.copyWith(
-                color: Palette.primary,
-              ),
-        ),
-        centerTitle: true,
-        title: Text(
-          translation.appNameTrailers,
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
-      ),
+      appBar: searchBar.build(context),
       drawer: _drawerWidget(),
       body: HomePage(user),
     );
