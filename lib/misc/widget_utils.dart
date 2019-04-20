@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:trenstop/i18n/translation.dart';
 import 'package:trenstop/managers/auth_manager.dart';
 import 'package:trenstop/models/channel.dart';
@@ -301,6 +302,27 @@ class WidgetUtils {
 //    }
 //  }
 
+  static void _launchURL(BuildContext context, String url) async {
+    try {
+      await launch(
+        url,
+        option: new CustomTabsOption(
+          toolbarColor: Theme.of(context).primaryColor,
+          enableDefaultShare: false,
+          enableUrlBarHiding: true,
+          showPageTitle: true,
+          animation: new CustomTabsAnimation.slideIn(),
+          extraCustomTabs: <String>[
+            'org.mozilla.firefox',
+            'com.microsoft.emmx',
+          ],
+        ),
+      );
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
   static void showSnackBar(
       State state, GlobalKey<ScaffoldState> key, String message) {
     if ((state?.mounted ?? false) &&
@@ -328,6 +350,10 @@ class WidgetUtils {
       builder: (context) => page,
     );
     Navigator.of(context).push(route);
+  }
+
+  static void goHowTo(BuildContext context) {
+    _launchURL(context, "https://excluzeev.com/howto");
   }
 
   static void goAbout(BuildContext context) {

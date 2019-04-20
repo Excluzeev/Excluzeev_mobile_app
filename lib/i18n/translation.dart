@@ -471,6 +471,7 @@ class Translation {
       );
 
   String get aboutUs => Intl.message('About Us', name: 'aboutUs');
+  String get howTo => Intl.message('How To', name: 'howTo');
   String get faqs => Intl.message('FAQ\'s', name: 'faqs');
   String get privacyPolicy =>
       Intl.message('Privacy Policy', name: 'privacyPolicy');

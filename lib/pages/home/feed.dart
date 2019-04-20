@@ -217,6 +217,20 @@ class _FeedPageState extends State<FeedPage> {
         FlatButton(
           onPressed: () {
             Navigator.of(context).pop();
+            WidgetUtils.goHowTo(context);
+          },
+          child: SizedBox(
+            width: double.infinity,
+            child: Text(
+              translation.howTo,
+              style: drawerItemTextStyle,
+              textAlign: TextAlign.left,
+            ),
+          ),
+        ),
+        FlatButton(
+          onPressed: () {
+            Navigator.of(context).pop();
             WidgetUtils.goAbout(context);
           },
           child: SizedBox(
