@@ -10,26 +10,23 @@ class FullAppLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Hero(
-      tag: TAG,
-      child: Container(
-        child: Material(
-          color: Colors.transparent,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Image.asset(
-                  "res/icons/logo/logo_transparent.png",
-                ),
-                SizedBox(height: 16.0),
-                SloganWidget(),
-                SizedBox(
-                  height: 8.0,
-                ),
-              ],
-            ),
+    return Container(
+      child: Material(
+        color: Colors.transparent,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Image.asset(
+                "res/icons/logo/logo_transparent.png",
+              ),
+              SizedBox(height: 16.0),
+              SloganWidget(),
+              SizedBox(
+                height: 8.0,
+              ),
+            ],
           ),
         ),
       ),

@@ -9,7 +9,6 @@ import 'package:trenstop/misc/logger.dart';
 part 'trailer.g.dart';
 
 abstract class Trailer implements Built<Trailer, TrailerBuilder> {
-
   static String TAG = "TRAILER_MODEL";
 
   String get userId;
@@ -47,7 +46,6 @@ abstract class Trailer implements Built<Trailer, TrailerBuilder> {
 
   Timestamp get createdDate;
 
-
   Trailer._();
 
   factory Trailer([updates(TrailerBuilder b)]) = _$Trailer;
@@ -69,7 +67,8 @@ abstract class Trailer implements Built<Trailer, TrailerBuilder> {
         ..title = data['title'] ?? ''
         ..description = data['description'] ?? ''
         ..image = 'https://image.mux.com/${data['playbackId']}/thumbnail.png'
-        ..channelImage = 'https://firebasestorage.googleapis.com/v0/b/trenstop-public/o/channels%2F${data['channelId']}%2Fthumbnail.jpg?alt=media'
+        ..channelImage =
+            'https://firebasestorage.googleapis.com/v0/b/trenstop-public/o/channels%2F${data['channelId']}%2Fthumbnail.jpg?alt=media'
         ..videoUrl = "https://stream.mux.com/${data['playbackId']}.m3u8"
         ..originalUrl = data['videoUrl'] ?? ''
         ..playbackId = data['playbackId'] ?? ''
@@ -85,20 +84,70 @@ abstract class Trailer implements Built<Trailer, TrailerBuilder> {
     }
   }
 
+// categoryId:	Iyz2r6IaQBD85W9lyBok
+// categoryName:	Education
+// channelId:	0MM4TxiBXBFGjvnADyZW
+// channelName:	Test
+// channelType:	VOD
+// createdBy:	Karthik Ponnam
+// createdDate:	_seconds1555153158_nanoseconds3000000
+// description:	Test
+// title:	Test Video
+// trailerId:	0MM4U9AyPGMDNdKoEMj2
+// userId:	8tofk8UcabOsu89X04bOaMwvH2C3
+// videoUrl:	https://firebasestorage.googleapis.com/v0/b/trenstop-public/o/0MM4TxiBXBFGjvnADyZW%2F0MM4U9AyPGMDNdKoEMj2%2Foriginal?alt=media&token=bc337291-87d1-4167-95bd-9d9850971c04
+
+  factory Trailer.fromAlogliaSearchIndex(Map<String, dynamic> snapshot) {
+    if (snapshot.isEmpty) return null;
+    try {
+      final data = snapshot;
+
+      final builder = TrailerBuilder()
+        ..userId = data['userId'] ?? ''
+        ..trailerId = data['trailerId'] ?? ''
+        ..channelId = data['channelId'] ?? ''
+        ..channelName = data['channelName'] ?? ''
+        ..categoryId = data['categoryId'] ?? ''
+        ..categoryName = data['categoryName'] ?? ''
+        ..channelType = data['channelType'] ?? ''
+        ..createdBy = data['createdBy'] ?? ''
+        ..title = data['title'] ?? ''
+        ..description = data['description'] ?? ''
+        ..image = 'https://image.mux.com/${data['playbackId']}/thumbnail.png'
+        ..channelImage =
+            'https://firebasestorage.googleapis.com/v0/b/trenstop-public/o/channels%2F${data['channelId']}%2Fthumbnail.jpg?alt=media'
+        ..videoUrl = "https://stream.mux.com/${data['playbackId']}.m3u8"
+        ..originalUrl = data['videoUrl'] ?? ''
+        ..playbackId = data['playbackId'] ?? ''
+        ..createdDate = data['createdDate'] != null
+            ? Timestamp.fromMillisecondsSinceEpoch(
+                data['createdDate']['_seconds'] * 1000)
+            : null
+        ..likes = data['likes'] ?? 0
+        ..dislikes = data['dislikes'] ?? 0
+        ..neutral = data['neutral'] ?? 0
+        ..views = data['views'] ?? 0;
+      return builder.build();
+    } catch (error) {
+      Logger.log(TAG, message: "Couldn't build user object, error: $error");
+      return null;
+    }
+  }
+
   Map<String, dynamic> get toMap => {
-    "userId": this.userId,
-    "trailerId": this.trailerId,
-    "channelId": this.channelId,
-    "channelName": this.channelName,
-    "channelType": this.channelType,
-    "categoryId": this.categoryId,
-    "categoryName": this.categoryName,
-    "createdBy": this.createdBy,
-    "title": this.title,
-    "description": this.description,
-    "videoUrl": this.videoUrl,
-    "createdDate": this.createdDate,
-  };
+        "userId": this.userId,
+        "trailerId": this.trailerId,
+        "channelId": this.channelId,
+        "channelName": this.channelName,
+        "channelType": this.channelType,
+        "categoryId": this.categoryId,
+        "categoryName": this.categoryName,
+        "createdBy": this.createdBy,
+        "title": this.title,
+        "description": this.description,
+        "videoUrl": this.videoUrl,
+        "createdDate": this.createdDate,
+      };
 
   static Serializer<Trailer> get serializer => _$trailerSerializer;
 }

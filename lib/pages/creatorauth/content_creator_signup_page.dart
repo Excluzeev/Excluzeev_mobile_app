@@ -99,23 +99,6 @@ class _ContentCreatorSignUpPageState extends State<ContentCreatorSignUpPage> {
               height: 8.0,
             ),
             CheckboxListTile(
-              value: terms,
-              onChanged: (value) {
-                setState(() {
-                  terms = value;
-                });
-              },
-              title: InkWell(
-                child: Text(
-                  translation.termsOfUse,
-                ),
-                onTap: () {
-                  _launchURL(
-                      context, "https://excluzeev.com/license-agreement");
-                },
-              ),
-            ),
-            CheckboxListTile(
               value: policy,
               onChanged: (value) {
                 setState(() {
@@ -140,7 +123,7 @@ class _ContentCreatorSignUpPageState extends State<ContentCreatorSignUpPage> {
               },
               title: InkWell(
                 child: Text(
-                   translation.contentCreatorPolicy,
+                  translation.contentCreatorsTerms,
                 ),
                 onTap: () {
                   _launchURL(

@@ -10,7 +10,6 @@ class LeagalLinks extends StatelessWidget {
   TextStyle drawerItemTextStyle =
       TextStyle(fontWeight: FontWeight.bold, fontSize: 16.0);
 
-
   void _launchURL(BuildContext context, String url) async {
     try {
       await launch(
@@ -31,7 +30,7 @@ class LeagalLinks extends StatelessWidget {
       debugPrint(e.toString());
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
     translation = Translation.of(context);
@@ -44,56 +43,65 @@ class LeagalLinks extends StatelessWidget {
       body: Container(
         color: Colors.white,
         child: Column(
-        children: <Widget>[
-          FlatButton(
-            onPressed: () { _launchURL(context, "https://excluzeev.com/license-agreement"); },
-            child: SizedBox(
-              width: double.infinity,
-              child: Text(
-                translation.termsOfUse,
-                style: drawerItemTextStyle,
-                textAlign: TextAlign.left,
+          children: <Widget>[
+            FlatButton(
+              onPressed: () {
+                _launchURL(context, "https://excluzeev.com/privacy-policy");
+              },
+              child: SizedBox(
+                width: double.infinity,
+                child: Text(
+                  translation.privacyPolicy,
+                  style: drawerItemTextStyle,
+                  textAlign: TextAlign.left,
+                ),
               ),
             ),
-          ),
-          Divider(),
-          FlatButton(
-            onPressed: () { _launchURL(context, "https://excluzeev.com/privacy-policy"); },
-            child: SizedBox(
-              width: double.infinity,
-              child: Text(
-                translation.privacyPolicy,
-                style: drawerItemTextStyle,
-                textAlign: TextAlign.left,
+            Divider(),
+            FlatButton(
+              onPressed: () {
+                _launchURL(context, "https://excluzeev.com/cookie-policy");
+              },
+              child: SizedBox(
+                width: double.infinity,
+                child: Text(
+                  translation.cookiePolicy,
+                  style: drawerItemTextStyle,
+                  textAlign: TextAlign.left,
+                ),
               ),
             ),
-          ),
-          Divider(),
-          FlatButton(
-            onPressed: () { _launchURL(context, "https://excluzeev.com/content-creator-policy"); },
-            child: SizedBox(
-              width: double.infinity,
-              child: Text(
-                translation.contentCreatorPolicy,
-                style: drawerItemTextStyle,
-                textAlign: TextAlign.left,
+            Divider(),
+            FlatButton(
+              onPressed: () {
+                _launchURL(context, "https://excluzeev.com/community-member");
+              },
+              child: SizedBox(
+                width: double.infinity,
+                child: Text(
+                  translation.communityMemberAgreement,
+                  style: drawerItemTextStyle,
+                  textAlign: TextAlign.left,
+                ),
               ),
             ),
-          ),
-          Divider(),
-          FlatButton(
-            onPressed: () { _launchURL(context, "https://excluzeev.com/cookie-policy"); },
-            child: SizedBox(
-              width: double.infinity,
-              child: Text(
-                translation.cookiePolicy,
-                style: drawerItemTextStyle,
-                textAlign: TextAlign.left,
+            Divider(),
+            FlatButton(
+              onPressed: () {
+                _launchURL(
+                    context, "https://excluzeev.com/content-creator-policy");
+              },
+              child: SizedBox(
+                width: double.infinity,
+                child: Text(
+                  translation.contentCreatorsTerms,
+                  style: drawerItemTextStyle,
+                  textAlign: TextAlign.left,
+                ),
               ),
             ),
-          ),
-        ],
-    ),
+          ],
+        ),
       ),
     );
   }

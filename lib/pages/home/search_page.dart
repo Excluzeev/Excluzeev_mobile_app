@@ -33,27 +33,29 @@ class _SearchPageState extends State<SearchPage> {
   ChannelManager _channelManager = ChannelManager.instance;
   TrailerManager _trailerManager = TrailerManager.instance;
 
+  List<Trailer> trailersList = List();
+  List<dynamic> indexs = List();
+
   _show(Trailer trailer) {
     WidgetUtils.showTrailerDetails(context, trailer);
   }
 
   _shareTrailer(Trailer trailer) {}
 
-  Widget _buildItem(BuildContext context, DocumentSnapshot snapshot,
-      Animation animation, int index) {
-    final trailer = Trailer.fromDocumentSnapshot(snapshot);
+  Widget _buildItem(
+      BuildContext context, Map<String, dynamic> snapshot, int index) {
+    final trailer = Trailer.fromAlogliaSearchIndex(snapshot);
 
-    return FadeTransition(
-      opacity: animation,
-      child: trailer != null
-          ? TrailerWidget(
-              trailer: trailer,
-              onTap: _show,
-              onShare: _shareTrailer,
-              showShare: false,
-            )
-          : Center(child: CircularProgressIndicator()),
-    );
+    return trailer != null
+        ? TrailerWidget(
+            trailer: trailer,
+            onTap: _show,
+            onShare: _shareTrailer,
+            showShare: false,
+          )
+        : Center(
+            child: CircularProgressIndicator(),
+          );
   }
 
 // -H "X-Algolia-API-Key: a43f7e807dbde9c65ecd0b08fd5f4bb7" \
@@ -70,6 +72,9 @@ class _SearchPageState extends State<SearchPage> {
       );
       if (response.statusCode == 200) {
         print(json.decode(response.body)["hits"]);
+        setState(() {
+          indexs = json.decode(response.body)["hits"];
+        });
         // Timestamp.fromMillisecondsSinceEpoch(milliseconds)
       }
     } catch (err) {
@@ -97,29 +102,35 @@ class _SearchPageState extends State<SearchPage> {
         ),
       ),
       body: Center(
-        child: FirestoreAnimatedList(
-          query: _trailerManager.trailersQuery.snapshots(),
-          errorChild: InformationWidget(
-            icon: Icons.error,
-            subtitle: translation.errorLoadTrailers,
+          child: ListView.builder(
+        itemBuilder: (context, index) {
+          return _buildItem(context, indexs[index], index);
+        },
+        itemCount: indexs.length,
+      )
+          // FirestoreAnimatedList(
+          //   query: _trailerManager.trailersQuery.snapshots(),
+          //   errorChild: InformationWidget(
+          //     icon: Icons.error,
+          //     subtitle: translation.errorLoadTrailers,
+          //   ),
+          //   emptyChild: Column(
+          //     mainAxisAlignment: MainAxisAlignment.center,
+          //     crossAxisAlignment: CrossAxisAlignment.center,
+          //     children: <Widget>[
+          //       Padding(
+          //         padding: const EdgeInsets.all(8.0),
+          //         child: Text(
+          //           translation.errorEmptyTrailers,
+          //           style: textTheme.title,
+          //           textAlign: TextAlign.center,
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          //   itemBuilder: _buildItem,
+          // ),
           ),
-          emptyChild: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  translation.errorEmptyTrailers,
-                  style: textTheme.title,
-                  textAlign: TextAlign.center,
-                ),
-              ),
-            ],
-          ),
-          itemBuilder: _buildItem,
-        ),
-      ),
     );
   }
 }

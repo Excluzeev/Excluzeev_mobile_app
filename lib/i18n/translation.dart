@@ -479,6 +479,11 @@ class Translation {
   String get contentCreatorPolicy =>
       Intl.message('Content Creator Policy', name: 'contentCreatorPolicy');
   String get termsOfUse => Intl.message('Terms of Use', name: 'termsOfUse');
+  String get contentCreatorsTerms =>
+      Intl.message('Content Creators Terms', name: 'contentCreatorsTerms');
+  String get communityMemberAgreement =>
+      Intl.message('Community Member Agreement',
+          name: 'communityMemberAgreement');
   String get legalDocs => Intl.message('Legal', name: 'legalDocs');
 
   String get aboutData => Intl.message(
