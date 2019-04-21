@@ -23,6 +23,7 @@ class ImageLoaderWidgetState extends State<ImageLoaderWidget> {
 
   @override
   Widget build(BuildContext context) {
+    // print(widget.url);
     return Container(
       color: Colors.grey[350],
       child: failed
