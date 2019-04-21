@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
+import 'package:flutter_advanced_networkimage/src/flutter_advanced_networkimage.dart';
 //import 'package:trenstop/managers/storage_manager.dart';
 import 'package:trenstop/misc/image_utils.dart';
 import 'package:trenstop/misc/logger.dart';
@@ -27,7 +27,8 @@ class _UserAvatarState extends State<UserAvatar> {
     if (widget.photoUrl != null && widget.photoUrl.isNotEmpty)
       return CircleAvatar(
         backgroundColor: Colors.black26,
-        backgroundImage: AdvancedNetworkImage(widget.photoUrl, useDiskCache: true),
+        backgroundImage:
+            AdvancedNetworkImage(widget.photoUrl, useDiskCache: true),
         radius: screenWidth / radiusRatio,
       );
     else if (widget.photoFile != null)

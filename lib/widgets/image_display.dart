@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
+import 'package:flutter_advanced_networkimage/src/flutter_advanced_networkimage.dart';
 //import 'package:trenstop/pages/plugins/carousel_pro.dart';
 //import 'package:trenstop/widgets/fullscreen_image.dart';
 import 'package:trenstop/widgets/image_loader.dart';
@@ -18,7 +18,7 @@ class ImageDisplay extends StatelessWidget {
       Navigator.of(context).push(
         CupertinoPageRoute(
 //          builder: (_) => FullscreenImage(url: url),
-        ),
+            ),
       );
 
   @override
@@ -48,7 +48,7 @@ class ImageDisplay extends StatelessWidget {
                   : Container(),
             ],
           )
-        :  Container();
+        : Container();
 //    Carousel(
 //            onExpand: zoomable ? (position) => _showFullscreen(context, urls[position]) : null,
 //            images: urls
