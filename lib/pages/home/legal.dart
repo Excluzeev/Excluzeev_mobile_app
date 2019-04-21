@@ -100,6 +100,20 @@ class LeagalLinks extends StatelessWidget {
                 ),
               ),
             ),
+            Divider(),
+            FlatButton(
+              onPressed: () {
+                _launchURL(context, "https://excluzeev.com/license-agreement");
+              },
+              child: SizedBox(
+                width: double.infinity,
+                child: Text(
+                  translation.licenseAgreement,
+                  style: drawerItemTextStyle,
+                  textAlign: TextAlign.left,
+                ),
+              ),
+            ),
           ],
         ),
       ),

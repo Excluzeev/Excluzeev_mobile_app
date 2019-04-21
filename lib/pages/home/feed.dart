@@ -79,7 +79,9 @@ class _FeedPageState extends State<FeedPage> {
   }
 
   _initRemoteConfig() async {
-    remoteConfig = await RemoteConfig.instance;
+    try {
+      remoteConfig = await RemoteConfig.instance;
+    } catch (err) {}
   }
 
   _contentCreator() async {

@@ -482,6 +482,8 @@ class Translation {
   String get termsOfUse => Intl.message('Terms of Use', name: 'termsOfUse');
   String get contentCreatorsTerms =>
       Intl.message('Content Creators Terms', name: 'contentCreatorsTerms');
+  String get licenseAgreement =>
+      Intl.message('License Agreement', name: 'licenseAgreement');
   String get communityMemberAgreement =>
       Intl.message('Community Member Agreement',
           name: 'communityMemberAgreement');
