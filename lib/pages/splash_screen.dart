@@ -55,10 +55,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
     await remoteConfig.fetch(expiration: const Duration(hours: 5));
     await remoteConfig.activateFetched();
-    print('welcome message: ' +
-        remoteConfig.getBool('showContentCreator').toString());
-    print('welcome message: ' +
-        remoteConfig.getBool('showCreateChannel').toString());
   }
 
   @override

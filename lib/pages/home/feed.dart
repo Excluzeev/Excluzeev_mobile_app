@@ -80,7 +80,10 @@ class _FeedPageState extends State<FeedPage> {
 
   _initRemoteConfig() async {
     try {
-      remoteConfig = await RemoteConfig.instance;
+      RemoteConfig remoteC = await RemoteConfig.instance;
+      setState(() {
+        remoteConfig = remoteC;
+      });
     } catch (err) {}
   }
 
@@ -109,7 +112,7 @@ class _FeedPageState extends State<FeedPage> {
   }
 
   _contentCreatorMenu() {
-    if (Platform.isIOS && !remoteConfig.getBool("showContentCreator")) {
+    if (Platform.isIOS && (remoteConfig != null ? !remoteConfig.getBool("showContentCreator") : false)) {
       return Container();
     }
     return user == null
@@ -177,7 +180,7 @@ class _FeedPageState extends State<FeedPage> {
             ),
           ),
         ),
-        Platform.isIOS && !remoteConfig.getBool("showCreateChannel")
+        Platform.isIOS && (remoteConfig != null ? !remoteConfig.getBool("showCreateChannel") : false)
             ? Container()
             : SizedBox(
                 width: double.infinity,
@@ -382,15 +385,14 @@ class _FeedPageState extends State<FeedPage> {
 
   @override
   void initState() {
-    super.initState();
     _initRemoteConfig();
+    super.initState();
     _getUser();
   }
 
   @override
   Widget build(BuildContext context) {
     if (translation == null) translation = Translation.of(context);
-    if (remoteConfig == null) _initRemoteConfig();
 
     return Scaffold(
       key: _scaffoldKey,

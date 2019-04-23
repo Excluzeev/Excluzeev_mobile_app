@@ -44,23 +44,20 @@ class SizedAppLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Hero(
-      tag: TAG,
-      child: Material(
-        color: Colors.transparent,
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              SizedBox(
-                  height: size,
-                  child: Image.asset(
-                    "res/icons/logo/logo_bottom_name.png",
-                  )),
-              SizedBox(height: 8.0),
-            ],
-          ),
+    return Material(
+      color: Colors.transparent,
+      child: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(
+                height: size,
+                child: Image.asset(
+                  "res/icons/logo/logo_bottom_name.png",
+                )),
+            SizedBox(height: 8.0),
+          ],
         ),
       ),
     );

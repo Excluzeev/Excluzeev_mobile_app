@@ -77,21 +77,21 @@ class _MyChannelsPageState extends State<MyChannelsPage> {
   }
 
   _initRemoteConfig() async {
-    remoteConfig = await RemoteConfig.instance;
+    RemoteConfig remoteC = await RemoteConfig.instance;
+    setState(() {
+      remoteConfig = remoteC;
+    });
   }
 
   @override
   void initState() {
-    super.initState();
     _initRemoteConfig();
+    super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     if (translation == null) translation = Translation.of(context);
-    if (remoteConfig == null) {
-      _initRemoteConfig();
-    }
 
     return Scaffold(
       key: _scaffoldKey,
@@ -99,7 +99,7 @@ class _MyChannelsPageState extends State<MyChannelsPage> {
         title: Text(translation.myChannels),
         centerTitle: true,
         actions: <Widget>[
-          Platform.isIOS && !remoteConfig.getBool("showCreateChannel")
+          Platform.isIOS && (remoteConfig != null ? !remoteConfig.getBool("showCreateChannel") : false)
               ? Container()
               : IconButton(
                   icon: Icon(
@@ -124,7 +124,7 @@ class _MyChannelsPageState extends State<MyChannelsPage> {
                 emptyChild: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Platform.isIOS && !remoteConfig.getBool("showCreateChannel")
+                    Platform.isIOS && (remoteConfig != null ? !remoteConfig.getBool("showCreateChannel") : false)
                         ? Container()
                         : RaisedButton.icon(
                             shape: new RoundedRectangleBorder(
