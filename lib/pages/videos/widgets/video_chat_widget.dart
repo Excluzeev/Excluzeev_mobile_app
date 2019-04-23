@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
+import 'package:flutter_advanced_networkimage/src/flutter_advanced_networkimage.dart';
 import 'package:trenstop/misc/date_utils.dart';
 import 'package:trenstop/misc/image_utils.dart';
 import 'package:trenstop/models/chat.dart';
 
 class VideoChatWidget extends StatefulWidget {
-
   const VideoChatWidget({
     Key key,
     @required this.chat,
@@ -18,7 +17,6 @@ class VideoChatWidget extends StatefulWidget {
 }
 
 class _VideoChatWidgetState extends State<VideoChatWidget> {
-
   bool failed = false;
 
   @override
@@ -31,16 +29,19 @@ class _VideoChatWidgetState extends State<VideoChatWidget> {
           InkWell(
 //                  onTap: () => _showProfile(context),
             child: CircleAvatar(
-              backgroundImage: failed ?
-              AssetImage("res/icons/user.png")
-                  :
-              AdvancedNetworkImage(widget.chat.userPhoto, useDiskCache: true, loadFailedCallback: () {
-                if(mounted) {
-                  setState(() {
-                    failed = true;
-                  });
-                }
-              },),
+              backgroundImage: failed
+                  ? AssetImage("res/icons/user.png")
+                  : AdvancedNetworkImage(
+                      widget.chat.userPhoto,
+                      useDiskCache: true,
+                      loadFailedCallback: () {
+                        if (mounted) {
+                          setState(() {
+                            failed = true;
+                          });
+                        }
+                      },
+                    ),
             ),
           ),
           Container(
@@ -53,8 +54,8 @@ class _VideoChatWidgetState extends State<VideoChatWidget> {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.title.copyWith(
-                    fontWeight: FontWeight.normal,
-                  ),
+                        fontWeight: FontWeight.normal,
+                      ),
                 ),
                 SizedBox(
                   height: 4.0,
@@ -64,19 +65,20 @@ class _VideoChatWidgetState extends State<VideoChatWidget> {
                   maxLines: null,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.subtitle.copyWith(
-                    fontWeight: FontWeight.normal,
-                  ),
+                        fontWeight: FontWeight.normal,
+                      ),
                 ),
                 SizedBox(
                   height: 4.0,
                 ),
                 Text(
-                  DateUtils.getLocalizedTimeAgo(widget.chat.createdAt.toDate(), locale: Localizations.localeOf(context)),
+                  DateUtils.getLocalizedTimeAgo(widget.chat.createdAt.toDate(),
+                      locale: Localizations.localeOf(context)),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.caption.copyWith(
-                    fontWeight: FontWeight.normal,
-                  ),
+                        fontWeight: FontWeight.normal,
+                      ),
                 ),
               ],
             ),

@@ -4,7 +4,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
+import 'package:flutter_advanced_networkimage/src/flutter_advanced_networkimage.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:trenstop/managers/snapshot.dart';
@@ -283,5 +283,4 @@ class ImageUtils {
       error: error,
     );
   }
-
 }

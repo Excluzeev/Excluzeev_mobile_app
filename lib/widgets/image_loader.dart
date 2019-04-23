@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/flutter_advanced_networkimage.dart';
+import 'package:flutter_advanced_networkimage/src/flutter_advanced_networkimage.dart';
 import 'dart:io';
 import 'package:rounded_modal/rounded_modal.dart';
 import 'package:trenstop/misc/image_utils.dart';
@@ -23,6 +23,7 @@ class ImageLoaderWidgetState extends State<ImageLoaderWidget> {
 
   @override
   Widget build(BuildContext context) {
+    // print(widget.url);
     return Container(
       color: Colors.grey[350],
       child: failed
