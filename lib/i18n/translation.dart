@@ -239,9 +239,20 @@ class Translation {
         name: 'descriptionVideoHintLabel',
       );
   String get priceSuffixLabel => Intl.message(
-        "CAD \$ per subscription",
+        "CAD \$ per community membership",
         name: 'priceSuffixLabel',
       );
+  String priceWarningMsg(String amount) => Intl.message(
+        '10% of $amount is for Excluzeev and 5% + 5 cents id paypal fee and remaining amount will credited to you.',
+        name: 'priceWarningMsg',
+        args: [amount],
+      );
+
+  String get priceWarningMsgLearnMore => Intl.message(
+        'Learn more about pricing here.',
+        name: 'priceWarningMsgLearnMore',
+      );
+
   String get thumbnailLabel => Intl.message(
         "Thumbnail",
         name: 'thumbnailLabel',

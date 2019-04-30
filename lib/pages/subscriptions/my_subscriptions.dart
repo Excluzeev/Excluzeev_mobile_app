@@ -108,10 +108,13 @@ class _MySubscriptionsPageState extends State<MySubscriptionsPage> {
                   icon: Icons.error,
                   subtitle: translation.errorLoadSubscriptions,
                 ),
-                emptyChild: Image.asset(
-                  'res/icons/empty-subscribe.png',
-                  fit: BoxFit.fill,
+                emptyChild: Center(
+                  child: Text("Join the communities to see them here"),
                 ),
+                // Image.asset(
+                //   'res/icons/empty-subscribe.png',
+                //   fit: BoxFit.fill,
+                // ),
                 itemBuilder: _buildItem,
               ),
       ),

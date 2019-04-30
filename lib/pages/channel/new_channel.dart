@@ -26,6 +26,7 @@ import 'package:trenstop/widgets/modal_picker.dart';
 import 'package:trenstop/widgets/rounded_border.dart';
 import 'package:trenstop/widgets/rounded_button.dart';
 import 'package:trenstop/widgets/white_app_bar.dart';
+import 'package:flutter/gestures.dart';
 
 class NewChannelPage extends StatefulWidget {
   static String TAG = "NEW_CHANNEL_PAGE";
@@ -561,6 +562,23 @@ class _NewChannelPageState extends State<NewChannelPage> {
                                 ),
                               )
                             : Container(),
+                        Padding(
+                          padding:
+                              const EdgeInsets.only(left: 16.0, right: 16.0),
+                          child: Text.rich(
+                            TextSpan(
+                              text: translation.priceWarningMsgLearnMore,
+                              style: TextStyle(
+                                color: Colors.lightBlue,
+                              ),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  WidgetUtils.launchURL(context,
+                                      "http://excluzeev.com/excluzeev-charges");
+                                },
+                            ),
+                          ),
+                        ),
                         Padding(
                           padding:
                               const EdgeInsets.only(left: 16.0, right: 16.0),

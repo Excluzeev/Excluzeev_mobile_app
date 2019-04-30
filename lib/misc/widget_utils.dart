@@ -302,7 +302,7 @@ class WidgetUtils {
 //    }
 //  }
 
-  static void _launchURL(BuildContext context, String url) async {
+  static void launchURL(BuildContext context, String url) async {
     try {
       await launch(
         url,
@@ -353,7 +353,7 @@ class WidgetUtils {
   }
 
   static void goHowTo(BuildContext context) {
-    _launchURL(context, "https://excluzeev.com/howto");
+    launchURL(context, "https://excluzeev.com/howto");
   }
 
   static void goAbout(BuildContext context) {
