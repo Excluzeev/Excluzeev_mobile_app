@@ -501,7 +501,7 @@ class Translation {
   String get legalDocs => Intl.message('Legal', name: 'legalDocs');
 
   String get aboutData => Intl.message(
-      'Excluzeev was created to be a hub for content creators. There are many steps In the process of content production, and Excluzeev connects all these steps together on its platform. Content creators can now crowd fund, launch, and Interact with there supporters here.',
+      'Excluzeev is a streaming platform where content creators feature their exclusive content.\nThere are many steps in the process of content production, and Excluzeev connects all these steps together on its platforms. Excluzeev is about championing diversity within a specific niche. We have created this single destination platform in order to inspire content creators, coaches, and freelancers alike to collaborate creatively and commission boldly.\nTalent need not sacrifice the soul in order to be commercially successful. In fact, we believe in anything but that.Whether you are a full time or a creative part-time content creator looking to explore your options, this is definitely the platform for you.',
       name: 'aboutData');
 
   String get notAppropriate =>

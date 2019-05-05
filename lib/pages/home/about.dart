@@ -10,30 +10,28 @@ class AboutPage extends StatelessWidget {
 
   Translation translation;
 
- _socialIcons() {
+  _socialIcons() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         IconButton(
-          onPressed: () {
-            uLaunch.launch("https://www.facebook.com/excluzeev");
+            onPressed: () {
+              uLaunch.launch("https://www.facebook.com/excluzeev");
             },
-          icon: ImageIcon(
-            AssetImage("res/icons/facebook.png"),
-            size: 50.0,
-            color: Palette.primary,
-          )
-        ),
+            icon: ImageIcon(
+              AssetImage("res/icons/facebook.png"),
+              size: 50.0,
+              color: Palette.primary,
+            )),
         IconButton(
-          onPressed: () {
-            uLaunch.launch("https://www.instagram.com/excluzeev/");
+            onPressed: () {
+              uLaunch.launch("https://www.instagram.com/excluzeev/");
             },
-          icon: ImageIcon(
-            AssetImage("res/icons/instagram.png"),
-            size: 50.0,
-            color: Palette.primary,
-          )
-        ),
+            icon: ImageIcon(
+              AssetImage("res/icons/instagram.png"),
+              size: 50.0,
+              color: Palette.primary,
+            )),
       ],
     );
   }
@@ -41,31 +39,31 @@ class AboutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     translation = Translation.of(context);
-    
+
     return Scaffold(
       appBar: WhiteAppBar(
         title: Text(translation.aboutUs),
         centerTitle: true,
       ),
-      body: Container(
-        padding: const EdgeInsets.all(16.0),
-        color: Colors.white,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            SizedAppLogo(),
-            Text(
-              translation.aboutData,
-              style: TextStyle(
-                fontSize: 18.0
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.all(16.0),
+          color: Colors.white,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              SizedAppLogo(),
+              Text(
+                translation.aboutData,
+                style: TextStyle(fontSize: 18.0),
+                textAlign: TextAlign.left,
               ),
-              textAlign: TextAlign.left,
-            ),
-            SizedBox(
-              height: 16.0,
-            ),
-            _socialIcons(),
-          ],
+              SizedBox(
+                height: 16.0,
+              ),
+              _socialIcons(),
+            ],
+          ),
         ),
       ),
     );
