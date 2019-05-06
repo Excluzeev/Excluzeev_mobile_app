@@ -297,9 +297,26 @@ class _VideoDetailPageState extends State<VideoDetailPage>
                                     child: Image.asset(
                                         'res/icons/thumbnail_placeholder.png'),
                                   )
-                                : Chewie(
-                                    controller: _chewieController,
-                                  ),
+                                : _videoPlayerController.value.initialized
+                                    ? Chewie(
+                                        controller: _chewieController,
+                                      )
+                                    : _videoPlayerController.value.hasError &&
+                                            !_videoPlayerController
+                                                .value.isPlaying
+                                        ? Center(
+                                            child: Text("Error Playing Video."),
+                                          )
+                                        : Container(
+                                            color: Colors.black,
+                                            child: Center(
+                                              child: CircularProgressIndicator(
+                                                valueColor:
+                                                    AlwaysStoppedAnimation<
+                                                        Color>(Colors.white),
+                                              ),
+                                            ),
+                                          ),
                         // Platform.isIOS
                         //     ? VideoPlayer(_videoPlayerController)
                         //     : Chewie(

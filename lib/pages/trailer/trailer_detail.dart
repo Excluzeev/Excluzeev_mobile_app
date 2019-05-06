@@ -474,31 +474,37 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
               //   height: 24.0,
               // ),
               AspectRatio(
-                  aspectRatio: aspectRatio,
-                  child: _videoPlayerController.value.initialized
-                      ? Chewie(
-                          controller: _chewieController,
-                        )
-                      : _videoPlayerController.value.hasError &&
-                              !_videoPlayerController.value.isPlaying
-                          ? Center(
-                              child: Text("Error Playing Video."),
-                            )
-                          : Center(
-                              child: CircularProgressIndicator(),
-                            )
-                  // Platform.isIOS
-                  //     ? VideoPlayer(_videoPlayerController)
-                  //     :
-                  //     Chewie(
-                  //   _videoPlayerController,
-                  //   aspectRatio: aspectRatio,
-                  //   autoPlay: false,
-                  //   placeholder:
-                  //       Image.asset('res/icons/thumbnail_placeholder.png'),
-                  //   key: Key(widget.trailer.trailerId),
-                  // ),
-                  ),
+                aspectRatio: aspectRatio,
+                child: _videoPlayerController.value.initialized
+                    ? Chewie(
+                        controller: _chewieController,
+                      )
+                    : _videoPlayerController.value.hasError &&
+                            !_videoPlayerController.value.isPlaying
+                        ? Center(
+                            child: Text("Error Playing Video."),
+                          )
+                        : Container(
+                            color: Colors.black,
+                            child: Center(
+                              child: CircularProgressIndicator(
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.white),
+                              ),
+                            ),
+                          ),
+                // Platform.isIOS
+                //     ? VideoPlayer(_videoPlayerController)
+                //     :
+                //     Chewie(
+                //   _videoPlayerController,
+                //   aspectRatio: aspectRatio,
+                //   autoPlay: false,
+                //   placeholder:
+                //       Image.asset('res/icons/thumbnail_placeholder.png'),
+                //   key: Key(widget.trailer.trailerId),
+                // ),
+              ),
               TrailerTitleDetailWidget(
                 trailer: widget.trailer,
               ),
