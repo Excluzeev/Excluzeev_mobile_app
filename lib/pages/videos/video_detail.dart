@@ -122,19 +122,34 @@ class _VideoDetailPageState extends State<VideoDetailPage>
     //       });
     //     }
     //   });
-    _videoPlayerController.addListener(() async {
-      if (_videoPlayerController.value.errorDescription != null) {
-        setState(() {
-          _isLoading = true;
-          _isError = true;
-        });
+    var listener = () {
+      if (!mounted) {
+        return;
       }
+      setState(() {});
+    };
 
-      if (!_isViewTriggered &&
-          (await _videoPlayerController.position > Duration(seconds: 5))) {
-        _triggerVideoView();
-      }
-    });
+    _videoPlayerController.addListener(listener);
+
+    // _videoPlayerController
+    //   ..initialize().then((v) {
+    //     _videoPlayerController.play();
+    //     if (aspectRatio != _videoPlayerController.value.aspectRatio) {
+    //       setState(() {
+    //         aspectRatio = _videoPlayerController.value.aspectRatio;
+    //       });
+    //     }
+    //   });
+    if (Platform.isAndroid) {
+      _videoPlayerController.addListener(() async {
+        if (_videoPlayerController != null &&
+            !_isViewTriggered &&
+            (await _videoPlayerController.position > Duration(seconds: 5))) {
+          _triggerVideoView();
+        }
+      });
+    }
+
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController,
       aspectRatio: aspectRatio,

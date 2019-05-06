@@ -109,6 +109,15 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
     _videoPlayerController =
         VideoPlayerController.network(widget.trailer.videoUrl);
 
+    var listener = () {
+      if (!mounted) {
+        return;
+      }
+      setState(() {});
+    };
+
+    _videoPlayerController.addListener(listener);
+
     // _videoPlayerController
     //   ..initialize().then((v) {
     //     _videoPlayerController.play();
@@ -118,13 +127,15 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
     //       });
     //     }
     //   });
-    _videoPlayerController.addListener(() async {
-      if (_videoPlayerController != null &&
-          !_isViewTriggered &&
-          (await _videoPlayerController.position > Duration(seconds: 5))) {
-        _triggerVideoView();
-      }
-    });
+    if (Platform.isAndroid) {
+      _videoPlayerController.addListener(() async {
+        if (_videoPlayerController != null &&
+            !_isViewTriggered &&
+            (await _videoPlayerController.position > Duration(seconds: 5))) {
+          _triggerVideoView();
+        }
+      });
+    }
 
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController,
@@ -464,9 +475,18 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
               // ),
               AspectRatio(
                   aspectRatio: aspectRatio,
-                  child: Chewie(
-                    controller: _chewieController,
-                  )
+                  child: _videoPlayerController.value.initialized
+                      ? Chewie(
+                          controller: _chewieController,
+                        )
+                      : _videoPlayerController.value.hasError &&
+                              !_videoPlayerController.value.isPlaying
+                          ? Center(
+                              child: Text("Error Playing Video."),
+                            )
+                          : Center(
+                              child: CircularProgressIndicator(),
+                            )
                   // Platform.isIOS
                   //     ? VideoPlayer(_videoPlayerController)
                   //     :
