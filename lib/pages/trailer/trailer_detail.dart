@@ -29,8 +29,8 @@ import 'package:trenstop/widgets/rounded_button.dart';
 import 'package:trenstop/widgets/white_app_bar.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
-// import 'package:chewie/chewie.dart';
-import 'package:custom_chewie/custom_chewie.dart';
+import 'package:chewie/chewie.dart';
+// import 'package:custom_chewie/custom_chewie.dart';
 import 'package:screen/screen.dart';
 import 'package:http/http.dart' as http;
 
@@ -57,7 +57,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
   ChannelManager _channelManager = ChannelManager.instance;
 
   VideoPlayerController _videoPlayerController;
-//  ChewieController _chewieController;
+  ChewieController _chewieController;
   double aspectRatio = 16.0 / 9.0;
   bool _publishingComment = false;
 
@@ -85,7 +85,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
       case AppLifecycleState.inactive:
       case AppLifecycleState.paused:
       case AppLifecycleState.suspending:
-        if (!_videoPlayerController.isDisposed) {
+        if (!_videoPlayerController.value.isPlaying) {
           _videoPlayerController.pause();
         }
         break;
@@ -126,12 +126,12 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
       }
     });
 
-//    _chewieController = ChewieController(
-//      videoPlayerController: _videoPlayerController,
-//      aspectRatio: aspectRatio,
-//      autoPlay: true,
-//      looping: false,
-//    );
+    _chewieController = ChewieController(
+      videoPlayerController: _videoPlayerController,
+      aspectRatio: aspectRatio,
+      autoPlay: true,
+      looping: false,
+    );
   }
 
   _checkSubscription() async {
@@ -206,7 +206,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
     _videoPlayerController.removeListener(() {});
     _videoPlayerController.pause();
     _videoPlayerController?.dispose();
-//    _chewieController?.dispose();
+    _chewieController?.dispose();
     super.dispose();
   }
 
@@ -443,12 +443,13 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
     return Scaffold(
       backgroundColor: Colors.white,
       key: _scaffoldKey,
-      appBar: Platform.isIOS
-          ? WhiteAppBar()
-          : PreferredSize(
-              preferredSize: Size(0.0, 0.0),
-              child: Container(),
-            ),
+      appBar: WhiteAppBar(),
+      // Platform.isIOS
+      //     ? WhiteAppBar()
+      //     : PreferredSize(
+      //         preferredSize: Size(0.0, 0.0),
+      //         child: Container(),
+      //       ),
       body: CustomScrollView(slivers: <Widget>[
         SliverToBoxAdapter(
           child: Column(
@@ -458,18 +459,22 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
               //   height: 24.0,
               // ),
               AspectRatio(
-                aspectRatio: aspectRatio,
-                child: Platform.isIOS
-                    ? VideoPlayer(_videoPlayerController)
-                    : Chewie(
-                        _videoPlayerController,
-                        aspectRatio: aspectRatio,
-                        autoPlay: false,
-                        placeholder:
-                            Image.asset('res/icons/thumbnail_placeholder.png'),
-                        key: Key(widget.trailer.trailerId),
-                      ),
-              ),
+                  aspectRatio: aspectRatio,
+                  child: Chewie(
+                    controller: _chewieController,
+                  )
+                  // Platform.isIOS
+                  //     ? VideoPlayer(_videoPlayerController)
+                  //     :
+                  //     Chewie(
+                  //   _videoPlayerController,
+                  //   aspectRatio: aspectRatio,
+                  //   autoPlay: false,
+                  //   placeholder:
+                  //       Image.asset('res/icons/thumbnail_placeholder.png'),
+                  //   key: Key(widget.trailer.trailerId),
+                  // ),
+                  ),
               TrailerTitleDetailWidget(
                 trailer: widget.trailer,
               ),

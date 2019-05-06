@@ -22,7 +22,8 @@ import 'package:trenstop/widgets/white_app_bar.dart';
 import 'package:video_player/video_player.dart';
 import 'package:screen/screen.dart';
 import 'package:flutter_rtmp_publisher/flutter_rtmp_publisher.dart';
-import 'package:custom_chewie/custom_chewie.dart';
+// import 'package:custom_chewie/custom_chewie.dart';
+import 'package:chewie/chewie.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -49,7 +50,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
   ChannelManager _channelManager = ChannelManager.instance;
 
   VideoPlayerController _videoPlayerController;
-//  ChewieController _chewieController;
+  ChewieController _chewieController;
   double aspectRatio = 16.0 / 9.0;
   String videoUrl = "";
   bool _isLoading = true;
@@ -100,7 +101,7 @@ class _VideoDetailPageState extends State<VideoDetailPage>
       case AppLifecycleState.inactive:
       case AppLifecycleState.paused:
       case AppLifecycleState.suspending:
-        if (!_videoPlayerController.isDisposed) {
+        if (!_videoPlayerController.value.isPlaying) {
           _videoPlayerController.pause();
         }
         break;
@@ -246,12 +247,13 @@ class _VideoDetailPageState extends State<VideoDetailPage>
       backgroundColor: Colors.white,
       key: _scaffoldKey,
       resizeToAvoidBottomPadding: true,
-      appBar: Platform.isIOS
-          ? WhiteAppBar()
-          : PreferredSize(
-              preferredSize: Size(0.0, 0.0),
-              child: Container(),
-            ),
+      appBar: WhiteAppBar(),
+      // Platform.isIOS
+      //     ? WhiteAppBar()
+      //     : PreferredSize(
+      //         preferredSize: Size(0.0, 0.0),
+      //         child: Container(),
+      //       ),
       body: CustomScrollView(
         physics: BouncingScrollPhysics(),
         slivers: [
@@ -276,18 +278,21 @@ class _VideoDetailPageState extends State<VideoDetailPage>
                                     child: Image.asset(
                                         'res/icons/thumbnail_placeholder.png'),
                                   )
-                                : Platform.isIOS
-                                    ? VideoPlayer(_videoPlayerController)
-                                    : Chewie(
-                                        _videoPlayerController,
-                                        aspectRatio: aspectRatio,
-                                        autoPlay: false,
-                                        looping: false,
-                                        placeholder: Image.asset(
-                                          'res/icons/thumbnail_placeholder.png',
-                                          key: Key(widget.video.videoId),
-                                        ),
-                                      ),
+                                : Chewie(
+                                    controller: _chewieController,
+                                  ),
+                        // Platform.isIOS
+                        //     ? VideoPlayer(_videoPlayerController)
+                        //     : Chewie(
+                        //         _videoPlayerController,
+                        //         aspectRatio: aspectRatio,
+                        //         autoPlay: false,
+                        //         looping: false,
+                        //         placeholder: Image.asset(
+                        //           'res/icons/thumbnail_placeholder.png',
+                        //           key: Key(widget.video.videoId),
+                        //         ),
+                        //       ),
 //                  Chewie(
 //                    controller: _chewieController,
 //                  ),

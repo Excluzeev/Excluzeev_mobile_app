@@ -33,7 +33,7 @@ dependencies:
   firestore_ui: ^1.1.1
   built_value: ^6.3.0
   crypto: ^2.0.6
-  custom_chewie: ^0.7.0
+  # custom_chewie: ^0.7.0
   http: ^0.12.0+1
   permission_handler: ^2.1.2
   flutter_webview_plugin:
@@ -47,9 +47,9 @@ dependencies:
   flutter_custom_tabs: ^0.6.0
   fluttertoast: ^3.0.3
   firebase_remote_config: ^0.1.0+2
+  chewie: ^0.9.7
 
-# dependency_overrides:
-#   chewie: ^0.9.6
+dependency_overrides:
 #   video_player: ^0.10.0+4
 
 dev_dependencies:
