@@ -109,15 +109,15 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
     _videoPlayerController =
         VideoPlayerController.network(widget.trailer.videoUrl);
 
-    _videoPlayerController
-      ..initialize().then((v) {
-        _videoPlayerController.play();
-        if (aspectRatio != _videoPlayerController.value.aspectRatio) {
-          setState(() {
-            aspectRatio = _videoPlayerController.value.aspectRatio;
-          });
-        }
-      });
+    // _videoPlayerController
+    //   ..initialize().then((v) {
+    //     _videoPlayerController.play();
+    //     if (aspectRatio != _videoPlayerController.value.aspectRatio) {
+    //       setState(() {
+    //         aspectRatio = _videoPlayerController.value.aspectRatio;
+    //       });
+    //     }
+    //   });
     _videoPlayerController.addListener(() async {
       if (_videoPlayerController != null &&
           !_isViewTriggered &&
@@ -131,6 +131,10 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
       aspectRatio: aspectRatio,
       autoPlay: true,
       looping: false,
+      autoInitialize: true,
+      placeholder: Image.asset('res/icons/thumbnail_placeholder.png'),
+      allowFullScreen: true,
+      allowedScreenSleep: false,
     );
   }
 

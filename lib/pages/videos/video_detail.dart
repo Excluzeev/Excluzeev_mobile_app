@@ -113,15 +113,15 @@ class _VideoDetailPageState extends State<VideoDetailPage>
   void _setVideo() async {
     await _getVideoUrl();
     _videoPlayerController = VideoPlayerController.network(videoUrl);
-    _videoPlayerController
-      ..initialize().then((v) {
-        _videoPlayerController.play();
-        if (aspectRatio != _videoPlayerController.value.aspectRatio) {
-          setState(() {
-            aspectRatio = _videoPlayerController.value.aspectRatio;
-          });
-        }
-      });
+    // _videoPlayerController
+    //   ..initialize().then((v) {
+    //     _videoPlayerController.play();
+    //     if (aspectRatio != _videoPlayerController.value.aspectRatio) {
+    //       setState(() {
+    //         aspectRatio = _videoPlayerController.value.aspectRatio;
+    //       });
+    //     }
+    //   });
     _videoPlayerController.addListener(() async {
       if (_videoPlayerController.value.errorDescription != null) {
         setState(() {
@@ -135,12 +135,16 @@ class _VideoDetailPageState extends State<VideoDetailPage>
         _triggerVideoView();
       }
     });
-//    _chewieController = ChewieController(
-//      videoPlayerController: _videoPlayerController,
-//      aspectRatio: aspectRatio,
-//      autoPlay: false,
-//      looping: false,
-//    );
+    _chewieController = ChewieController(
+      videoPlayerController: _videoPlayerController,
+      aspectRatio: aspectRatio,
+      autoPlay: true,
+      looping: false,
+      autoInitialize: true,
+      placeholder: Image.asset('res/icons/thumbnail_placeholder.png'),
+      allowFullScreen: true,
+      allowedScreenSleep: false,
+    );
   }
 
   void _setStreamButton() async {
