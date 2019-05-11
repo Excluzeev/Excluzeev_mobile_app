@@ -66,7 +66,8 @@ abstract class Trailer implements Built<Trailer, TrailerBuilder> {
         ..createdBy = data['createdBy'] ?? ''
         ..title = data['title'] ?? ''
         ..description = data['description'] ?? ''
-        ..image = 'https://image.mux.com/${data['playbackId']}/thumbnail.png'
+        ..image =
+            'https://image.mux.com/${data['playbackId']}/thumbnail.png?width=214&fit_mode=pad'
         ..channelImage =
             'https://firebasestorage.googleapis.com/v0/b/trenstop-public/o/channels%2F${data['channelId']}%2Fthumbnail.jpg?alt=media'
         ..videoUrl = "https://stream.mux.com/${data['playbackId']}.m3u8"
@@ -113,7 +114,8 @@ abstract class Trailer implements Built<Trailer, TrailerBuilder> {
         ..createdBy = data['createdBy'] ?? ''
         ..title = data['title'] ?? ''
         ..description = data['description'] ?? ''
-        ..image = 'https://image.mux.com/${data['playbackId']}/thumbnail.png'
+        ..image =
+            'https://image.mux.com/${data['playbackId']}/thumbnail.png?width=214&fit_mode=pad'
         ..channelImage =
             'https://firebasestorage.googleapis.com/v0/b/trenstop-public/o/channels%2F${data['channelId']}%2Fthumbnail.jpg?alt=media'
         ..videoUrl = "https://stream.mux.com/${data['playbackId']}.m3u8"

@@ -9,7 +9,6 @@ import 'package:trenstop/misc/logger.dart';
 part 'video.g.dart';
 
 abstract class Video implements Built<Video, VideoBuilder> {
-
   static String TAG = "VIDEO_MODEL";
 
   String get userId;
@@ -56,7 +55,6 @@ abstract class Video implements Built<Video, VideoBuilder> {
 
   Timestamp get createdDate;
 
-
   Video._();
 
   factory Video([updates(VideoBuilder b)]) = _$Video;
@@ -79,10 +77,12 @@ abstract class Video implements Built<Video, VideoBuilder> {
         ..later = data['later'] ?? 'now'
         ..scheduleDate = data['scheduleDate'] ?? null
         ..description = data['description'] ?? ''
-        ..image = 'https://image.mux.com/${data['playbackId']}/thumbnail.png?token=${data['imageToken']}'
+        ..image =
+            'https://image.mux.com/${data['playbackId']}/thumbnail.png?width=214&fit_mode=pad&token=${data['imageToken']}'
         ..streamKey = data['streamKey'] ?? ''
         ..muxId = data['muxId'] ?? ''
-        ..channelImage = 'https://firebasestorage.googleapis.com/v0/b/trenstop-public/o/channels%2F${data['channelId']}%2Fthumbnail.jpg?alt=media'
+        ..channelImage =
+            'https://firebasestorage.googleapis.com/v0/b/trenstop-public/o/channels%2F${data['channelId']}%2Fthumbnail.jpg?alt=media'
         ..playbackId = data['playbackId'] ?? ''
         ..createdDate = data['createdDate'] ?? null
         ..likes = data['likes'] ?? 0
@@ -97,35 +97,35 @@ abstract class Video implements Built<Video, VideoBuilder> {
   }
 
   Map<String, dynamic> get toMap => {
-    "userId": this.userId,
-    "videoId": this.videoId,
-    "channelId": this.channelId,
-    "channelName": this.channelName,
-    "categoryId": this.categoryId,
-    "categoryName": this.categoryName,
-    "createdBy": this.createdBy,
-    "title": this.title,
-    "type": this.type,
-    "description": this.description,
-    "videoUrl": this.videoUrl,
-    "createdDate": this.createdDate,
-  };
+        "userId": this.userId,
+        "videoId": this.videoId,
+        "channelId": this.channelId,
+        "channelName": this.channelName,
+        "categoryId": this.categoryId,
+        "categoryName": this.categoryName,
+        "createdBy": this.createdBy,
+        "title": this.title,
+        "type": this.type,
+        "description": this.description,
+        "videoUrl": this.videoUrl,
+        "createdDate": this.createdDate,
+      };
 
   Map<String, dynamic> get toJson => {
-    "userId": this.userId,
-    "videoId": this.videoId,
-    "channelId": this.channelId,
-    "channelName": this.channelName,
-    "categoryId": this.categoryId,
-    "categoryName": this.categoryName,
-    "createdBy": this.createdBy,
-    "title": this.title,
-    "type": this.type,
-    "description": this.description,
-    "later": this.later,
-    "sDate": this.sDate,
-    "videoUrl": this.videoUrl,
-  };
+        "userId": this.userId,
+        "videoId": this.videoId,
+        "channelId": this.channelId,
+        "channelName": this.channelName,
+        "categoryId": this.categoryId,
+        "categoryName": this.categoryName,
+        "createdBy": this.createdBy,
+        "title": this.title,
+        "type": this.type,
+        "description": this.description,
+        "later": this.later,
+        "sDate": this.sDate,
+        "videoUrl": this.videoUrl,
+      };
 
   static Serializer<Video> get serializer => _$videoSerializer;
 }
