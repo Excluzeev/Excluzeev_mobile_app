@@ -109,9 +109,18 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
     _videoPlayerController =
         VideoPlayerController.network(widget.trailer.videoUrl);
 
-    var listener = () {
+    var listener = () async {
       if (!mounted) {
         return;
+      }
+      if(_videoPlayerController != null ) {
+      var videoDuration = _videoPlayerController.value.position;
+      // var videoDuration;
+      print(videoDuration);
+      if (!_isViewTriggered && videoDuration != null && (videoDuration > Duration(seconds: 5))) {
+          _isViewTriggered = true;
+          _triggerVideoView();
+        }
       }
       setState(() {});
     };
@@ -127,15 +136,15 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
     //       });
     //     }
     //   });
-    if (Platform.isAndroid) {
-      _videoPlayerController.addListener(() async {
-        if (_videoPlayerController != null &&
-            !_isViewTriggered &&
-            (await _videoPlayerController.position > Duration(seconds: 5))) {
-          _triggerVideoView();
-        }
-      });
-    }
+    // if (Platform.isAndroid) {
+    //   _videoPlayerController.addListener(() async {
+    //     if (_videoPlayerController != null &&
+    //         !_isViewTriggered &&
+    //         (await _videoPlayerController.position > Duration(seconds: 5))) {
+    //       _triggerVideoView();
+    //     }
+    //   });
+    // }
 
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController,
@@ -219,7 +228,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
   @override
   void dispose() {
     _videoPlayerController.removeListener(() {});
-    _videoPlayerController.pause();
+    // _videoPlayerController?.pause();
     _videoPlayerController?.dispose();
     _chewieController?.dispose();
     super.dispose();

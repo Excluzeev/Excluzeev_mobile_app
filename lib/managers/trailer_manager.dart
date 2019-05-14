@@ -125,7 +125,7 @@ class TrailerManager {
 
     final errorHandler = (exception, stacktrace) {
       Logger.log(TAG,
-          message: "Couldn't update Comment on database, error: $exception");
+          message: "Couldn't update Views on database, error: $exception $stacktrace");
       error = "Unknown Error";
     };
 
