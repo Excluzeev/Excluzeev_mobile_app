@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'dart:math';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -61,6 +61,8 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
   double aspectRatio = 16.0 / 9.0;
   bool _publishingComment = false;
 
+  static int viewThreshold = Random().nextInt(10);
+
   bool _isViewTriggered = false;
   bool _showSubscribe = true;
 
@@ -116,8 +118,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
       if(_videoPlayerController != null ) {
       var videoDuration = _videoPlayerController.value.position;
       // var videoDuration;
-      print(videoDuration);
-      if (!_isViewTriggered && videoDuration != null && (videoDuration > Duration(seconds: 5))) {
+      if (!_isViewTriggered && videoDuration != null && (videoDuration > Duration(seconds: viewThreshold))) {
           _isViewTriggered = true;
           _triggerVideoView();
         }
