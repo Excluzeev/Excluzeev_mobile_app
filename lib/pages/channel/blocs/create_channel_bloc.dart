@@ -45,14 +45,23 @@ class CreateChannelBlocValidator {
         }
       });
 
-  StreamTransformer<double, String> get validatePriceInt =>
+  StreamTransformer<double, String> validatePriceInt(
+          BehaviorSubject<String> tier) =>
       StreamTransformer<double, String>.fromHandlers(handleData: (data, sink) {
         if (data == null) {
           sink.addError(translation.cannotBeEmpty);
-        } else if (data <= 10 && data >= 1) {
-          sink.add(data.toString());
-        } else {
-          sink.addError(translation.priceError);
+        } else if (tier.value == "Tier 1") {
+          if (data <= 10 && data >= 1) {
+            sink.add(data.toString());
+          } else {
+            sink.addError(translation.priceError);
+          }
+        } else if (tier.value == "Tier 2") {
+          if (data >= 10) {
+            sink.add(data.toString());
+          } else {
+            sink.addError(translation.priceLess10Error);
+          }
         }
       });
 }
@@ -72,9 +81,12 @@ class CreateChannelBloc extends BlocBase {
   final _descriptionSubject = BehaviorSubject<String>();
   final _priceSubject = BehaviorSubject<double>();
   final _targetFundSubject = BehaviorSubject<double>();
+  final _tierSubject = BehaviorSubject<String>();
 
   Stream<String> get categoryName =>
       _categoryNameSubject.stream.transform(validator.validateEmpty);
+  Stream<String> get tier =>
+      _tierSubject.stream.transform(validator.validateEmpty);
   Stream<String> get type =>
       _typeSubject.stream.transform(validator.validateEmpty);
   Stream<String> get title =>
@@ -82,7 +94,7 @@ class CreateChannelBloc extends BlocBase {
   Stream<String> get description =>
       _descriptionSubject.stream.transform(validator.validateEmpty);
   Stream<String> get price =>
-      _priceSubject.stream.transform(validator.validatePriceInt);
+      _priceSubject.stream.transform(validator.validatePriceInt(_tierSubject));
   Stream<String> get targetFund =>
       _targetFundSubject.stream.transform(validator.validateTargetFund);
 
@@ -95,6 +107,7 @@ class CreateChannelBloc extends BlocBase {
           !c.isEmpty && !title.isEmpty && !d.isEmpty && (price != null));
 
   Function(String) get updateCategoryName => _categoryNameSubject.sink.add;
+  Function(String) get updateTier => _tierSubject.sink.add;
   Function(String) get updateType => _typeSubject.sink.add;
   Function(String) get updateTitle => _titleSubject.sink.add;
   Function(String) get updateDescription => _descriptionSubject.sink.add;
@@ -104,6 +117,7 @@ class CreateChannelBloc extends BlocBase {
   dispose() {
     _categoryNameSubject.close();
     _typeSubject.close();
+    _tierSubject.close();
     _titleSubject.close();
     _descriptionSubject.close();
     _priceSubject.close();

@@ -6,19 +6,6 @@ part of 'video.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
-// ignore_for_file: always_put_control_body_on_new_line
-// ignore_for_file: annotate_overrides
-// ignore_for_file: avoid_annotating_with_dynamic
-// ignore_for_file: avoid_catches_without_on_clauses
-// ignore_for_file: avoid_returning_this
-// ignore_for_file: lines_longer_than_80_chars
-// ignore_for_file: omit_local_variable_types
-// ignore_for_file: prefer_expression_function_bodies
-// ignore_for_file: sort_constructors_first
-// ignore_for_file: unnecessary_const
-// ignore_for_file: unnecessary_new
-// ignore_for_file: test_types_in_equals
-
 Serializer<Video> _$videoSerializer = new _$VideoSerializer();
 
 class _$VideoSerializer implements StructuredSerializer<Video> {
@@ -310,7 +297,7 @@ class _$Video extends Video {
   @override
   final Timestamp createdDate;
 
-  factory _$Video([void updates(VideoBuilder b)]) =>
+  factory _$Video([void Function(VideoBuilder) updates]) =>
       (new VideoBuilder()..update(updates)).build();
 
   _$Video._(
@@ -375,7 +362,7 @@ class _$Video extends Video {
   }
 
   @override
-  Video rebuild(void updates(VideoBuilder b)) =>
+  Video rebuild(void Function(VideoBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -626,7 +613,7 @@ class VideoBuilder implements Builder<Video, VideoBuilder> {
   }
 
   @override
-  void update(void updates(VideoBuilder b)) {
+  void update(void Function(VideoBuilder) updates) {
     if (updates != null) updates(this);
   }
 
@@ -662,3 +649,5 @@ class VideoBuilder implements Builder<Video, VideoBuilder> {
     return _$result;
   }
 }
+
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

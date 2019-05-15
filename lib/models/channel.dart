@@ -34,6 +34,9 @@ abstract class Channel implements Built<Channel, ChannelBuilder> {
   double get price;
 
   @nullable
+  String get tier;
+
+  @nullable
   double get targetFund;
 
   @nullable
@@ -67,6 +70,7 @@ abstract class Channel implements Built<Channel, ChannelBuilder> {
         ..title = data['title'] ?? ''
         ..description = data['description'] ?? ''
         ..image = data['image'] ?? ''
+        ..tier = data['tier'] ?? ''
         ..coverImage = data['coverImage'] ?? ''
         ..createdDate = data['createdDate'] ?? null
         ..deleteOn = data['deleteOn'] != null ? data['deleteOn'].toDate() : null
@@ -93,6 +97,7 @@ abstract class Channel implements Built<Channel, ChannelBuilder> {
         "title": this.title,
         "description": this.description,
         "image": this.image,
+        "tier": this.tier,
         "coverImage": this.coverImage,
         "createdDate": this.createdDate,
         "subscriberCount": this.subscriberCount,

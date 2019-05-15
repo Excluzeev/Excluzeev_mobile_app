@@ -198,6 +198,11 @@ class Translation {
         "Cannot be greater 10 or Lessthan 1",
         name: 'priceError',
       );
+
+  String get priceLess10Error => Intl.message(
+        "Cannot be less than 10",
+        name: 'priceError',
+      );
   String get categoryNameLabel => Intl.message(
         "Category",
         name: 'categoryNameLabel',
@@ -209,6 +214,11 @@ class Translation {
   String get channelTypeLabel => Intl.message(
         "Channel Type",
         name: 'channelTypeLabel',
+      );
+
+  String get channelTierLabel => Intl.message(
+        "Channel Tier",
+        name: 'channelTierLabel',
       );
   String get titleLabel => Intl.message(
         "Title",

@@ -6,19 +6,6 @@ part of 'channel.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
-// ignore_for_file: always_put_control_body_on_new_line
-// ignore_for_file: annotate_overrides
-// ignore_for_file: avoid_annotating_with_dynamic
-// ignore_for_file: avoid_catches_without_on_clauses
-// ignore_for_file: avoid_returning_this
-// ignore_for_file: lines_longer_than_80_chars
-// ignore_for_file: omit_local_variable_types
-// ignore_for_file: prefer_expression_function_bodies
-// ignore_for_file: sort_constructors_first
-// ignore_for_file: unnecessary_const
-// ignore_for_file: unnecessary_new
-// ignore_for_file: test_types_in_equals
-
 Serializer<Channel> _$channelSerializer = new _$ChannelSerializer();
 
 class _$ChannelSerializer implements StructuredSerializer<Channel> {
@@ -79,6 +66,12 @@ class _$ChannelSerializer implements StructuredSerializer<Channel> {
         ..add('subscriberCount')
         ..add(serializers.serialize(object.subscriberCount,
             specifiedType: const FullType(int)));
+    }
+    if (object.tier != null) {
+      result
+        ..add('tier')
+        ..add(serializers.serialize(object.tier,
+            specifiedType: const FullType(String)));
     }
     if (object.targetFund != null) {
       result
@@ -177,6 +170,10 @@ class _$ChannelSerializer implements StructuredSerializer<Channel> {
           result.price = serializers.deserialize(value,
               specifiedType: const FullType(double)) as double;
           break;
+        case 'tier':
+          result.tier = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
         case 'targetFund':
           result.targetFund = serializers.deserialize(value,
               specifiedType: const FullType(double)) as double;
@@ -232,6 +229,8 @@ class _$Channel extends Channel {
   @override
   final double price;
   @override
+  final String tier;
+  @override
   final double targetFund;
   @override
   final double currentFund;
@@ -242,7 +241,7 @@ class _$Channel extends Channel {
   @override
   final DateTime deleteOn;
 
-  factory _$Channel([void updates(ChannelBuilder b)]) =>
+  factory _$Channel([void Function(ChannelBuilder) updates]) =>
       (new ChannelBuilder()..update(updates)).build();
 
   _$Channel._(
@@ -259,6 +258,7 @@ class _$Channel extends Channel {
       this.createdDate,
       this.subscriberCount,
       this.price,
+      this.tier,
       this.targetFund,
       this.currentFund,
       this.percentage,
@@ -298,7 +298,7 @@ class _$Channel extends Channel {
   }
 
   @override
-  Channel rebuild(void updates(ChannelBuilder b)) =>
+  Channel rebuild(void Function(ChannelBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -321,6 +321,7 @@ class _$Channel extends Channel {
         createdDate == other.createdDate &&
         subscriberCount == other.subscriberCount &&
         price == other.price &&
+        tier == other.tier &&
         targetFund == other.targetFund &&
         currentFund == other.currentFund &&
         percentage == other.percentage &&
@@ -348,24 +349,28 @@ class _$Channel extends Channel {
                                                                 $jc(
                                                                     $jc(
                                                                         $jc(
-                                                                            0,
-                                                                            userId
+                                                                            $jc(
+                                                                                0,
+                                                                                userId
+                                                                                    .hashCode),
+                                                                            channelId
                                                                                 .hashCode),
-                                                                        channelId
+                                                                        categoryId
                                                                             .hashCode),
-                                                                    categoryId
+                                                                    categoryName
                                                                         .hashCode),
-                                                                categoryName
+                                                                createdBy
                                                                     .hashCode),
-                                                            createdBy.hashCode),
-                                                        channelType.hashCode),
-                                                    title.hashCode),
-                                                description.hashCode),
-                                            image.hashCode),
-                                        coverImage.hashCode),
-                                    createdDate.hashCode),
-                                subscriberCount.hashCode),
-                            price.hashCode),
+                                                            channelType
+                                                                .hashCode),
+                                                        title.hashCode),
+                                                    description.hashCode),
+                                                image.hashCode),
+                                            coverImage.hashCode),
+                                        createdDate.hashCode),
+                                    subscriberCount.hashCode),
+                                price.hashCode),
+                            tier.hashCode),
                         targetFund.hashCode),
                     currentFund.hashCode),
                 percentage.hashCode),
@@ -389,6 +394,7 @@ class _$Channel extends Channel {
           ..add('createdDate', createdDate)
           ..add('subscriberCount', subscriberCount)
           ..add('price', price)
+          ..add('tier', tier)
           ..add('targetFund', targetFund)
           ..add('currentFund', currentFund)
           ..add('percentage', percentage)
@@ -454,6 +460,10 @@ class ChannelBuilder implements Builder<Channel, ChannelBuilder> {
   double get price => _$this._price;
   set price(double price) => _$this._price = price;
 
+  String _tier;
+  String get tier => _$this._tier;
+  set tier(String tier) => _$this._tier = tier;
+
   double _targetFund;
   double get targetFund => _$this._targetFund;
   set targetFund(double targetFund) => _$this._targetFund = targetFund;
@@ -491,6 +501,7 @@ class ChannelBuilder implements Builder<Channel, ChannelBuilder> {
       _createdDate = _$v.createdDate;
       _subscriberCount = _$v.subscriberCount;
       _price = _$v.price;
+      _tier = _$v.tier;
       _targetFund = _$v.targetFund;
       _currentFund = _$v.currentFund;
       _percentage = _$v.percentage;
@@ -510,7 +521,7 @@ class ChannelBuilder implements Builder<Channel, ChannelBuilder> {
   }
 
   @override
-  void update(void updates(ChannelBuilder b)) {
+  void update(void Function(ChannelBuilder) updates) {
     if (updates != null) updates(this);
   }
 
@@ -531,6 +542,7 @@ class ChannelBuilder implements Builder<Channel, ChannelBuilder> {
             createdDate: createdDate,
             subscriberCount: subscriberCount,
             price: price,
+            tier: tier,
             targetFund: targetFund,
             currentFund: currentFund,
             percentage: percentage,
@@ -540,3 +552,5 @@ class ChannelBuilder implements Builder<Channel, ChannelBuilder> {
     return _$result;
   }
 }
+
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new

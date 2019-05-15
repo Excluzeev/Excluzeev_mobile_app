@@ -50,6 +50,7 @@ class _NewChannelPageState extends State<NewChannelPage> {
 
   Category selectedCategory;
   String selectedType = "VOD";
+  String selectedTier = "Tier 1";
 
   bool _isLoading = false;
 
@@ -152,9 +153,46 @@ class _NewChannelPageState extends State<NewChannelPage> {
               );
             }).toList(),
             onChanged: (type) {
-              bloc.updateType(type);
+              bloc.updateTier(type);
               setState(() {
                 selectedType = type;
+              });
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  _buildTierDropDown() {
+    return Container(
+      margin:
+          const EdgeInsets.only(left: 16.0, right: 16.0, top: 8.0, bottom: 8.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text(
+            translation.channelTierLabel,
+            style: TextStyle(
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+              color: Palette.primary,
+            ),
+          ),
+          DropdownButton<String>(
+            value: selectedTier,
+            hint: Text(translation.channelTierLabel),
+            isExpanded: true,
+            items: <String>["Tier 1", "Tier 2"].map((String type) {
+              return DropdownMenuItem<String>(
+                value: type,
+                child: Text(type),
+              );
+            }).toList(),
+            onChanged: (type) {
+              bloc.updateType(type);
+              setState(() {
+                selectedTier = type;
               });
             },
           ),
@@ -347,6 +385,31 @@ class _NewChannelPageState extends State<NewChannelPage> {
       targetFund = 0.0;
     }
 
+    double priceData = 1.0;
+
+    if (selectedTier == "Tier 1") {
+      try {
+        priceData = double.parse(_priceController.text);
+      } catch (err) {
+        priceData = 1.0;
+      }
+      if (priceData >= 10.0) {
+        _showSnackBar("Tier 1 price should be less than 10\$");
+        return;
+      }
+    } else {
+      try {
+        priceData = double.parse(_priceController.text);
+      } catch (err) {
+        priceData = 10.0;
+      }
+
+      if (priceData < 10.0) {
+        _showSnackBar("Tier 2 price should be greater than 10\$");
+        return;
+      }
+    }
+
     ChannelBuilder channelBuilder = ChannelBuilder()
       ..channelId = channelId
       ..categoryName = selectedCategory.name
@@ -360,7 +423,8 @@ class _NewChannelPageState extends State<NewChannelPage> {
       ..coverImage = coverImage.data
       ..createdDate = Timestamp.fromDate(DateTime.now())
       ..subscriberCount = 0
-      ..price = double.parse(_priceController.text) ?? 1.0
+      ..price = priceData
+      ..tier = selectedTier
       ..targetFund = targetFund
       ..currentFund = 0
       ..percentage = 0.0;
@@ -382,6 +446,8 @@ class _NewChannelPageState extends State<NewChannelPage> {
     if (bloc == null)
       bloc =
           CreateChannelBloc(validator: CreateChannelBlocValidator(translation));
+
+    bloc.updateTier(selectedTier);
 
     return BlocProvider(
       bloc: bloc,
@@ -485,6 +551,7 @@ class _NewChannelPageState extends State<NewChannelPage> {
                             ),
                           ),
                         ),
+                        _buildTierDropDown(),
                         Padding(
                           padding:
                               const EdgeInsets.only(left: 16.0, right: 16.0),

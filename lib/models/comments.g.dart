@@ -6,19 +6,6 @@ part of 'comments.dart';
 // BuiltValueGenerator
 // **************************************************************************
 
-// ignore_for_file: always_put_control_body_on_new_line
-// ignore_for_file: annotate_overrides
-// ignore_for_file: avoid_annotating_with_dynamic
-// ignore_for_file: avoid_catches_without_on_clauses
-// ignore_for_file: avoid_returning_this
-// ignore_for_file: lines_longer_than_80_chars
-// ignore_for_file: omit_local_variable_types
-// ignore_for_file: prefer_expression_function_bodies
-// ignore_for_file: sort_constructors_first
-// ignore_for_file: unnecessary_const
-// ignore_for_file: unnecessary_new
-// ignore_for_file: test_types_in_equals
-
 Serializer<Comments> _$commentsSerializer = new _$CommentsSerializer();
 
 class _$CommentsSerializer implements StructuredSerializer<Comments> {
@@ -139,7 +126,7 @@ class _$Comments extends Comments {
   @override
   final Timestamp createdDate;
 
-  factory _$Comments([void updates(CommentsBuilder b)]) =>
+  factory _$Comments([void Function(CommentsBuilder) updates]) =>
       (new CommentsBuilder()..update(updates)).build();
 
   _$Comments._(
@@ -180,7 +167,7 @@ class _$Comments extends Comments {
   }
 
   @override
-  Comments rebuild(void updates(CommentsBuilder b)) =>
+  Comments rebuild(void Function(CommentsBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
@@ -301,7 +288,7 @@ class CommentsBuilder implements Builder<Comments, CommentsBuilder> {
   }
 
   @override
-  void update(void updates(CommentsBuilder b)) {
+  void update(void Function(CommentsBuilder) updates) {
     if (updates != null) updates(this);
   }
 
@@ -322,3 +309,5 @@ class CommentsBuilder implements Builder<Comments, CommentsBuilder> {
     return _$result;
   }
 }
+
+// ignore_for_file: always_put_control_body_on_new_line,always_specify_types,annotate_overrides,avoid_annotating_with_dynamic,avoid_as,avoid_catches_without_on_clauses,avoid_returning_this,lines_longer_than_80_chars,omit_local_variable_types,prefer_expression_function_bodies,sort_constructors_first,test_types_in_equals,unnecessary_const,unnecessary_new
