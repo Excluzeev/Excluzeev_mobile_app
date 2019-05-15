@@ -57,6 +57,8 @@ class _VideoDetailPageState extends State<VideoDetailPage>
   bool _isError = false;
   bool _isViewTriggered = false;
 
+  static int viewThreshold = 10;
+
   bool _showStartStream = false;
 
   FocusNode _focusNode = new FocusNode();
@@ -126,6 +128,14 @@ class _VideoDetailPageState extends State<VideoDetailPage>
       if (!mounted) {
         return;
       }
+      if(_videoPlayerController != null ) {
+      var videoDuration = _videoPlayerController.value.position;
+      // var videoDuration;
+      if (!_isViewTriggered && videoDuration != null && (videoDuration > Duration(seconds: viewThreshold))) {
+          _isViewTriggered = true;
+          _triggerVideoView();
+        }
+      }
       setState(() {});
     };
 
@@ -140,15 +150,6 @@ class _VideoDetailPageState extends State<VideoDetailPage>
     //       });
     //     }
     //   });
-    if (Platform.isAndroid) {
-      _videoPlayerController.addListener(() async {
-        if (_videoPlayerController != null &&
-            !_isViewTriggered &&
-            (await _videoPlayerController.position > Duration(seconds: 5))) {
-          _triggerVideoView();
-        }
-      });
-    }
 
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController,

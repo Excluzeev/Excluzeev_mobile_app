@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'dart:math';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -61,6 +61,8 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
   double aspectRatio = 16.0 / 9.0;
   bool _publishingComment = false;
 
+  static int viewThreshold = Random().nextInt(10);
+
   bool _isViewTriggered = false;
   bool _showSubscribe = true;
 
@@ -109,9 +111,17 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
     _videoPlayerController =
         VideoPlayerController.network(widget.trailer.videoUrl);
 
-    var listener = () {
+    var listener = () async {
       if (!mounted) {
         return;
+      }
+      if(_videoPlayerController != null ) {
+      var videoDuration = _videoPlayerController.value.position;
+      // var videoDuration;
+      if (!_isViewTriggered && videoDuration != null && (videoDuration > Duration(seconds: viewThreshold))) {
+          _isViewTriggered = true;
+          _triggerVideoView();
+        }
       }
       setState(() {});
     };
@@ -127,15 +137,15 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
     //       });
     //     }
     //   });
-    if (Platform.isAndroid) {
-      _videoPlayerController.addListener(() async {
-        if (_videoPlayerController != null &&
-            !_isViewTriggered &&
-            (await _videoPlayerController.position > Duration(seconds: 5))) {
-          _triggerVideoView();
-        }
-      });
-    }
+    // if (Platform.isAndroid) {
+    //   _videoPlayerController.addListener(() async {
+    //     if (_videoPlayerController != null &&
+    //         !_isViewTriggered &&
+    //         (await _videoPlayerController.position > Duration(seconds: 5))) {
+    //       _triggerVideoView();
+    //     }
+    //   });
+    // }
 
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController,
@@ -219,7 +229,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
   @override
   void dispose() {
     _videoPlayerController.removeListener(() {});
-    _videoPlayerController.pause();
+    // _videoPlayerController?.pause();
     _videoPlayerController?.dispose();
     _chewieController?.dispose();
     super.dispose();
