@@ -21,54 +21,11 @@
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCM0cUO94XZ7v6EhrlzrwZDKGedqjig_7g"
+          "current_key": "AIzaSyBnwgGPYZZ6KgnHNais9cBt9nEaTjar3BY"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:527781088405:android:9165f7f9da3b1b1a",
-        "android_client_info": {
-          "package_name": "com.trenstop.mobile"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "527781088405-2s1d43j3g8731qsb3mkpe1q58s3fkosh.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.trenstop.mobile",
-            "certificate_hash": "7fac3afe9589213c56e4f542d8ae15e74c260725"
-          }
-        },
-        {
-          "client_id": "527781088405-in0te4k4mgaeptkknr9uifgluiikpfab.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyCM0cUO94XZ7v6EhrlzrwZDKGedqjig_7g"
-        }
-      ],
-      "services": {
-        "analytics_service": {
-          "status": 1
-        },
-        "appinvite_service": {
-          "status": 2,
           "other_platform_oauth_client": [
             {
               "client_id": "527781088405-in0te4k4mgaeptkknr9uifgluiikpfab.apps.googleusercontent.com",
@@ -82,9 +39,6 @@
               }
             }
           ]
-        },
-        "ads_service": {
-          "status": 2
         }
       }
     }
