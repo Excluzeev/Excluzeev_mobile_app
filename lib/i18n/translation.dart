@@ -175,7 +175,7 @@ class Translation {
       );
 
   String get contentCreatorAuthSave => Intl.message(
-        "Next",
+        "Connect Stripe",
         name: 'contentCreatorAuthSave',
       );
   String get paypalEmail => Intl.message(
@@ -425,9 +425,19 @@ class Translation {
         "Payment Failed",
         name: 'paymentFailedLabel',
       );
+
+  String get connectingFailedLabel => Intl.message(
+        "Connecting Failed",
+        name: 'connectingFailedLabel',
+      );
   String get paymentFailedDialogContent => Intl.message(
         "Payment Canceled. Please retry the payment after some time.!",
         name: 'paymentFailedDialogContent',
+      );
+
+  String get connectingFailedDialogContent => Intl.message(
+        "Connecting Canceled. Please retry after some time.!",
+        name: 'connectingFailedDialogContent',
       );
   String get paymentVerifying => Intl.message(
         "Verifying payment!",

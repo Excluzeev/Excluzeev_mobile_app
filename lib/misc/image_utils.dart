@@ -86,8 +86,8 @@ class ImageUtils {
             "Loaded image's dimensions: ${resized.height}x${resized.width}");
     if (resized.height != payload.desiredSize ||
         resized.width != payload.desiredSize)
-      resized =
-          img.copyResize(resized, payload.desiredSize, payload.desiredSize);
+      resized = img.copyResize(resized,
+          width: payload.desiredSize, height: payload.desiredSize);
     Logger.log(TAG,
         message:
             "Resized image's dimensions: ${resized.height}x${resized.width}");
@@ -221,7 +221,8 @@ class ImageUtils {
       );
     }
 
-    converted = img.copyResize(converted, payload.size, payload.size);
+    converted =
+        img.copyResize(converted, width: payload.size, height: payload.size);
 
     final resized = File("${payload.directory.path}/${payload.name}");
     resized.writeAsBytesSync(img.encodeJpg(converted, quality: QUALITY_VALUE));
@@ -230,7 +231,7 @@ class ImageUtils {
 
   static File resizeImage(PhotoPayload payload) {
     img.Image converted = img.decodeImage(payload.file.readAsBytesSync());
-    converted = img.copyResize(converted, payload.size);
+    converted = img.copyResize(converted, width: payload.size);
     final resized = File("${payload.directory.path}/${payload.name}");
     resized.writeAsBytesSync(img.encodeJpg(converted, quality: QUALITY_VALUE));
     return resized;
@@ -238,7 +239,8 @@ class ImageUtils {
 
   static File resizeSquareImage(PhotoPayload payload) {
     img.Image converted = img.decodeImage(payload.file.readAsBytesSync());
-    converted = img.copyResize(converted, payload.size, payload.size);
+    converted =
+        img.copyResize(converted, width: payload.size, height: payload.size);
     final resized = File("${payload.directory.path}/${payload.name}");
     resized.writeAsBytesSync(img.encodeJpg(converted, quality: QUALITY_VALUE));
     return resized;
