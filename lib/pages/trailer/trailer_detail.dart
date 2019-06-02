@@ -16,6 +16,7 @@ import 'package:trenstop/misc/logger.dart';
 import 'package:trenstop/misc/palette.dart';
 import 'package:trenstop/misc/prefs.dart';
 import 'package:trenstop/misc/widget_utils.dart';
+import 'package:trenstop/models/channel.dart';
 import 'package:trenstop/models/comments.dart';
 import 'package:trenstop/models/trailer.dart';
 import 'package:trenstop/models/user.dart';
@@ -55,6 +56,8 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
 
   Translation translation;
   ChannelManager _channelManager = ChannelManager.instance;
+
+  Channel channel;
 
   VideoPlayerController _videoPlayerController;
   ChewieController _chewieController;
@@ -98,6 +101,20 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
     }
   }
 
+  _fetchChannel() async {
+    var channelSnap =
+        await _channelManager.getChannelFromId(widget.trailer.channelId);
+
+    if (channelSnap.error == null) {
+      channel = channelSnap.data;
+    }
+    setState(() {});
+  }
+
+  getChannelPrice() {
+    return channel != null ? channel.price : "--";
+  }
+
   @override
   void initState() {
     super.initState();
@@ -108,6 +125,8 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
 
     _checkSubscription();
 
+    _fetchChannel();
+
     _videoPlayerController =
         VideoPlayerController.network(widget.trailer.videoUrl);
 
@@ -115,10 +134,12 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
       if (!mounted) {
         return;
       }
-      if(_videoPlayerController != null ) {
-      var videoDuration = _videoPlayerController.value.position;
-      // var videoDuration;
-      if (!_isViewTriggered && videoDuration != null && (videoDuration > Duration(seconds: viewThreshold))) {
+      if (_videoPlayerController != null) {
+        var videoDuration = _videoPlayerController.value.position;
+        // var videoDuration;
+        if (!_isViewTriggered &&
+            videoDuration != null &&
+            (videoDuration > Duration(seconds: viewThreshold))) {
           _isViewTriggered = true;
           _triggerVideoView();
         }
@@ -127,25 +148,6 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
     };
 
     _videoPlayerController.addListener(listener);
-
-    // _videoPlayerController
-    //   ..initialize().then((v) {
-    //     _videoPlayerController.play();
-    //     if (aspectRatio != _videoPlayerController.value.aspectRatio) {
-    //       setState(() {
-    //         aspectRatio = _videoPlayerController.value.aspectRatio;
-    //       });
-    //     }
-    //   });
-    // if (Platform.isAndroid) {
-    //   _videoPlayerController.addListener(() async {
-    //     if (_videoPlayerController != null &&
-    //         !_isViewTriggered &&
-    //         (await _videoPlayerController.position > Duration(seconds: 5))) {
-    //       _triggerVideoView();
-    //     }
-    //   });
-    // }
 
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController,
@@ -426,7 +428,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
                     ),
                     textColor: Colors.white,
                     child: Text(
-                      "${translation.subscribe}",
+                      "${translation.subscribe} CAD \$${getChannelPrice()}",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 18.0,

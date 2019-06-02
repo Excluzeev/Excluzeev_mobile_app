@@ -168,7 +168,7 @@ class _PaymentPageState extends State<PaymentPage> {
 
     if (user.subscribedChannels.contains(widget.trailer.channelId)) {
       // Navigator.of(context).pop();
-      WidgetUtils.goToAuth(context, replaceAll: true);
+      WidgetUtils.proceedToAuth(context, replaceAll: true);
     }
   }
 
