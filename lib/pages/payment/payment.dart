@@ -12,6 +12,7 @@ import 'package:trenstop/widgets/white_app_bar.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:stripeelements/stripeelements.dart';
 
 class PaymentPage extends StatefulWidget {
   static const String TAG = "PAYMENTS_PAGE";
@@ -37,6 +38,8 @@ class _PaymentPageState extends State<PaymentPage> {
   bool _isPreparing = true;
 
   bool _isFinishing = false;
+
+  var stripeElements = Stripeelements();
 
   _showSnackBar(String message) {
     if (mounted && message != null && message.isNotEmpty)
@@ -69,47 +72,57 @@ class _PaymentPageState extends State<PaymentPage> {
     return _isPreparing ? _preparing() : _startPayment();
   }
 
-  _preparePayment() async {
+  _preparePayment(String token) async {
     FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
-    var body = {
+    var body = <String, dynamic>{
       "channelId": widget.trailer.channelId,
-      "userId": firebaseUser.uid
+      "channelName": widget.trailer.channelName,
+      "userId": firebaseUser.uid,
+      "token": token
     };
 
     if (widget.isDonate) {
       body["donate"] = widget.price.toString();
+      body["isDonate"] = true;
     }
 
     Logger.log(PaymentPage.TAG, message: "$body");
 
     var client = new http.Client();
     var response = await client.post(
-        "https://us-central1-trenstop-2033f.cloudfunctions.net/generatePayKey",
+        "https://us-central1-trenstop-2033f.cloudfunctions.net/chargeAmount",
         body: body);
 
     Logger.log(PaymentPage.TAG, message: response.body);
     var res = json.decode(response.body);
 
-    if (res['responseEnvelope']['ack'] != "Success") {
+    if (res['error']) {
       _showSnackBar(translation.paymentFailed);
+
+      String payUrl =
+          "https://us-central1-trenstop-2033f.cloudfunctions.net/pagePaymentCanceled?subId=" +
+              res["subId"] +
+              "&donate=" +
+              widget.isDonate.toString();
+      startPaymentProcess(payUrl);
     } else {
-      var payKey = res['payKey'];
-      startPaymentProcess(payKey);
+      String payUrl =
+          "https://us-central1-trenstop-2033f.cloudfunctions.net/pagePaymentSuccess?subId=" +
+              res["subId"] +
+              "&donate=" +
+              widget.isDonate.toString();
+      startPaymentProcess(payUrl);
     }
     client.close();
   }
 
-  startPaymentProcess(String payKey) {
-//    var payUrl = "https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_ap-payment&paykey=$payKey";
-    var payUrl =
-        "https://www.sandbox.paypal.com/webapps/adaptivepayment/flow/pay?paykey=$payKey&expType=mini";
-    flutterWebViewPlugin.launch(
-      payUrl,
-      scrollBar: true,
-      withZoom: true,
-      disableBack: true,
-      rect: Rect.fromLTWH(0.0, 0.0, MediaQuery.of(context).size.width, MediaQuery.of(context).size.height)
-    );
+  startPaymentProcess(String payUrl) {
+    flutterWebViewPlugin.launch(payUrl,
+        scrollBar: true,
+        withZoom: true,
+        disableBack: true,
+        rect: Rect.fromLTWH(0.0, 0.0, MediaQuery.of(context).size.width,
+            MediaQuery.of(context).size.height));
   }
 
   _markSubscribed() async {
@@ -159,6 +172,19 @@ class _PaymentPageState extends State<PaymentPage> {
     }
   }
 
+  _fetchToken() async {
+    stripeElements.onToken.listen((token) {
+      if (token.isEmpty) {
+        _showSnackBar("Payment Failed.");
+        Navigator.of(context).pop();
+        return;
+      }
+      _preparePayment(token);
+    });
+    await stripeElements.enterCardDetails(
+        key: "pk_test_cf1l5xJI5WKEBPCKbYRRKnLB00FKzaOcN5");
+  }
+
   @override
   void initState() {
     super.initState();
@@ -191,7 +217,7 @@ class _PaymentPageState extends State<PaymentPage> {
       }
     });
 
-    _preparePayment();
+    _fetchToken();
   }
 
   @override
@@ -199,6 +225,7 @@ class _PaymentPageState extends State<PaymentPage> {
     super.dispose();
     flutterWebViewPlugin.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     if (translation == null) translation = Translation.of(context);
