@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/src/flutter_advanced_networkimage.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
 import 'dart:io';
 import 'package:rounded_modal/rounded_modal.dart';
 import 'package:trenstop/misc/image_utils.dart';

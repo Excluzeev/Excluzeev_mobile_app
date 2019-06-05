@@ -12,22 +12,20 @@ import 'package:trenstop/models/user.dart';
 import 'package:trenstop/pages/home/widgets/information.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:trenstop/pages/trailer/widgets/trailer_widget.dart';
+import 'package:trenstop/widgets/white_app_bar.dart';
 
-class TrailersListPage extends StatefulWidget {
-  static const String TAG = "TRAILERS_LIST_PAGE";
+class CallToActionPage extends StatefulWidget {
+  static const String TAG = "CALL_TO_ACTION_PAGE";
 
   final User user;
-  final Channel channel;
-
-  TrailersListPage(this.channel, this.user);
+  CallToActionPage(this.user);
 
   @override
-  _TrailersListPageState createState() => _TrailersListPageState();
+  _CallToActionPageState createState() => _CallToActionPageState();
 }
 
-class _TrailersListPageState extends State<TrailersListPage> {
+class _CallToActionPageState extends State<CallToActionPage> {
   Translation translation;
-  ChannelManager _channelManager = ChannelManager.instance;
   TrailerManager _trailerManager = TrailerManager.instance;
 
   _show(Trailer trailer) {
@@ -57,34 +55,37 @@ class _TrailersListPageState extends State<TrailersListPage> {
   Widget build(BuildContext context) {
     if (translation == null) translation = Translation.of(context);
     final textTheme = Theme.of(context).textTheme;
-    return Center(
-      child: widget.user == null
-          ? CircularProgressIndicator()
-          : FirestoreAnimatedList(
-              query: _trailerManager
-                  .trailersByUserChannelQuery(
-                      widget.channel.channelId, widget.user.uid)
-                  .snapshots(),
-              errorChild: InformationWidget(
-                icon: Icons.error,
-                subtitle: translation.errorLoadTrailers,
-              ),
-              emptyChild: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      translation.errorEmptyTrailers,
-                      style: textTheme.title,
-                      textAlign: TextAlign.center,
+    return Scaffold(
+      appBar: WhiteAppBar(
+        title: Text(translation.menuCallToAction),
+        centerTitle: true,
+      ),
+      body: Center(
+        child: widget.user == null
+            ? CircularProgressIndicator()
+            : FirestoreAnimatedList(
+                query: _trailerManager.trailersQueryCallToAction.snapshots(),
+                errorChild: InformationWidget(
+                  icon: Icons.error,
+                  subtitle: translation.errorLoadTrailers,
+                ),
+                emptyChild: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        translation.errorEmptyTrailers,
+                        style: textTheme.title,
+                        textAlign: TextAlign.center,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
+                itemBuilder: _buildItem,
               ),
-              itemBuilder: _buildItem,
-            ),
+      ),
     );
   }
 }

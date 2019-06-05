@@ -11,6 +11,7 @@ import 'package:trenstop/models/user.dart';
 import 'package:trenstop/models/video.dart';
 import 'package:trenstop/pages/auth/sign_in_page.dart';
 import 'package:trenstop/pages/home/about.dart';
+import 'package:trenstop/pages/home/call_to_action.dart';
 import 'package:trenstop/pages/home/legal.dart';
 import 'package:trenstop/pages/home/search_page.dart';
 import 'package:trenstop/pages/payment/payment.dart';
@@ -197,6 +198,18 @@ class WidgetUtils {
   static void showSubscriptions(BuildContext context, User user) async {
     String tag = MySubscriptionsPage.TAG;
     Widget page = MySubscriptionsPage(user);
+
+    final route = CupertinoPageRoute<bool>(
+      maintainState: true,
+      settings: RouteSettings(name: tag),
+      builder: (context) => page,
+    );
+    Navigator.of(context).push(route);
+  }
+
+  static void showTrailerCallToAction(BuildContext context, User user) async {
+    String tag = CallToActionPage.TAG;
+    Widget page = CallToActionPage(user);
 
     final route = CupertinoPageRoute<bool>(
       maintainState: true,

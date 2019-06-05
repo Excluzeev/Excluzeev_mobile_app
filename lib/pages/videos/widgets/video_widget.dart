@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/src/flutter_advanced_networkimage.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:trenstop/misc/date_utils.dart';
 import 'package:trenstop/misc/logger.dart';
 import 'package:trenstop/models/trailer.dart';

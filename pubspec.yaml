@@ -1,7 +1,7 @@
 name: trenstop
 description: Excluzeev
 
-version: 1.0.21+24
+version: 1.0.22+25
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -18,7 +18,7 @@ dependencies:
   device_info: ^0.3.0
   rxdart: ^0.20.0
   rounded_modal: ^1.0.0
-  flutter_advanced_networkimage: ^0.4.15
+  flutter_advanced_networkimage: ^0.5.0-alpha.3
   flutter_cache_manager: any
   flutter_native_image:
     git: https://github.com/btastic/flutter_native_image.git

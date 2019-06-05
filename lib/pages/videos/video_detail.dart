@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/src/flutter_advanced_networkimage.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:trenstop/i18n/translation.dart';
 import 'package:trenstop/managers/auth_manager.dart';
 import 'package:trenstop/managers/channel_manager.dart';
@@ -128,10 +128,12 @@ class _VideoDetailPageState extends State<VideoDetailPage>
       if (!mounted) {
         return;
       }
-      if(_videoPlayerController != null ) {
-      var videoDuration = _videoPlayerController.value.position;
-      // var videoDuration;
-      if (!_isViewTriggered && videoDuration != null && (videoDuration > Duration(seconds: viewThreshold))) {
+      if (_videoPlayerController != null) {
+        var videoDuration = _videoPlayerController.value.position;
+        // var videoDuration;
+        if (!_isViewTriggered &&
+            videoDuration != null &&
+            (videoDuration > Duration(seconds: viewThreshold))) {
           _isViewTriggered = true;
           _triggerVideoView();
         }

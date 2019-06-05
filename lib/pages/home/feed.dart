@@ -112,7 +112,10 @@ class _FeedPageState extends State<FeedPage> {
   }
 
   _contentCreatorMenu() {
-    if (Platform.isIOS && (remoteConfig != null ? !remoteConfig.getBool("showContentCreator") : false)) {
+    if (Platform.isIOS &&
+        (remoteConfig != null
+            ? !remoteConfig.getBool("showContentCreator")
+            : false)) {
       return Container();
     }
     return user == null
@@ -180,7 +183,10 @@ class _FeedPageState extends State<FeedPage> {
             ),
           ),
         ),
-        Platform.isIOS && (remoteConfig != null ? !remoteConfig.getBool("showCreateChannel") : false)
+        Platform.isIOS &&
+                (remoteConfig != null
+                    ? !remoteConfig.getBool("showCreateChannel")
+                    : false)
             ? Container()
             : SizedBox(
                 width: double.infinity,
@@ -314,6 +320,19 @@ class _FeedPageState extends State<FeedPage> {
                         ),
                       ),
                       _contentCreatorMenu(),
+                      FlatButton(
+                        onPressed: () {
+                          WidgetUtils.showTrailerCallToAction(context, user);
+                        },
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: Text(
+                            translation.menuCallToAction,
+                            style: drawerItemTextStyle,
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                      ),
                       _createMenu(),
                       _policyMenu(),
                       _faqMenu(),

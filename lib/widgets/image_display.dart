@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_advanced_networkimage/src/flutter_advanced_networkimage.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
 //import 'package:trenstop/pages/plugins/carousel_pro.dart';
 //import 'package:trenstop/widgets/fullscreen_image.dart';
 import 'package:trenstop/widgets/image_loader.dart';

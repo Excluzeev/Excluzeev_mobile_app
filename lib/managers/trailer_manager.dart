@@ -22,8 +22,13 @@ class TrailerManager {
 
   CollectionReference get trailersCollection => _store.collection(TRAILERS_TAG);
 
-  Query get trailersQuery =>
-      trailersCollection.orderBy("createdDate", descending: true);
+  Query get trailersQuery => trailersCollection
+      .orderBy("createdDate", descending: true)
+      .where("isNormal", isEqualTo: true);
+
+  Query get trailersQueryCallToAction => trailersCollection
+      .orderBy("createdDate", descending: true)
+      .where("isNormal", isEqualTo: false);
 
   Query trailersByUserChannelQuery(String channelId, String userId) {
     return trailersCollection
@@ -125,7 +130,8 @@ class TrailerManager {
 
     final errorHandler = (exception, stacktrace) {
       Logger.log(TAG,
-          message: "Couldn't update Views on database, error: $exception $stacktrace");
+          message:
+              "Couldn't update Views on database, error: $exception $stacktrace");
       error = "Unknown Error";
     };
 

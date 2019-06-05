@@ -82,6 +82,11 @@ class Translation {
         "Become a Content Creator",
         name: "signUpContentCreator",
       );
+
+  String get menuCallToAction => Intl.message(
+        "Call To Action",
+        name: "menuCallToAction",
+      );
   String get resetPassword => Intl.message(
         "Reset Password",
         name: "resetPassword",

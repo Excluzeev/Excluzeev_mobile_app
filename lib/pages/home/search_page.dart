@@ -10,7 +10,7 @@ import 'package:trenstop/misc/widget_utils.dart';
 import 'package:trenstop/models/trailer.dart';
 import 'package:trenstop/models/user.dart';
 import 'package:trenstop/pages/home/widgets/information.dart';
-import 'package:flutter_advanced_networkimage/src/flutter_advanced_networkimage.dart';
+import 'package:flutter_advanced_networkimage/provider.dart';
 import 'package:trenstop/pages/trailer/widgets/trailer_widget.dart';
 import 'package:http/http.dart' as http;
 import 'package:trenstop/widgets/white_app_bar.dart';
