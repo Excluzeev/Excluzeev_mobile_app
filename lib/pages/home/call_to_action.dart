@@ -61,9 +61,7 @@ class _CallToActionPageState extends State<CallToActionPage> {
         centerTitle: true,
       ),
       body: Center(
-        child: widget.user == null
-            ? CircularProgressIndicator()
-            : FirestoreAnimatedList(
+        child: FirestoreAnimatedList(
                 query: _trailerManager.trailersQueryCallToAction.snapshots(),
                 errorChild: InformationWidget(
                   icon: Icons.error,

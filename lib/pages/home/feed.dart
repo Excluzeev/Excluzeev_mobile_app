@@ -322,6 +322,7 @@ class _FeedPageState extends State<FeedPage> {
                       _contentCreatorMenu(),
                       FlatButton(
                         onPressed: () {
+                          Navigator.of(context).pop();
                           WidgetUtils.showTrailerCallToAction(context, user);
                         },
                         child: SizedBox(
