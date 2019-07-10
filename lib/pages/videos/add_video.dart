@@ -146,6 +146,7 @@ class _AddVideoPageState extends State<AddVideoPage> {
                             backgroundColor: Colors.white,
                             child: IconButton(
                               icon: Icon(Icons.close, color: Colors.black),
+                              onPressed: () {},
 //                        onPressed: () => _removeThumbnailImage(),
                             ),
                           ),
@@ -281,20 +282,20 @@ class _AddVideoPageState extends State<AddVideoPage> {
                         child: StreamBuilder(
                           stream: bloc.title,
                           builder: (context, snapshot) => TextField(
-                                controller: _titleController,
-                                onChanged: bloc.updateTitle,
-                                decoration: InputDecoration(
-                                  fillColor: Colors.white,
-                                  contentPadding: EdgeInsets.zero,
-                                  filled: true,
-                                  border: InputBorder.none,
-                                  errorText: snapshot.error,
-                                  hintText: translation.titleVideoHintLabel,
-                                ),
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(32)
-                                ],
-                              ),
+                            controller: _titleController,
+                            onChanged: bloc.updateTitle,
+                            decoration: InputDecoration(
+                              fillColor: Colors.white,
+                              contentPadding: EdgeInsets.zero,
+                              filled: true,
+                              border: InputBorder.none,
+                              errorText: snapshot.error,
+                              hintText: translation.titleVideoHintLabel,
+                            ),
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(32)
+                            ],
+                          ),
                         ),
                       ),
                       SizedBox(
@@ -315,22 +316,21 @@ class _AddVideoPageState extends State<AddVideoPage> {
                         child: StreamBuilder(
                           stream: bloc.description,
                           builder: (context, snapshot) => TextField(
-                                controller: _descriptionController,
-                                onChanged: bloc.updateDescription,
-                                maxLines: 3,
-                                decoration: InputDecoration(
-                                  fillColor: Colors.white,
-                                  contentPadding: EdgeInsets.zero,
-                                  filled: true,
-                                  border: InputBorder.none,
-                                  errorText: snapshot.error,
-                                  hintText:
-                                      translation.descriptionVideoHintLabel,
-                                ),
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(255)
-                                ],
-                              ),
+                            controller: _descriptionController,
+                            onChanged: bloc.updateDescription,
+                            maxLines: 3,
+                            decoration: InputDecoration(
+                              fillColor: Colors.white,
+                              contentPadding: EdgeInsets.zero,
+                              filled: true,
+                              border: InputBorder.none,
+                              errorText: snapshot.error,
+                              hintText: translation.descriptionVideoHintLabel,
+                            ),
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(255)
+                            ],
+                          ),
                         ),
                       ),
                       widget.hideVideoUpload
@@ -338,7 +338,7 @@ class _AddVideoPageState extends State<AddVideoPage> {
                           : _uploadVideoWidget(),
                       widget.hideVideoUpload
                           ? ListView(
-                            primary: false,
+                              primary: false,
                               shrinkWrap: true,
                               children: <Widget>[
                                 CheckboxListTile(
@@ -393,14 +393,14 @@ class _AddVideoPageState extends State<AddVideoPage> {
                       StreamBuilder(
                         stream: bloc.submitValid,
                         builder: (context, snapshot) => RoundedButton(
-                              enabled: snapshot.hasData,
-                              text: widget.hideVideoUpload
-                                  ? translation.next.toUpperCase()
-                                  : translation.addVideo.toUpperCase(),
-                              onPressed: () => snapshot.hasData
-                                  ? _addVideo()
-                                  : _showSnackBar(translation.errorEmptyField),
-                            ),
+                          enabled: snapshot.hasData,
+                          text: widget.hideVideoUpload
+                              ? translation.next.toUpperCase()
+                              : translation.addVideo.toUpperCase(),
+                          onPressed: () => snapshot.hasData
+                              ? _addVideo()
+                              : _showSnackBar(translation.errorEmptyField),
+                        ),
                       ),
                     ],
                   ),

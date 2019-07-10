@@ -114,6 +114,7 @@ class _AddTrailerPageState extends State<AddTrailerPage> {
                             backgroundColor: Colors.white,
                             child: IconButton(
                               icon: Icon(Icons.close, color: Colors.black),
+                              onPressed: () {},
 //                        onPressed: () => _removeThumbnailImage(),
                             ),
                           ),
@@ -198,20 +199,20 @@ class _AddTrailerPageState extends State<AddTrailerPage> {
                         child: StreamBuilder(
                           stream: bloc.title,
                           builder: (context, snapshot) => TextField(
-                                controller: _titleController,
-                                onChanged: bloc.updateTitle,
-                                decoration: InputDecoration(
-                                  fillColor: Colors.white,
-                                  contentPadding: EdgeInsets.zero,
-                                  filled: true,
-                                  border: InputBorder.none,
-                                  errorText: snapshot.error,
-                                  hintText: translation.titleLabel,
-                                ),
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(32)
-                                ],
-                              ),
+                            controller: _titleController,
+                            onChanged: bloc.updateTitle,
+                            decoration: InputDecoration(
+                              fillColor: Colors.white,
+                              contentPadding: EdgeInsets.zero,
+                              filled: true,
+                              border: InputBorder.none,
+                              errorText: snapshot.error,
+                              hintText: translation.titleLabel,
+                            ),
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(32)
+                            ],
+                          ),
                         ),
                       ),
                       SizedBox(
@@ -221,33 +222,33 @@ class _AddTrailerPageState extends State<AddTrailerPage> {
                         child: StreamBuilder(
                           stream: bloc.description,
                           builder: (context, snapshot) => TextField(
-                                controller: _descriptionController,
-                                onChanged: bloc.updateDescription,
-                                maxLines: 3,
-                                decoration: InputDecoration(
-                                  fillColor: Colors.white,
-                                  contentPadding: EdgeInsets.zero,
-                                  filled: true,
-                                  border: InputBorder.none,
-                                  errorText: snapshot.error,
-                                  hintText: translation.descriptionLabel,
-                                ),
-                                inputFormatters: [
-                                  LengthLimitingTextInputFormatter(255)
-                                ],
-                              ),
+                            controller: _descriptionController,
+                            onChanged: bloc.updateDescription,
+                            maxLines: 3,
+                            decoration: InputDecoration(
+                              fillColor: Colors.white,
+                              contentPadding: EdgeInsets.zero,
+                              filled: true,
+                              border: InputBorder.none,
+                              errorText: snapshot.error,
+                              hintText: translation.descriptionLabel,
+                            ),
+                            inputFormatters: [
+                              LengthLimitingTextInputFormatter(255)
+                            ],
+                          ),
                         ),
                       ),
                       _uploadTrailerWidget(),
                       StreamBuilder(
                         stream: bloc.submitValid,
                         builder: (context, snapshot) => RoundedButton(
-                              enabled: snapshot.hasData,
-                              text: translation.addTrailer.toUpperCase(),
-                              onPressed: () => snapshot.hasData
-                                  ? _addTrailer()
-                                  : _showSnackBar(translation.errorFields),
-                            ),
+                          enabled: snapshot.hasData,
+                          text: translation.addTrailer.toUpperCase(),
+                          onPressed: () => snapshot.hasData
+                              ? _addTrailer()
+                              : _showSnackBar(translation.errorFields),
+                        ),
                       ),
                     ],
                   ),

@@ -14,12 +14,13 @@ class ImageDisplay extends StatelessWidget {
       : assert(urls != null),
         super(key: key);
 
-  _showFullscreen(BuildContext context, String url) =>
-      Navigator.of(context).push(
-        CupertinoPageRoute(
+  _showFullscreen(BuildContext context, String url) {
+//       Navigator.of(context).push(
+//         CupertinoPageRoute(
 //          builder: (_) => FullscreenImage(url: url),
-            ),
-      );
+//             ),
+//       );
+  }
 
   @override
   Widget build(BuildContext context) {
