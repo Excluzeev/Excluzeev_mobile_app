@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firestore_ui/animated_firestore_list.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
@@ -21,6 +22,7 @@ import 'package:trenstop/models/comments.dart';
 import 'package:trenstop/models/trailer.dart';
 import 'package:trenstop/models/user.dart';
 import 'package:trenstop/pages/home/widgets/information.dart';
+import 'package:trenstop/pages/trailer/edit_trailer_description.dart';
 import 'package:trenstop/pages/trailer/widgets/trailer_comments_widget.dart';
 import 'package:trenstop/pages/trailer/widgets/trailer_title_detail_widget.dart';
 import 'package:trenstop/pages/trailer/widgets/trailer_title_widget.dart';
@@ -38,9 +40,9 @@ import 'package:http/http.dart' as http;
 class TrailerDetailPage extends StatefulWidget {
   static const String TAG = "TRAILER_DETAILS_PAGE";
 
-  final Trailer trailer;
+  final Trailer trailerMain;
 
-  TrailerDetailPage(this.trailer);
+  TrailerDetailPage(this.trailerMain);
 
   @override
   _TrailerDetailPageState createState() => _TrailerDetailPageState();
@@ -49,6 +51,8 @@ class TrailerDetailPage extends StatefulWidget {
 class _TrailerDetailPageState extends State<TrailerDetailPage>
     with WidgetsBindingObserver {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+
+  Trailer trailer;
 
   final TrailerManager _trailerManager = TrailerManager.instance;
   final AuthManager _authManager = AuthManager.instance;
@@ -81,7 +85,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
 
   _triggerVideoView() async {
     _isViewTriggered = true;
-    _trailerManager.countView(widget.trailer);
+    _trailerManager.countView(trailer);
   }
 
   @override
@@ -102,8 +106,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
   }
 
   _fetchChannel() async {
-    var channelSnap =
-        await _channelManager.getChannelFromId(widget.trailer.channelId);
+    var channelSnap = await _channelManager.getChannelFromId(trailer.channelId);
 
     if (channelSnap.error == null) {
       channel = channelSnap.data;
@@ -117,6 +120,10 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
 
   @override
   void initState() {
+    setState(() {
+      trailer = widget.trailerMain;
+    });
+    _getuser();
     super.initState();
 
     WidgetsBinding.instance.addObserver(this);
@@ -127,8 +134,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
 
     _fetchChannel();
 
-    _videoPlayerController =
-        VideoPlayerController.network(widget.trailer.videoUrl);
+    _videoPlayerController = VideoPlayerController.network(trailer.videoUrl);
 
     var listener = () async {
       if (!mounted) {
@@ -161,18 +167,27 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
     );
   }
 
+  FirebaseUser fUser;
+
+  _getuser() async {
+    var f = await FirebaseAuth.instance.currentUser();
+    setState(() {
+      fUser = f;
+    });
+  }
+
   _checkSubscription() async {
     FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
     User user = await _authManager.getUser(firebaseUser: firebaseUser);
 
     if (user != null) {
-      if (user.subscribedChannels.contains(widget.trailer.channelId)) {
+      if (user.subscribedChannels.contains(trailer.channelId)) {
         setState(() {
           _showSubscribe = false;
         });
       }
 
-      if (widget.trailer.userId == user.uid) {
+      if (trailer.userId == user.uid) {
         setState(() {
           _showSubscribe = false;
         });
@@ -224,7 +239,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
     }
 
     User user = await _authManager.getUser(firebaseUser: firebaseUser);
-    WidgetUtils.showPaymentScreen(context, widget.trailer, user, isDonate,
+    WidgetUtils.showPaymentScreen(context, trailer, user, isDonate,
         price: price);
   }
 
@@ -263,11 +278,11 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
       ..comment = comment
       ..userPhoto = user.userPhoto
       ..createdDate = Timestamp.fromDate(DateTime.now())
-      ..channelName = widget.trailer.channelName
-      ..channelId = widget.trailer.channelId
+      ..channelName = trailer.channelName
+      ..channelId = trailer.channelId
       ..userId = user.uid
       ..userName = user.displayName
-      ..vtId = widget.trailer.trailerId
+      ..vtId = trailer.trailerId
       ..commentId = commentId;
 
     Snapshot<Comments> snapshot =
@@ -363,7 +378,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
 
   _donateButton() {
     return _showSubscribe
-        ? widget.trailer.channelType != "CrowdFunding"
+        ? trailer.channelType != "CrowdFunding"
             ? Container()
             : Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -416,7 +431,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
   _subscribeButton() {
     return Center(
       child: _showSubscribe
-          ? widget.trailer.channelType != "CrowdFunding"
+          ? trailer.channelType != "CrowdFunding"
               ? Container(
                   child: RaisedButton(
                     shape: StadiumBorder(),
@@ -477,151 +492,206 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
       //         preferredSize: Size(0.0, 0.0),
       //         child: Container(),
       //       ),
-      body: CustomScrollView(slivers: <Widget>[
-        SliverToBoxAdapter(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // SizedBox(
-              //   height: 24.0,
-              // ),
-              AspectRatio(
-                aspectRatio: aspectRatio,
-                child: _videoPlayerController.value.initialized
-                    ? Chewie(
-                        controller: _chewieController,
-                      )
-                    : _videoPlayerController.value.hasError &&
-                            !_videoPlayerController.value.isPlaying
-                        ? Center(
-                            child: Text("Error Playing Video."),
-                          )
-                        : Container(
-                            color: Colors.black,
-                            child: Center(
-                              child: CircularProgressIndicator(
-                                valueColor:
-                                    AlwaysStoppedAnimation<Color>(Colors.white),
-                              ),
-                            ),
-                          ),
-                // Platform.isIOS
-                //     ? VideoPlayer(_videoPlayerController)
-                //     :
-                //     Chewie(
-                //   _videoPlayerController,
-                //   aspectRatio: aspectRatio,
-                //   autoPlay: false,
-                //   placeholder:
-                //       Image.asset('res/icons/thumbnail_placeholder.png'),
-                //   key: Key(widget.trailer.trailerId),
-                // ),
-              ),
-              TrailerTitleDetailWidget(
-                trailer: widget.trailer,
-              ),
-              Divider(),
-              LikeDislikeNeutral(
-                id: widget.trailer.trailerId,
-                type: "t",
-                likes: widget.trailer.likes,
-                dislikes: widget.trailer.dislikes,
-                neutral: widget.trailer.neutral,
-              ),
-              Divider(),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.only(
-                  left: 16.0,
-                  right: 16.0,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    Container(
-                      width: MediaQuery.of(context).size.width - 80,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          CircleAvatar(
-                            backgroundColor: Colors.black26,
-                            backgroundImage: AdvancedNetworkImage(
-                              widget.trailer.channelImage,
-                              useDiskCache: true,
-                            ),
-                          ),
-                          Flexible(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                widget.trailer.channelName,
-                                style: TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.w500,
+      body: trailer == null
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : CustomScrollView(slivers: <Widget>[
+              SliverToBoxAdapter(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // SizedBox(
+                    //   height: 24.0,
+                    // ),
+                    AspectRatio(
+                      aspectRatio: aspectRatio,
+                      child: _videoPlayerController.value.initialized
+                          ? Chewie(
+                              controller: _chewieController,
+                            )
+                          : _videoPlayerController.value.hasError &&
+                                  !_videoPlayerController.value.isPlaying
+                              ? Center(
+                                  child: Text("Error Playing Video."),
+                                )
+                              : Container(
+                                  color: Colors.black,
+                                  child: Center(
+                                    child: CircularProgressIndicator(
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                          Colors.white),
+                                    ),
+                                  ),
                                 ),
-                              ),
+                      // Platform.isIOS
+                      //     ? VideoPlayer(_videoPlayerController)
+                      //     :
+                      //     Chewie(
+                      //   _videoPlayerController,
+                      //   aspectRatio: aspectRatio,
+                      //   autoPlay: false,
+                      //   placeholder:
+                      //       Image.asset('res/icons/thumbnail_placeholder.png'),
+                      //   key: Key(trailer.trailerId),
+                      // ),
+                    ),
+                    TrailerTitleDetailWidget(
+                      trailer: trailer,
+                    ),
+                    Divider(),
+                    LikeDislikeNeutral(
+                      id: trailer.trailerId,
+                      type: "t",
+                      likes: trailer.likes,
+                      dislikes: trailer.dislikes,
+                      neutral: trailer.neutral,
+                    ),
+                    Divider(),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      padding: EdgeInsets.only(
+                        left: 16.0,
+                        right: 16.0,
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Container(
+                            width: MediaQuery.of(context).size.width - 80,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: <Widget>[
+                                CircleAvatar(
+                                  backgroundColor: Colors.black26,
+                                  backgroundImage: AdvancedNetworkImage(
+                                    trailer.channelImage,
+                                    useDiskCache: true,
+                                  ),
+                                ),
+                                Flexible(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      trailer.channelName,
+                                      style: TextStyle(
+                                        fontSize: 18.0,
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
                       ),
                     ),
+                    _subscribeButton(),
+                    Container(
+                        padding: const EdgeInsets.only(
+                          bottom: 8.0,
+                          left: 16.0,
+                          right: 16.0,
+                          top: 4.0,
+                        ),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          constraints: BoxConstraints(
+                            minHeight: 40.0,
+                          ),
+                          child: (fUser != null && fUser.uid == trailer.userId)
+                              ? Stack(
+                                  fit: StackFit.loose,
+                                  children: <Widget>[
+                                    ReadMoreTextWidget(
+                                      text: trailer.description,
+                                    ),
+                                    Positioned(
+                                      right: 0.0,
+                                      child: IconButton(
+                                        icon: Icon(Icons.edit),
+                                        onPressed: () async {
+                                          String descp =
+                                              await Navigator.of(context).push(
+                                            CupertinoPageRoute(
+                                              builder: (context) {
+                                                return EditTrailerDescription(
+                                                    trailer);
+                                              },
+                                              fullscreenDialog: true,
+                                            ),
+                                          );
+
+                                          var tra = trailer.toBuilder();
+                                          tra..description = descp;
+                                          trailer = tra.build();
+
+                                          if (descp.isNotEmpty) {
+                                            if (mounted) {
+                                              Navigator.of(context)
+                                                  .pushReplacement(
+                                                CupertinoPageRoute(
+                                                  builder: (context) {
+                                                    return TrailerDetailPage(
+                                                        trailer);
+                                                  },
+                                                ),
+                                              );
+                                            }
+                                          }
+                                        },
+                                      ),
+                                    ),
+                                  ],
+                                )
+                              : ReadMoreTextWidget(
+                                  text: trailer.description,
+                                ),
+                        )
+
+                        // Text(
+                        //   trailer.description,
+                        //   style: TextStyle(
+                        //     fontSize: 14.0,
+                        //   ),
+                        // ),
+                        ),
+                    _donateButton(),
                   ],
                 ),
               ),
-              _subscribeButton(),
-              Container(
-                padding: const EdgeInsets.only(
-                  bottom: 8.0,
-                  left: 16.0,
-                  right: 16.0,
-                  top: 4.0,
-                ),
-                child: ReadMoreTextWidget(
-                  text: widget.trailer.description,
-                ),
-
-                // Text(
-                //   widget.trailer.description,
-                //   style: TextStyle(
-                //     fontSize: 14.0,
-                //   ),
-                // ),
+              SliverToBoxAdapter(
+                child: _buildAddCommentWidget(),
               ),
-              _donateButton(),
-            ],
-          ),
-        ),
-        SliverToBoxAdapter(
-          child: _buildAddCommentWidget(),
-        ),
-        SliverToBoxAdapter(
-          child: FirestoreAnimatedList(
-            primary: false,
-            shrinkWrap: true,
-            query: _trailerManager
-                .trailerCommentQuery(widget.trailer.trailerId)
-                .snapshots(),
-            errorChild: InformationWidget(
-              icon: Icons.error,
-              subtitle: translation.errorLoadComments,
-            ),
-            emptyChild: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    translation.noCommentsYet,
-                    textAlign: TextAlign.center,
+              SliverToBoxAdapter(
+                child: FirestoreAnimatedList(
+                  primary: false,
+                  shrinkWrap: true,
+                  query: _trailerManager
+                      .trailerCommentQuery(trailer.trailerId)
+                      .snapshots(),
+                  errorChild: InformationWidget(
+                    icon: Icons.error,
+                    subtitle: translation.errorLoadComments,
                   ),
+                  emptyChild: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          translation.noCommentsYet,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ],
+                  ),
+                  itemBuilder: _buildCommentItem,
                 ),
-              ],
-            ),
-            itemBuilder: _buildCommentItem,
-          ),
-        ),
-      ]),
+              ),
+            ]),
     );
   }
 }

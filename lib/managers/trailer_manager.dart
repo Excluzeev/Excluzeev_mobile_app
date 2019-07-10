@@ -81,6 +81,42 @@ class TrailerManager {
     );
   }
 
+  Future<Snapshot<Trailer>> updateTrailerDescription(
+      Trailer trailer, String description) async {
+    String error;
+
+    DocumentReference reference =
+        trailersCollection.document(trailer.trailerId);
+
+    Logger.log(TAG, message: "Trying to retrieve ${reference.documentID}");
+
+    final errorHandler = (exception, stacktrace) {
+      Logger.log(TAG,
+          message: "Couldn't update trailer on database, error: $exception");
+      error = "Unknown Error";
+    };
+
+    final data = {"description": description};
+    await reference.updateData(data).catchError(errorHandler);
+
+    // await _store.runTransaction((transaction) async {
+    //   print("inside run Tra");
+    //   final data = {"description": description};
+    //   print(data);
+    //   final isUpdate = freshSnap?.exists ?? false;
+    //   if (isUpdate) {
+    //     Logger.log(TAG,
+    //         message: "Sending data with isUpdate ($isUpdate): ${data.keys}");
+    //     await transaction.update(reference, data).catchError(errorHandler);
+    //   }
+    // }).catchError(errorHandler);
+
+    return Snapshot<Trailer>(
+      data: trailer,
+      error: error,
+    );
+  }
+
   Future<Snapshot<Comments>> addComment(Comments comment) async {
     String error;
 

@@ -19,7 +19,7 @@ abstract class Trailer implements Built<Trailer, TrailerBuilder> {
   String get categoryName;
   String get createdBy;
   String get title;
-  String get description;
+  String description;
 
   String get videoUrl;
   String get channelType;
@@ -152,4 +152,8 @@ abstract class Trailer implements Built<Trailer, TrailerBuilder> {
       };
 
   static Serializer<Trailer> get serializer => _$trailerSerializer;
+
+  setDescription(String s) {
+    description = s;
+  }
 }

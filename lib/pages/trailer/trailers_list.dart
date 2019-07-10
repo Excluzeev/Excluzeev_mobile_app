@@ -47,7 +47,7 @@ class _TrailersListPageState extends State<TrailersListPage> {
               trailer: trailer,
               onTap: _show,
               onShare: _shareTrailer,
-              showShare: false,
+              showShare: true,
             )
           : Center(child: CircularProgressIndicator()),
     );

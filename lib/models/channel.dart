@@ -76,10 +76,21 @@ abstract class Channel implements Built<Channel, ChannelBuilder> {
         ..deleteOn = data['deleteOn'] != null ? data['deleteOn'].toDate() : null
         ..isDeleted = data['isDeleted'] ?? false
         ..subscriberCount = data['subscriberCount'] ?? 0
-        ..price = double.parse(data['price'].toString()) ?? 0.0
-        ..targetFund = double.parse(data['targetFund'].toString()) ?? 0.0
-        ..currentFund = double.parse(data['currentFund'].toString()) ?? 0.0
-        ..percentage = double.parse(data['percentage'].toString()) ?? 0.0;
+        ..price = double.parse(
+                (data['price'] != null) ? data['price'].toString() : "0") ??
+            0.0
+        ..targetFund = double.parse((data['targetFund'] != null)
+                ? data['targetFund'].toString()
+                : "0") ??
+            0.0
+        ..currentFund = double.parse((data['currentFund'] != null)
+                ? data['currentFund'].toString()
+                : "0") ??
+            0.0
+        ..percentage = double.parse((data['percentage'] != null)
+                ? data['percentage'].toString()
+                : "0") ??
+            0.0;
       return builder.build();
     } catch (error) {
       Logger.log(TAG, message: "Couldn't build user object, error: $error");

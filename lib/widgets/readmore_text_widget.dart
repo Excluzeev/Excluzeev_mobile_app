@@ -45,8 +45,6 @@ class _ReadMoreTextWidgetState extends State<ReadMoreTextWidget> {
                   child: Text.rich(
                     TextSpan(
                       text: firstHalf,
-                      // recognizer: TapGestureRecognizer()
-                      //   ..onTap = () => print('Tap Here onTap'),
                       children: <TextSpan>[
                         flag
                             ? TextSpan(

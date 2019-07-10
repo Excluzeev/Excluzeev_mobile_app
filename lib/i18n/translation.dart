@@ -344,6 +344,11 @@ class Translation {
         "Add Trailer",
         name: 'addTrailer',
       );
+
+  String get updateDescription => Intl.message(
+        "Update",
+        name: 'updateDescription',
+      );
   String get errorLoadTrailers => Intl.message(
         "Loading Trailer Filed",
         name: 'errorLoadTrailers',
