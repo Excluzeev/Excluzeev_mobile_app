@@ -89,6 +89,21 @@ class LeagalLinks extends StatelessWidget {
             FlatButton(
               onPressed: () {
                 _launchURL(
+                    context, "https://excluzeev.com/call-to-action-terms");
+              },
+              child: SizedBox(
+                width: double.infinity,
+                child: Text(
+                  translation.callToActionTerms,
+                  style: drawerItemTextStyle,
+                  textAlign: TextAlign.left,
+                ),
+              ),
+            ),
+            Divider(),
+            FlatButton(
+              onPressed: () {
+                _launchURL(
                     context, "https://excluzeev.com/content-creator-policy");
               },
               child: SizedBox(

@@ -22,6 +22,7 @@ class _ContentCreatorSignUpPageState extends State<ContentCreatorSignUpPage> {
   bool terms = true;
   bool policy = true;
   bool upload = true;
+  bool callActionTerms = true;
 
   bool isLoading = false;
 
@@ -68,6 +69,11 @@ class _ContentCreatorSignUpPageState extends State<ContentCreatorSignUpPage> {
 
     if (!policy) {
       _showSnackBar("Please accept Policy");
+      return;
+    }
+
+    if (!callActionTerms) {
+      _showSnackBar("Please accept Call To Action Terms");
       return;
     }
 
@@ -128,6 +134,23 @@ class _ContentCreatorSignUpPageState extends State<ContentCreatorSignUpPage> {
                 onTap: () {
                   _launchURL(
                       context, "https://excluzeev.com/content-creator-policy");
+                },
+              ),
+            ),
+            CheckboxListTile(
+              value: callActionTerms,
+              onChanged: (value) {
+                setState(() {
+                  callActionTerms = value;
+                });
+              },
+              title: InkWell(
+                child: Text(
+                  translation.callToActionTerms,
+                ),
+                onTap: () {
+                  _launchURL(
+                      context, "https://excluzeev.com/call-to-action-terms");
                 },
               ),
             ),
