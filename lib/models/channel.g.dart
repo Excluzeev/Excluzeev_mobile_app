@@ -67,11 +67,14 @@ class _$ChannelSerializer implements StructuredSerializer<Channel> {
         ..add(serializers.serialize(object.subscriberCount,
             specifiedType: const FullType(int)));
     }
-    if (object.tier != null) {
+    if (object.tiers != null) {
       result
-        ..add('tier')
-        ..add(serializers.serialize(object.tier,
-            specifiedType: const FullType(String)));
+        ..add('tiers')
+        ..add(serializers.serialize(object.tiers,
+            specifiedType: const FullType(List, const [
+              const FullType(
+                  Map, const [const FullType(String), const FullType(dynamic)])
+            ])));
     }
     if (object.targetFund != null) {
       result
@@ -101,6 +104,12 @@ class _$ChannelSerializer implements StructuredSerializer<Channel> {
       result
         ..add('deleteOn')
         ..add(serializers.serialize(object.deleteOn,
+            specifiedType: const FullType(DateTime)));
+    }
+    if (object.expiry != null) {
+      result
+        ..add('expiry')
+        ..add(serializers.serialize(object.expiry,
             specifiedType: const FullType(DateTime)));
     }
 
@@ -170,9 +179,12 @@ class _$ChannelSerializer implements StructuredSerializer<Channel> {
           result.price = serializers.deserialize(value,
               specifiedType: const FullType(double)) as double;
           break;
-        case 'tier':
-          result.tier = serializers.deserialize(value,
-              specifiedType: const FullType(String)) as String;
+        case 'tiers':
+          result.tiers = serializers.deserialize(value,
+              specifiedType: const FullType(List, const [
+                const FullType(Map,
+                    const [const FullType(String), const FullType(dynamic)])
+              ])) as List<Map<String, dynamic>>;
           break;
         case 'targetFund':
           result.targetFund = serializers.deserialize(value,
@@ -192,6 +204,10 @@ class _$ChannelSerializer implements StructuredSerializer<Channel> {
           break;
         case 'deleteOn':
           result.deleteOn = serializers.deserialize(value,
+              specifiedType: const FullType(DateTime)) as DateTime;
+          break;
+        case 'expiry':
+          result.expiry = serializers.deserialize(value,
               specifiedType: const FullType(DateTime)) as DateTime;
           break;
       }
@@ -229,7 +245,7 @@ class _$Channel extends Channel {
   @override
   final double price;
   @override
-  final String tier;
+  final List<Map<String, dynamic>> tiers;
   @override
   final double targetFund;
   @override
@@ -240,6 +256,8 @@ class _$Channel extends Channel {
   final bool isDeleted;
   @override
   final DateTime deleteOn;
+  @override
+  final DateTime expiry;
 
   factory _$Channel([void Function(ChannelBuilder) updates]) =>
       (new ChannelBuilder()..update(updates)).build();
@@ -258,12 +276,13 @@ class _$Channel extends Channel {
       this.createdDate,
       this.subscriberCount,
       this.price,
-      this.tier,
+      this.tiers,
       this.targetFund,
       this.currentFund,
       this.percentage,
       this.isDeleted,
-      this.deleteOn})
+      this.deleteOn,
+      this.expiry})
       : super._() {
     if (userId == null) {
       throw new BuiltValueNullFieldError('Channel', 'userId');
@@ -321,12 +340,13 @@ class _$Channel extends Channel {
         createdDate == other.createdDate &&
         subscriberCount == other.subscriberCount &&
         price == other.price &&
-        tier == other.tier &&
+        tiers == other.tiers &&
         targetFund == other.targetFund &&
         currentFund == other.currentFund &&
         percentage == other.percentage &&
         isDeleted == other.isDeleted &&
-        deleteOn == other.deleteOn;
+        deleteOn == other.deleteOn &&
+        expiry == other.expiry;
   }
 
   @override
@@ -349,33 +369,26 @@ class _$Channel extends Channel {
                                                                 $jc(
                                                                     $jc(
                                                                         $jc(
-                                                                            $jc(
-                                                                                0,
-                                                                                userId
-                                                                                    .hashCode),
-                                                                            channelId
-                                                                                .hashCode),
-                                                                        categoryId
-                                                                            .hashCode),
-                                                                    categoryName
-                                                                        .hashCode),
-                                                                createdBy
-                                                                    .hashCode),
-                                                            channelType
-                                                                .hashCode),
-                                                        title.hashCode),
-                                                    description.hashCode),
-                                                image.hashCode),
-                                            coverImage.hashCode),
-                                        createdDate.hashCode),
-                                    subscriberCount.hashCode),
-                                price.hashCode),
-                            tier.hashCode),
-                        targetFund.hashCode),
-                    currentFund.hashCode),
-                percentage.hashCode),
-            isDeleted.hashCode),
-        deleteOn.hashCode));
+                                                                            $jc($jc(0, userId.hashCode),
+                                                                                channelId.hashCode),
+                                                                            categoryId.hashCode),
+                                                                        categoryName.hashCode),
+                                                                    createdBy.hashCode),
+                                                                channelType.hashCode),
+                                                            title.hashCode),
+                                                        description.hashCode),
+                                                    image.hashCode),
+                                                coverImage.hashCode),
+                                            createdDate.hashCode),
+                                        subscriberCount.hashCode),
+                                    price.hashCode),
+                                tiers.hashCode),
+                            targetFund.hashCode),
+                        currentFund.hashCode),
+                    percentage.hashCode),
+                isDeleted.hashCode),
+            deleteOn.hashCode),
+        expiry.hashCode));
   }
 
   @override
@@ -394,12 +407,13 @@ class _$Channel extends Channel {
           ..add('createdDate', createdDate)
           ..add('subscriberCount', subscriberCount)
           ..add('price', price)
-          ..add('tier', tier)
+          ..add('tiers', tiers)
           ..add('targetFund', targetFund)
           ..add('currentFund', currentFund)
           ..add('percentage', percentage)
           ..add('isDeleted', isDeleted)
-          ..add('deleteOn', deleteOn))
+          ..add('deleteOn', deleteOn)
+          ..add('expiry', expiry))
         .toString();
   }
 }
@@ -460,9 +474,9 @@ class ChannelBuilder implements Builder<Channel, ChannelBuilder> {
   double get price => _$this._price;
   set price(double price) => _$this._price = price;
 
-  String _tier;
-  String get tier => _$this._tier;
-  set tier(String tier) => _$this._tier = tier;
+  List<Map<String, dynamic>> _tiers;
+  List<Map<String, dynamic>> get tiers => _$this._tiers;
+  set tiers(List<Map<String, dynamic>> tiers) => _$this._tiers = tiers;
 
   double _targetFund;
   double get targetFund => _$this._targetFund;
@@ -484,6 +498,10 @@ class ChannelBuilder implements Builder<Channel, ChannelBuilder> {
   DateTime get deleteOn => _$this._deleteOn;
   set deleteOn(DateTime deleteOn) => _$this._deleteOn = deleteOn;
 
+  DateTime _expiry;
+  DateTime get expiry => _$this._expiry;
+  set expiry(DateTime expiry) => _$this._expiry = expiry;
+
   ChannelBuilder();
 
   ChannelBuilder get _$this {
@@ -501,12 +519,13 @@ class ChannelBuilder implements Builder<Channel, ChannelBuilder> {
       _createdDate = _$v.createdDate;
       _subscriberCount = _$v.subscriberCount;
       _price = _$v.price;
-      _tier = _$v.tier;
+      _tiers = _$v.tiers;
       _targetFund = _$v.targetFund;
       _currentFund = _$v.currentFund;
       _percentage = _$v.percentage;
       _isDeleted = _$v.isDeleted;
       _deleteOn = _$v.deleteOn;
+      _expiry = _$v.expiry;
       _$v = null;
     }
     return this;
@@ -542,12 +561,13 @@ class ChannelBuilder implements Builder<Channel, ChannelBuilder> {
             createdDate: createdDate,
             subscriberCount: subscriberCount,
             price: price,
-            tier: tier,
+            tiers: tiers,
             targetFund: targetFund,
             currentFund: currentFund,
             percentage: percentage,
             isDeleted: isDeleted,
-            deleteOn: deleteOn);
+            deleteOn: deleteOn,
+            expiry: expiry);
     replace(_$result);
     return _$result;
   }

@@ -123,6 +123,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
     setState(() {
       trailer = widget.trailerMain;
     });
+
     _getuser();
     super.initState();
 
@@ -184,6 +185,15 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
       if (user.subscribedChannels.contains(trailer.channelId)) {
         setState(() {
           _showSubscribe = false;
+        });
+        if (trailer.categoryName != "Call-to-Action") {
+          setState(() {
+            _showSubscribe = true;
+          });
+        }
+      } else {
+        setState(() {
+          _showSubscribe = true;
         });
       }
 
@@ -377,55 +387,63 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
   }
 
   _donateButton() {
-    return _showSubscribe
-        ? trailer.channelType != "CrowdFunding"
-            ? Container()
-            : Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  RaisedButton(
-                    shape: StadiumBorder(),
-                    padding: const EdgeInsets.only(
-                      top: 8.0,
-                      bottom: 8.0,
-                      left: 24.0,
-                      right: 24.0,
-                    ),
-                    textColor: Colors.white,
-                    child: Text(
-                      "${translation.donate5}",
+    if (_showSubscribe && channel != null) {
+      if (trailer.channelType != "CrowdFunding") {
+        return Container();
+      } else {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            for (int i = 0; i < channel.tiers.length; i++)
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  child: ExpansionTile(
+                    title: Text(
+                      "Join Tier ${i + 1}",
                       style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                    color: Palette.primary,
-                    onPressed: () => _startSubscribe(true, price: 5),
-                  ),
-                  RaisedButton(
-                    shape: StadiumBorder(),
-                    padding: const EdgeInsets.only(
-                      top: 8.0,
-                      bottom: 8.0,
-                      left: 24.0,
-                      right: 24.0,
-                    ),
-                    textColor: Colors.white,
-                    child: Text(
-                      "${translation.donate10}",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.w600,
+                    children: <Widget>[
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(channel.tiers[i]["description"]),
                       ),
-                    ),
-                    color: Palette.primary,
-                    onPressed: () => _startSubscribe(true, price: 10),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: RaisedButton(
+                          shape: StadiumBorder(),
+                          padding: const EdgeInsets.only(
+                            top: 8.0,
+                            bottom: 8.0,
+                            left: 24.0,
+                            right: 24.0,
+                          ),
+                          textColor: Colors.white,
+                          child: Text(
+                            "Donate ${channel.tiers[i]['price']}\$",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          color: Palette.primary,
+                          onPressed: () => _startSubscribe(true,
+                              price: int.parse(channel.tiers[i]['price'])),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              )
-        : Container();
+                ),
+              ),
+          ],
+        );
+      }
+    } else {
+      return Container();
+    }
   }
 
   _subscribeButton() {

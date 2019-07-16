@@ -19,7 +19,7 @@ abstract class Trailer implements Built<Trailer, TrailerBuilder> {
   String get categoryName;
   String get createdBy;
   String get title;
-  String description;
+  String get description;
 
   String get videoUrl;
   String get channelType;
@@ -45,6 +45,9 @@ abstract class Trailer implements Built<Trailer, TrailerBuilder> {
   String get channelImage;
 
   Timestamp get createdDate;
+
+  @nullable
+  DateTime get expiry;
 
   Trailer._();
 
@@ -77,7 +80,8 @@ abstract class Trailer implements Built<Trailer, TrailerBuilder> {
         ..likes = data['likes'] ?? 0
         ..dislikes = data['dislikes'] ?? 0
         ..neutral = data['neutral'] ?? 0
-        ..views = data['views'] ?? 0;
+        ..views = data['views'] ?? 0
+        ..expiry = data['expiry'] != null ? data['expiry'].toDate() : null;
       return builder.build();
     } catch (error) {
       Logger.log(TAG, message: "Couldn't build user object, error: $error");
@@ -152,8 +156,4 @@ abstract class Trailer implements Built<Trailer, TrailerBuilder> {
       };
 
   static Serializer<Trailer> get serializer => _$trailerSerializer;
-
-  setDescription(String s) {
-    description = s;
-  }
 }

@@ -200,7 +200,7 @@ class Translation {
         name: 'cannotBeEmpty',
       );
   String get priceError => Intl.message(
-        "Cannot be greater 10 or Lessthan 1",
+        "Price should be greater than 1.99",
         name: 'priceError',
       );
 

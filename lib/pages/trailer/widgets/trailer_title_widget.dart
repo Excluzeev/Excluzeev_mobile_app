@@ -36,6 +36,14 @@ class _TrailerTitleWidgetState extends State<TrailerTitleWidget> {
     WidgetUtils.goToAuth(context);
   }
 
+  bool getIsExpired() {
+    if (widget.trailer.expiry == null) {
+      return false;
+    } else {
+      return widget.trailer.expiry.isBefore(DateTime.now());
+    }
+  }
+
   _reportReason() async {
     if (selectReasonList.isEmpty) {
       Fluttertoast.showToast(
@@ -141,16 +149,16 @@ class _TrailerTitleWidgetState extends State<TrailerTitleWidget> {
         _showReasonDialog();
       },
       itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-            const PopupMenuItem<String>(
-              value: "Report",
-              child: Text(
-                'Report',
-                style: TextStyle(
-                  fontSize: 14.0,
-                ),
-              ),
+        const PopupMenuItem<String>(
+          value: "Report",
+          child: Text(
+            'Report',
+            style: TextStyle(
+              fontSize: 14.0,
             ),
-          ],
+          ),
+        ),
+      ],
     );
   }
 
@@ -224,6 +232,18 @@ class _TrailerTitleWidgetState extends State<TrailerTitleWidget> {
                                       fontWeight: FontWeight.normal,
                                       fontSize: 12.0,
                                     ),
+                              ),
+                              TextSpan(
+                                text: getIsExpired() ? " • Expired" : "",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .caption
+                                    .copyWith(
+                                        fontWeight: FontWeight.normal,
+                                        fontSize: 12.0,
+                                        color: getIsExpired()
+                                            ? Colors.red
+                                            : Colors.black),
                               )
                             ],
                           ),

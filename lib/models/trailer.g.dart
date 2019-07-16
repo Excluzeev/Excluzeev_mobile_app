@@ -103,6 +103,12 @@ class _$TrailerSerializer implements StructuredSerializer<Trailer> {
         ..add(serializers.serialize(object.channelImage,
             specifiedType: const FullType(String)));
     }
+    if (object.expiry != null) {
+      result
+        ..add('expiry')
+        ..add(serializers.serialize(object.expiry,
+            specifiedType: const FullType(DateTime)));
+    }
 
     return result;
   }
@@ -198,6 +204,10 @@ class _$TrailerSerializer implements StructuredSerializer<Trailer> {
           result.createdDate = serializers.deserialize(value,
               specifiedType: const FullType(Timestamp)) as Timestamp;
           break;
+        case 'expiry':
+          result.expiry = serializers.deserialize(value,
+              specifiedType: const FullType(DateTime)) as DateTime;
+          break;
       }
     }
 
@@ -246,6 +256,8 @@ class _$Trailer extends Trailer {
   final String channelImage;
   @override
   final Timestamp createdDate;
+  @override
+  final DateTime expiry;
 
   factory _$Trailer([void Function(TrailerBuilder) updates]) =>
       (new TrailerBuilder()..update(updates)).build();
@@ -270,7 +282,8 @@ class _$Trailer extends Trailer {
       this.playbackId,
       this.image,
       this.channelImage,
-      this.createdDate})
+      this.createdDate,
+      this.expiry})
       : super._() {
     if (userId == null) {
       throw new BuiltValueNullFieldError('Trailer', 'userId');
@@ -340,7 +353,8 @@ class _$Trailer extends Trailer {
         playbackId == other.playbackId &&
         image == other.image &&
         channelImage == other.channelImage &&
-        createdDate == other.createdDate;
+        createdDate == other.createdDate &&
+        expiry == other.expiry;
   }
 
   @override
@@ -363,26 +377,26 @@ class _$Trailer extends Trailer {
                                                                 $jc(
                                                                     $jc(
                                                                         $jc(
-                                                                            $jc($jc(0, userId.hashCode),
-                                                                                trailerId.hashCode),
-                                                                            channelId.hashCode),
-                                                                        channelName.hashCode),
-                                                                    categoryId.hashCode),
-                                                                categoryName.hashCode),
-                                                            createdBy.hashCode),
-                                                        title.hashCode),
-                                                    description.hashCode),
-                                                videoUrl.hashCode),
-                                            channelType.hashCode),
-                                        likes.hashCode),
-                                    dislikes.hashCode),
-                                neutral.hashCode),
-                            views.hashCode),
-                        originalUrl.hashCode),
-                    playbackId.hashCode),
-                image.hashCode),
-            channelImage.hashCode),
-        createdDate.hashCode));
+                                                                            $jc($jc($jc(0, userId.hashCode), trailerId.hashCode),
+                                                                                channelId.hashCode),
+                                                                            channelName.hashCode),
+                                                                        categoryId.hashCode),
+                                                                    categoryName.hashCode),
+                                                                createdBy.hashCode),
+                                                            title.hashCode),
+                                                        description.hashCode),
+                                                    videoUrl.hashCode),
+                                                channelType.hashCode),
+                                            likes.hashCode),
+                                        dislikes.hashCode),
+                                    neutral.hashCode),
+                                views.hashCode),
+                            originalUrl.hashCode),
+                        playbackId.hashCode),
+                    image.hashCode),
+                channelImage.hashCode),
+            createdDate.hashCode),
+        expiry.hashCode));
   }
 
   @override
@@ -407,7 +421,8 @@ class _$Trailer extends Trailer {
           ..add('playbackId', playbackId)
           ..add('image', image)
           ..add('channelImage', channelImage)
-          ..add('createdDate', createdDate))
+          ..add('createdDate', createdDate)
+          ..add('expiry', expiry))
         .toString();
   }
 }
@@ -495,6 +510,10 @@ class TrailerBuilder implements Builder<Trailer, TrailerBuilder> {
   Timestamp get createdDate => _$this._createdDate;
   set createdDate(Timestamp createdDate) => _$this._createdDate = createdDate;
 
+  DateTime _expiry;
+  DateTime get expiry => _$this._expiry;
+  set expiry(DateTime expiry) => _$this._expiry = expiry;
+
   TrailerBuilder();
 
   TrailerBuilder get _$this {
@@ -519,6 +538,7 @@ class TrailerBuilder implements Builder<Trailer, TrailerBuilder> {
       _image = _$v.image;
       _channelImage = _$v.channelImage;
       _createdDate = _$v.createdDate;
+      _expiry = _$v.expiry;
       _$v = null;
     }
     return this;
@@ -560,7 +580,8 @@ class TrailerBuilder implements Builder<Trailer, TrailerBuilder> {
             playbackId: playbackId,
             image: image,
             channelImage: channelImage,
-            createdDate: createdDate);
+            createdDate: createdDate,
+            expiry: expiry);
     replace(_$result);
     return _$result;
   }

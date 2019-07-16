@@ -86,7 +86,7 @@ class ChannelManager {
 
     await _store.runTransaction((transaction) async {
       final data = channel.toMap;
-      print(data);
+      // print(data);
       final isUpdate = freshSnap?.exists ?? false;
       if (isUpdate) {
         Logger.log(TAG,

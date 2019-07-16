@@ -34,7 +34,7 @@ abstract class Channel implements Built<Channel, ChannelBuilder> {
   double get price;
 
   @nullable
-  String get tier;
+  List<Map<String, dynamic>> get tiers;
 
   @nullable
   double get targetFund;
@@ -51,6 +51,9 @@ abstract class Channel implements Built<Channel, ChannelBuilder> {
   @nullable
   DateTime get deleteOn;
 
+  @nullable
+  DateTime get expiry;
+
   Channel._();
 
   factory Channel([updates(ChannelBuilder b)]) = _$Channel;
@@ -60,6 +63,18 @@ abstract class Channel implements Built<Channel, ChannelBuilder> {
       return null;
     try {
       final data = snapshot.data;
+      print(data['tiers']);
+      List<Map<String, dynamic>> listTiers = List();
+      if (data['tiers'] != null) {
+        data['tiers'].forEach((d) {
+          Map<String, dynamic> m = {
+            "description": d["description"],
+            "price": d["price"],
+            "tier": d["tier"]
+          };
+          listTiers.add(m);
+        });
+      }
       final builder = ChannelBuilder()
         ..userId = data['userId'] ?? ''
         ..channelId = data['channelId'] ?? ''
@@ -70,7 +85,8 @@ abstract class Channel implements Built<Channel, ChannelBuilder> {
         ..title = data['title'] ?? ''
         ..description = data['description'] ?? ''
         ..image = data['image'] ?? ''
-        ..tier = data['tier'] ?? ''
+        ..tiers = data['tiers'] != null ? listTiers : []
+        ..expiry = data['expiry'] != null ? data['expiry'].toDate() : null
         ..coverImage = data['coverImage'] ?? ''
         ..createdDate = data['createdDate'] ?? null
         ..deleteOn = data['deleteOn'] != null ? data['deleteOn'].toDate() : null
@@ -108,11 +124,13 @@ abstract class Channel implements Built<Channel, ChannelBuilder> {
         "title": this.title,
         "description": this.description,
         "image": this.image,
-        "tier": this.tier,
+        "tiers": this.tiers,
         "coverImage": this.coverImage,
         "createdDate": this.createdDate,
         "subscriberCount": this.subscriberCount,
         "price": this.price,
+        "tiers": tiers,
+        "expiry": expiry != null ? Timestamp.fromDate(expiry) : null,
         "targetFund": this.targetFund,
         "currentFund": this.currentFund,
         "percentage": this.percentage,
