@@ -1,7 +1,7 @@
 name: trenstop
 description: Excluzeev
 
-version: 1.0.26+29
+version: 1.1.0+30
 
 environment:
   sdk: ">=2.2.2 <3.0.0"
