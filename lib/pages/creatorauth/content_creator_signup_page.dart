@@ -19,9 +19,10 @@ class _ContentCreatorSignUpPageState extends State<ContentCreatorSignUpPage> {
   final UserManager _userMangaer = UserManager.instance;
   Translation translation;
 
-  bool terms = true;
+  // bool terms = true;
   bool policy = true;
   bool upload = true;
+  bool checkAll = true;
   bool callActionTerms = true;
 
   bool isLoading = false;
@@ -62,10 +63,10 @@ class _ContentCreatorSignUpPageState extends State<ContentCreatorSignUpPage> {
   }
 
   _checkUpdateUser() {
-    if (!terms) {
-      _showSnackBar("Please accept Terms");
-      return;
-    }
+    // if (!terms) {
+    //   _showSnackBar("Please accept Terms");
+    //   return;
+    // }
 
     if (!policy) {
       _showSnackBar("Please accept Policy");
@@ -82,10 +83,40 @@ class _ContentCreatorSignUpPageState extends State<ContentCreatorSignUpPage> {
       return;
     }
 
-    if (terms && policy && upload) {
+    if (callActionTerms && policy && upload) {
       _updateLoading(true);
       Navigator.of(context).pop(true);
     }
+  }
+
+  _checkSomeCheckBoxUpdated() {
+    if (!policy) {
+      setState(() {
+        checkAll = false;
+      });
+      return;
+    }
+    // if(!terms) {
+    //   setState(() {
+    //     checkAll = false;
+    //   });
+    //   return;
+    // }
+    if (!upload) {
+      setState(() {
+        checkAll = false;
+      });
+      return;
+    }
+    if (!callActionTerms) {
+      setState(() {
+        checkAll = false;
+      });
+      return;
+    }
+    setState(() {
+      checkAll = true;
+    });
   }
 
   @override
@@ -110,6 +141,7 @@ class _ContentCreatorSignUpPageState extends State<ContentCreatorSignUpPage> {
                 setState(() {
                   policy = value;
                 });
+                _checkSomeCheckBoxUpdated();
               },
               title: InkWell(
                 child: Text(
@@ -126,6 +158,7 @@ class _ContentCreatorSignUpPageState extends State<ContentCreatorSignUpPage> {
                 setState(() {
                   upload = value;
                 });
+                _checkSomeCheckBoxUpdated();
               },
               title: InkWell(
                 child: Text(
@@ -143,6 +176,7 @@ class _ContentCreatorSignUpPageState extends State<ContentCreatorSignUpPage> {
                 setState(() {
                   callActionTerms = value;
                 });
+                _checkSomeCheckBoxUpdated();
               },
               title: InkWell(
                 child: Text(
@@ -154,6 +188,23 @@ class _ContentCreatorSignUpPageState extends State<ContentCreatorSignUpPage> {
                 },
               ),
             ),
+            // CheckboxListTile(
+            //   value: checkAll,
+            //   onChanged: (value) {
+            //     setState(() {
+            //       checkAll = value;
+            //       callActionTerms = true;
+            //       policy = true;
+            //       upload = true;
+            //     });
+            //   },
+            //   title: InkWell(
+            //     child: Text(
+            //       translation.checkAllTerms,
+            //     ),
+            //     onTap: () {},
+            //   ),
+            // ),
             SizedBox(
               height: 8.0,
             ),

@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:trenstop/i18n/translation.dart';
 import 'package:trenstop/managers/auth_manager.dart';
 import 'package:trenstop/misc/palette.dart';
@@ -35,6 +37,29 @@ class _SignUpPageState extends State<SignUpPage> {
   SignUpBloc bloc;
   bool _loading = false;
 
+  bool agreeTerms = false;
+
+  void _launchURL(BuildContext context, String url) async {
+    try {
+      await launch(
+        url,
+        option: new CustomTabsOption(
+          toolbarColor: Theme.of(context).primaryColor,
+          enableDefaultShare: true,
+          enableUrlBarHiding: true,
+          showPageTitle: true,
+          animation: new CustomTabsAnimation.slideIn(),
+          extraCustomTabs: <String>[
+            'org.mozilla.firefox',
+            'com.microsoft.emmx',
+          ],
+        ),
+      );
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
   _updateLoading(bool value) {
     if (mounted) {
       setState(() {
@@ -52,6 +77,10 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   void _emailSignUpConnect() async {
+    if (!agreeTerms) {
+      _showSnackBar("Please accept terms.");
+      return;
+    }
     _updateLoading(true);
     final snapshot = await _authManager.connectWithEmailAndPassword(
       true,
@@ -60,9 +89,7 @@ class _SignUpPageState extends State<SignUpPage> {
       password: _passwordTextController.text,
     );
     if (snapshot.hasError) {
-      String message = snapshot.error is AuthManagerError
-          ? "Error"
-          : "error";
+      String message = snapshot.error is AuthManagerError ? "Error" : "error";
       _showSnackBar(snapshot.error.toString());
     } else {
       _updateUser();
@@ -70,7 +97,6 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   _updateUser() async {
-
     FirebaseUser firebaseUser = await _authManager.currentUser;
     UserBuilder userBuilder = UserBuilder()
       ..firstName = _firstNameController.text
@@ -86,19 +112,16 @@ class _SignUpPageState extends State<SignUpPage> {
       _showSnackBar(translation.errorUpdateUser);
     } else {
       Future.delayed(
-        Duration(
-          seconds: 1,
-        ),
-          () {
-            Navigator.of(context).pushAndRemoveUntil(
-              CupertinoPageRoute(
-                  settings: RouteSettings(name: FeedPage.TAG),
-                  builder: (context) => FeedPage()),
-                  (route) => false,
-            );
-          }
-      );
-
+          Duration(
+            seconds: 1,
+          ), () {
+        Navigator.of(context).pushAndRemoveUntil(
+          CupertinoPageRoute(
+              settings: RouteSettings(name: FeedPage.TAG),
+              builder: (context) => FeedPage()),
+          (route) => false,
+        );
+      });
     }
   }
 
@@ -107,13 +130,11 @@ class _SignUpPageState extends State<SignUpPage> {
     SystemChrome.setSystemUIOverlayStyle(Palette.overlayStyle);
     if (translation == null) translation = Translation.of(context);
 
-    if (bloc == null)
-      bloc = SignUpBloc(translation);
+    if (bloc == null) bloc = SignUpBloc(translation);
     final style = Theme.of(context).textTheme.subhead.copyWith(
-      color: Palette.primary,
-      fontSize: 12.0,
-    );
-
+          color: Palette.primary,
+          fontSize: 12.0,
+        );
 
     return BlocProvider<SignUpBloc>(
       bloc: bloc,
@@ -135,99 +156,160 @@ class _SignUpPageState extends State<SignUpPage> {
               SizedBox(height: 24.0),
               _loading
                   ? Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: CircularProgressIndicator(),
-                ),
-              )
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: CircularProgressIndicator(),
+                      ),
+                    )
                   : Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    SizedBox(height: 24.0),
-                    RoundedBorder(
-                      child: StreamBuilder(
-                        stream: bloc.firstName,
-                        builder: (context, snapshot) => TextField(
-                          controller: _firstNameController,
-                          onChanged: bloc.updateFirstName,
-                          decoration: InputDecoration(
-                            fillColor: Colors.white,
-                            contentPadding: EdgeInsets.zero,
-                            filled: true,
-                            border: InputBorder.none,
-                            errorText: snapshot.error,
-                            hintText: translation.firstNameLabel,
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          SizedBox(height: 24.0),
+                          RoundedBorder(
+                            child: StreamBuilder(
+                              stream: bloc.firstName,
+                              builder: (context, snapshot) => TextField(
+                                controller: _firstNameController,
+                                onChanged: bloc.updateFirstName,
+                                decoration: InputDecoration(
+                                  fillColor: Colors.white,
+                                  contentPadding: EdgeInsets.zero,
+                                  filled: true,
+                                  border: InputBorder.none,
+                                  errorText: snapshot.error,
+                                  hintText: translation.firstNameLabel,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 16.0),
-                    RoundedBorder(
-                      child: StreamBuilder(
-                        stream: bloc.lastName,
-                        builder: (context, snapshot) => TextField(
-                          controller: _lastNameController,
-                          onChanged: bloc.updateLastName,
-                          decoration: InputDecoration(
-                            fillColor: Colors.white,
-                            contentPadding: EdgeInsets.zero,
-                            filled: true,
-                            border: InputBorder.none,
-                            errorText: snapshot.error,
-                            hintText: translation.lastNameLabel,
+                          SizedBox(height: 16.0),
+                          RoundedBorder(
+                            child: StreamBuilder(
+                              stream: bloc.lastName,
+                              builder: (context, snapshot) => TextField(
+                                controller: _lastNameController,
+                                onChanged: bloc.updateLastName,
+                                decoration: InputDecoration(
+                                  fillColor: Colors.white,
+                                  contentPadding: EdgeInsets.zero,
+                                  filled: true,
+                                  border: InputBorder.none,
+                                  errorText: snapshot.error,
+                                  hintText: translation.lastNameLabel,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 16.0),
-                    RoundedBorder(
-                      child: StreamBuilder(
-                        stream: bloc.email,
-                        builder: (context, snapshot) => TextField(
-                          controller: _emailTextController,
-                          onChanged: bloc.updateEmail,
-                          decoration: InputDecoration(
-                            fillColor: Colors.white,
-                            contentPadding: EdgeInsets.zero,
-                            filled: true,
-                            border: InputBorder.none,
-                            errorText: snapshot.error,
-                            hintText: translation.emailHint,
+                          SizedBox(height: 16.0),
+                          RoundedBorder(
+                            child: StreamBuilder(
+                              stream: bloc.email,
+                              builder: (context, snapshot) => TextField(
+                                controller: _emailTextController,
+                                onChanged: bloc.updateEmail,
+                                decoration: InputDecoration(
+                                  fillColor: Colors.white,
+                                  contentPadding: EdgeInsets.zero,
+                                  filled: true,
+                                  border: InputBorder.none,
+                                  errorText: snapshot.error,
+                                  hintText: translation.emailHint,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 16.0),
-                    RoundedBorder(
-                      child: StreamBuilder(
-                        stream: bloc.password,
-                        builder: (context, snapshot) => TextField(
-                          controller: _passwordTextController,
-                          obscureText: true,
-                          onChanged: bloc.updatePassword,
-                          decoration: InputDecoration(
-                            fillColor: Colors.white,
-                            contentPadding: EdgeInsets.zero,
-                            filled: true,
-                            border: InputBorder.none,
-                            errorText: snapshot.error,
-                            hintText: translation.passwordHint,
+                          SizedBox(height: 16.0),
+                          RoundedBorder(
+                            child: StreamBuilder(
+                              stream: bloc.password,
+                              builder: (context, snapshot) => TextField(
+                                controller: _passwordTextController,
+                                obscureText: true,
+                                onChanged: bloc.updatePassword,
+                                decoration: InputDecoration(
+                                  fillColor: Colors.white,
+                                  contentPadding: EdgeInsets.zero,
+                                  filled: true,
+                                  border: InputBorder.none,
+                                  errorText: snapshot.error,
+                                  hintText: translation.passwordHint,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(height: 16.0),
-                    StreamBuilder(
-                      stream: bloc.submitValid,
-                      builder: (context, snapshot) => RoundedButton(
-                        enabled: snapshot.hasData,
-                        text: translation.signUp.toUpperCase(),
-                        onPressed: () => snapshot.hasData ?  _emailSignUpConnect() : _showSnackBar(translation.errorFields),
-                      ),
-                    ),
-                    SizedBox(height: 24.0),
+                          SizedBox(height: 16.0),
+
+                          CheckboxListTile(
+                            value: agreeTerms,
+                            onChanged: (value) {
+                              setState(() {
+                                agreeTerms = value;
+                              });
+                            },
+                            title: Text.rich(
+                              TextSpan(
+                                style: TextStyle(
+                                  fontSize: 14.0,
+                                ),
+                                children: <TextSpan>[
+                                  TextSpan(text: "Agree to "),
+                                  TextSpan(
+                                    style: TextStyle(
+                                      color: Colors.blue,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                    text: "Terms",
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        _launchURL(context,
+                                            "https://excluzeev.com/license-agreement");
+                                      },
+                                  ),
+                                  TextSpan(text: ", "),
+                                  TextSpan(
+                                    style: TextStyle(
+                                      color: Colors.blue,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                    text: "Privacy Policy",
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        _launchURL(context,
+                                            "https://excluzeev.com/privacy-policy");
+                                      },
+                                  ),
+                                  TextSpan(text: ", "),
+                                  TextSpan(
+                                    style: TextStyle(
+                                      color: Colors.blue,
+                                      decoration: TextDecoration.underline,
+                                    ),
+                                    text: "Call to Action terms",
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {
+                                        _launchURL(context,
+                                            "https://excluzeev.com/call-to-action-terms");
+                                      },
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+
+                          SizedBox(height: 16.0),
+                          StreamBuilder(
+                            stream: bloc.submitValid,
+                            builder: (context, snapshot) => RoundedButton(
+                              enabled: snapshot.hasData,
+                              text: translation.signUp.toUpperCase(),
+                              onPressed: () => snapshot.hasData
+                                  ? _emailSignUpConnect()
+                                  : _showSnackBar(translation.errorFields),
+                            ),
+                          ),
+                          SizedBox(height: 24.0),
 //                      Padding(
 //                        padding: const EdgeInsets.all(8.0),
 //                        child: OrWidget(),
@@ -236,9 +318,9 @@ class _SignUpPageState extends State<SignUpPage> {
 //                        text: translation.signUp.toUpperCase(),
 //                        onPressed: () => _goSignUp(),
 //                      ),
-                  ],
-                ),
-              )
+                        ],
+                      ),
+                    )
             ],
           ),
         ),

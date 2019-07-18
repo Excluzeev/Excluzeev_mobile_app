@@ -525,6 +525,7 @@ class Translation {
       Intl.message('Content Creators Terms', name: 'contentCreatorsTerms');
   String get callToActionTerms =>
       Intl.message('Call To Action Terms', name: 'callToActionTerms');
+  String get checkAllTerms => Intl.message('Check All', name: 'checkAllTerms');
   String get licenseAgreement =>
       Intl.message('License Agreement', name: 'licenseAgreement');
   String get communityMemberAgreement =>
