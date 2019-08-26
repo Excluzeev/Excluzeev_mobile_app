@@ -142,16 +142,16 @@ class _VideoTitleWidgetState extends State<VideoTitleWidget> {
         _showReasonDialog();
       },
       itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-            const PopupMenuItem<String>(
-              value: "Report",
-              child: Text(
-                'Report',
-                style: TextStyle(
-                  fontSize: 14.0,
-                ),
-              ),
+        const PopupMenuItem<String>(
+          value: "Report",
+          child: Text(
+            'Report',
+            style: TextStyle(
+              fontSize: 14.0,
             ),
-          ],
+          ),
+        ),
+      ],
     );
   }
 
@@ -186,46 +186,51 @@ class _VideoTitleWidgetState extends State<VideoTitleWidget> {
                     ),
                   ),
                 ),
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.8,
-                  padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text(
-                        widget.video.title,
-                        maxLines: 2,
-                        softWrap: true,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.title.copyWith(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 15.0,
-                              color: Palette.primary,
-                            ),
-                      ),
-                      SizedBox(
-                        height: 4.0,
-                      ),
-                      Text.rich(
-                        TextSpan(
-                          text: "${widget.video.channelName}",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12.0,
-                          ),
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: " • ${widget.video.views} views • $daysAgo",
-                              style:
-                                  Theme.of(context).textTheme.caption.copyWith(
-                                        fontWeight: FontWeight.normal,
-                                        fontSize: 12.0,
-                                      ),
-                            )
-                          ],
+                Expanded(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width * 0.8,
+                    padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(
+                          widget.video.title,
+                          maxLines: 2,
+                          softWrap: true,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.title.copyWith(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 15.0,
+                                color: Palette.primary,
+                              ),
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          height: 4.0,
+                        ),
+                        Text.rich(
+                          TextSpan(
+                            text: "${widget.video.channelName}",
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 12.0,
+                            ),
+                            children: <TextSpan>[
+                              TextSpan(
+                                text:
+                                    " • ${widget.video.views} views • $daysAgo",
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .caption
+                                    .copyWith(
+                                      fontWeight: FontWeight.normal,
+                                      fontSize: 12.0,
+                                    ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ],

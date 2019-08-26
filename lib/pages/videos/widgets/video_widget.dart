@@ -47,7 +47,11 @@ class VideoWidget extends StatelessWidget {
                   child: Container(
                     color: Colors.blueGrey,
                     child: ImageDisplay(
-                      urls: [video.image],
+                      urls: [
+                        video.hasCustomThumbnail
+                            ? video.customThumbnail
+                            : video.image
+                      ],
                       zoomable: this.zoomable,
                     ),
                   ),

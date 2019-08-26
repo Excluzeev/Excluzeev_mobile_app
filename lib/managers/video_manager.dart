@@ -72,21 +72,18 @@ class VideoManager {
     };
 
     final freshSnap = await reference.get().catchError(errorHandler);
-
-    await _store.runTransaction((transaction) async {
-      final data = video.toMap;
-      print(data);
-      final isUpdate = freshSnap?.exists ?? false;
-      if (isUpdate) {
-        Logger.log(TAG,
-            message: "Sending data with isUpdate ($isUpdate): ${data.keys}");
-        await transaction.update(reference, data).catchError(errorHandler);
-      } else {
-        Logger.log(TAG,
-            message: "Sending data with isUpdate ($isUpdate): ${data.keys}");
-        await transaction.set(reference, data).catchError(errorHandler);
-      }
-    }).catchError(errorHandler);
+    final data = video.toMap;
+    print(data);
+    final isUpdate = freshSnap?.exists ?? false;
+    if (isUpdate) {
+      Logger.log(TAG,
+          message: "Sending data with isUpdate ($isUpdate): ${data.keys}");
+      await reference.updateData(data).catchError(errorHandler);
+    } else {
+      Logger.log(TAG,
+          message: "Sending data with isUpdate ($isUpdate): ${data.keys}");
+      await reference.setData(data).catchError(errorHandler);
+    }
 
     return Snapshot<Video>(
       data: video,

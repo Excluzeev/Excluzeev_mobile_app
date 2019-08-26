@@ -9,7 +9,6 @@ import 'package:trenstop/misc/logger.dart';
 part 'user.g.dart';
 
 abstract class User implements Built<User, UserBuilder> {
-
   static String TAG = "USER_MODEL";
 
   String get uid;
@@ -76,10 +75,8 @@ abstract class User implements Built<User, UserBuilder> {
     }
   }
 
-
   factory User.fromMap(Map<String, dynamic> data) {
-    if (data == null || data.isEmpty)
-      return null;
+    if (data == null || data.isEmpty) return null;
     try {
       final builder = UserBuilder()
         ..firstName = data['firstName'] ?? ''
@@ -101,17 +98,16 @@ abstract class User implements Built<User, UserBuilder> {
     }
   }
 
-
   Map<String, dynamic> get toMap => {
-    "firstName": this.firstName,
-    "lastName": this.lastName,
-    "uid": this.uid,
-    "email": this.email,
-    "isContentCreator": this.isContentCreator,
-    "paypalEmail": this.paypalEmail,
-    "userPhoto": this.userPhoto,
-    "subscribedChannels": this.subscribedChannels?.toList()
-  };
+        "firstName": this.firstName,
+        "lastName": this.lastName,
+        "uid": this.uid,
+        "email": this.email,
+        "isContentCreator": this.isContentCreator,
+        "paypalEmail": this.paypalEmail,
+        "userPhoto": this.userPhoto,
+        "subscribedChannels": this.subscribedChannels?.toList()
+      };
 
   static Serializer<User> get serializer => _$userSerializer;
 }

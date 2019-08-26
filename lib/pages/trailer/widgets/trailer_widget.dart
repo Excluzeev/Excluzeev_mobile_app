@@ -43,7 +43,11 @@ class TrailerWidget extends StatelessWidget {
               children: <Widget>[
                 SizedBox.expand(
                   child: ImageDisplay(
-                    urls: [trailer.image],
+                    urls: [
+                      trailer.hasCustomThumbnail
+                          ? trailer.customThumbnail
+                          : trailer.image
+                    ],
                     zoomable: this.zoomable,
                     key: Key(trailer.trailerId),
                   ),

@@ -129,6 +129,18 @@ class _$VideoSerializer implements StructuredSerializer<Video> {
         ..add(serializers.serialize(object.muxId,
             specifiedType: const FullType(String)));
     }
+    if (object.hasCustomThumbnail != null) {
+      result
+        ..add('hasCustomThumbnail')
+        ..add(serializers.serialize(object.hasCustomThumbnail,
+            specifiedType: const FullType(bool)));
+    }
+    if (object.customThumbnail != null) {
+      result
+        ..add('customThumbnail')
+        ..add(serializers.serialize(object.customThumbnail,
+            specifiedType: const FullType(String)));
+    }
 
     return result;
   }
@@ -240,6 +252,14 @@ class _$VideoSerializer implements StructuredSerializer<Video> {
           result.createdDate = serializers.deserialize(value,
               specifiedType: const FullType(Timestamp)) as Timestamp;
           break;
+        case 'hasCustomThumbnail':
+          result.hasCustomThumbnail = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
+          break;
+        case 'customThumbnail':
+          result.customThumbnail = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
       }
     }
 
@@ -296,6 +316,10 @@ class _$Video extends Video {
   final String muxId;
   @override
   final Timestamp createdDate;
+  @override
+  final bool hasCustomThumbnail;
+  @override
+  final String customThumbnail;
 
   factory _$Video([void Function(VideoBuilder) updates]) =>
       (new VideoBuilder()..update(updates)).build();
@@ -324,7 +348,9 @@ class _$Video extends Video {
       this.sDate,
       this.streamKey,
       this.muxId,
-      this.createdDate})
+      this.createdDate,
+      this.hasCustomThumbnail,
+      this.customThumbnail})
       : super._() {
     if (userId == null) {
       throw new BuiltValueNullFieldError('Video', 'userId');
@@ -395,7 +421,9 @@ class _$Video extends Video {
         sDate == other.sDate &&
         streamKey == other.streamKey &&
         muxId == other.muxId &&
-        createdDate == other.createdDate;
+        createdDate == other.createdDate &&
+        hasCustomThumbnail == other.hasCustomThumbnail &&
+        customThumbnail == other.customThumbnail;
   }
 
   @override
@@ -418,26 +446,26 @@ class _$Video extends Video {
                                                                 $jc(
                                                                     $jc(
                                                                         $jc(
-                                                                            $jc($jc($jc($jc($jc($jc(0, userId.hashCode), videoId.hashCode), channelId.hashCode), channelName.hashCode), categoryId.hashCode),
-                                                                                categoryName.hashCode),
-                                                                            createdBy.hashCode),
-                                                                        title.hashCode),
-                                                                    description.hashCode),
-                                                                type.hashCode),
-                                                            likes.hashCode),
-                                                        dislikes.hashCode),
-                                                    neutral.hashCode),
-                                                views.hashCode),
-                                            image.hashCode),
-                                        playbackId.hashCode),
-                                    videoUrl.hashCode),
-                                channelImage.hashCode),
-                            later.hashCode),
-                        scheduleDate.hashCode),
-                    sDate.hashCode),
-                streamKey.hashCode),
-            muxId.hashCode),
-        createdDate.hashCode));
+                                                                            $jc($jc($jc($jc($jc($jc($jc($jc(0, userId.hashCode), videoId.hashCode), channelId.hashCode), channelName.hashCode), categoryId.hashCode), categoryName.hashCode), createdBy.hashCode),
+                                                                                title.hashCode),
+                                                                            description.hashCode),
+                                                                        type.hashCode),
+                                                                    likes.hashCode),
+                                                                dislikes.hashCode),
+                                                            neutral.hashCode),
+                                                        views.hashCode),
+                                                    image.hashCode),
+                                                playbackId.hashCode),
+                                            videoUrl.hashCode),
+                                        channelImage.hashCode),
+                                    later.hashCode),
+                                scheduleDate.hashCode),
+                            sDate.hashCode),
+                        streamKey.hashCode),
+                    muxId.hashCode),
+                createdDate.hashCode),
+            hasCustomThumbnail.hashCode),
+        customThumbnail.hashCode));
   }
 
   @override
@@ -466,7 +494,9 @@ class _$Video extends Video {
           ..add('sDate', sDate)
           ..add('streamKey', streamKey)
           ..add('muxId', muxId)
-          ..add('createdDate', createdDate))
+          ..add('createdDate', createdDate)
+          ..add('hasCustomThumbnail', hasCustomThumbnail)
+          ..add('customThumbnail', customThumbnail))
         .toString();
   }
 }
@@ -571,6 +601,16 @@ class VideoBuilder implements Builder<Video, VideoBuilder> {
   Timestamp get createdDate => _$this._createdDate;
   set createdDate(Timestamp createdDate) => _$this._createdDate = createdDate;
 
+  bool _hasCustomThumbnail;
+  bool get hasCustomThumbnail => _$this._hasCustomThumbnail;
+  set hasCustomThumbnail(bool hasCustomThumbnail) =>
+      _$this._hasCustomThumbnail = hasCustomThumbnail;
+
+  String _customThumbnail;
+  String get customThumbnail => _$this._customThumbnail;
+  set customThumbnail(String customThumbnail) =>
+      _$this._customThumbnail = customThumbnail;
+
   VideoBuilder();
 
   VideoBuilder get _$this {
@@ -599,6 +639,8 @@ class VideoBuilder implements Builder<Video, VideoBuilder> {
       _streamKey = _$v.streamKey;
       _muxId = _$v.muxId;
       _createdDate = _$v.createdDate;
+      _hasCustomThumbnail = _$v.hasCustomThumbnail;
+      _customThumbnail = _$v.customThumbnail;
       _$v = null;
     }
     return this;
@@ -644,7 +686,9 @@ class VideoBuilder implements Builder<Video, VideoBuilder> {
             sDate: sDate,
             streamKey: streamKey,
             muxId: muxId,
-            createdDate: createdDate);
+            createdDate: createdDate,
+            hasCustomThumbnail: hasCustomThumbnail,
+            customThumbnail: customThumbnail);
     replace(_$result);
     return _$result;
   }

@@ -79,6 +79,18 @@ class _$TrailerSerializer implements StructuredSerializer<Trailer> {
         ..add(serializers.serialize(object.views,
             specifiedType: const FullType(int)));
     }
+    if (object.hasCustomThumbnail != null) {
+      result
+        ..add('hasCustomThumbnail')
+        ..add(serializers.serialize(object.hasCustomThumbnail,
+            specifiedType: const FullType(bool)));
+    }
+    if (object.customThumbnail != null) {
+      result
+        ..add('customThumbnail')
+        ..add(serializers.serialize(object.customThumbnail,
+            specifiedType: const FullType(String)));
+    }
     if (object.originalUrl != null) {
       result
         ..add('originalUrl')
@@ -184,6 +196,14 @@ class _$TrailerSerializer implements StructuredSerializer<Trailer> {
           result.views = serializers.deserialize(value,
               specifiedType: const FullType(int)) as int;
           break;
+        case 'hasCustomThumbnail':
+          result.hasCustomThumbnail = serializers.deserialize(value,
+              specifiedType: const FullType(bool)) as bool;
+          break;
+        case 'customThumbnail':
+          result.customThumbnail = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
         case 'originalUrl':
           result.originalUrl = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
@@ -247,6 +267,10 @@ class _$Trailer extends Trailer {
   @override
   final int views;
   @override
+  final bool hasCustomThumbnail;
+  @override
+  final String customThumbnail;
+  @override
   final String originalUrl;
   @override
   final String playbackId;
@@ -278,6 +302,8 @@ class _$Trailer extends Trailer {
       this.dislikes,
       this.neutral,
       this.views,
+      this.hasCustomThumbnail,
+      this.customThumbnail,
       this.originalUrl,
       this.playbackId,
       this.image,
@@ -349,6 +375,8 @@ class _$Trailer extends Trailer {
         dislikes == other.dislikes &&
         neutral == other.neutral &&
         views == other.views &&
+        hasCustomThumbnail == other.hasCustomThumbnail &&
+        customThumbnail == other.customThumbnail &&
         originalUrl == other.originalUrl &&
         playbackId == other.playbackId &&
         image == other.image &&
@@ -377,20 +405,20 @@ class _$Trailer extends Trailer {
                                                                 $jc(
                                                                     $jc(
                                                                         $jc(
-                                                                            $jc($jc($jc(0, userId.hashCode), trailerId.hashCode),
-                                                                                channelId.hashCode),
-                                                                            channelName.hashCode),
-                                                                        categoryId.hashCode),
-                                                                    categoryName.hashCode),
-                                                                createdBy.hashCode),
-                                                            title.hashCode),
-                                                        description.hashCode),
-                                                    videoUrl.hashCode),
-                                                channelType.hashCode),
-                                            likes.hashCode),
-                                        dislikes.hashCode),
-                                    neutral.hashCode),
-                                views.hashCode),
+                                                                            $jc($jc($jc($jc($jc(0, userId.hashCode), trailerId.hashCode), channelId.hashCode), channelName.hashCode),
+                                                                                categoryId.hashCode),
+                                                                            categoryName.hashCode),
+                                                                        createdBy.hashCode),
+                                                                    title.hashCode),
+                                                                description.hashCode),
+                                                            videoUrl.hashCode),
+                                                        channelType.hashCode),
+                                                    likes.hashCode),
+                                                dislikes.hashCode),
+                                            neutral.hashCode),
+                                        views.hashCode),
+                                    hasCustomThumbnail.hashCode),
+                                customThumbnail.hashCode),
                             originalUrl.hashCode),
                         playbackId.hashCode),
                     image.hashCode),
@@ -417,6 +445,8 @@ class _$Trailer extends Trailer {
           ..add('dislikes', dislikes)
           ..add('neutral', neutral)
           ..add('views', views)
+          ..add('hasCustomThumbnail', hasCustomThumbnail)
+          ..add('customThumbnail', customThumbnail)
           ..add('originalUrl', originalUrl)
           ..add('playbackId', playbackId)
           ..add('image', image)
@@ -490,6 +520,16 @@ class TrailerBuilder implements Builder<Trailer, TrailerBuilder> {
   int get views => _$this._views;
   set views(int views) => _$this._views = views;
 
+  bool _hasCustomThumbnail;
+  bool get hasCustomThumbnail => _$this._hasCustomThumbnail;
+  set hasCustomThumbnail(bool hasCustomThumbnail) =>
+      _$this._hasCustomThumbnail = hasCustomThumbnail;
+
+  String _customThumbnail;
+  String get customThumbnail => _$this._customThumbnail;
+  set customThumbnail(String customThumbnail) =>
+      _$this._customThumbnail = customThumbnail;
+
   String _originalUrl;
   String get originalUrl => _$this._originalUrl;
   set originalUrl(String originalUrl) => _$this._originalUrl = originalUrl;
@@ -533,6 +573,8 @@ class TrailerBuilder implements Builder<Trailer, TrailerBuilder> {
       _dislikes = _$v.dislikes;
       _neutral = _$v.neutral;
       _views = _$v.views;
+      _hasCustomThumbnail = _$v.hasCustomThumbnail;
+      _customThumbnail = _$v.customThumbnail;
       _originalUrl = _$v.originalUrl;
       _playbackId = _$v.playbackId;
       _image = _$v.image;
@@ -576,6 +618,8 @@ class TrailerBuilder implements Builder<Trailer, TrailerBuilder> {
             dislikes: dislikes,
             neutral: neutral,
             views: views,
+            hasCustomThumbnail: hasCustomThumbnail,
+            customThumbnail: customThumbnail,
             originalUrl: originalUrl,
             playbackId: playbackId,
             image: image,

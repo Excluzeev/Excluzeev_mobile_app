@@ -55,6 +55,12 @@ abstract class Video implements Built<Video, VideoBuilder> {
 
   Timestamp get createdDate;
 
+  @nullable
+  bool get hasCustomThumbnail;
+
+  @nullable
+  String get customThumbnail;
+
   Video._();
 
   factory Video([updates(VideoBuilder b)]) = _$Video;
@@ -72,6 +78,8 @@ abstract class Video implements Built<Video, VideoBuilder> {
         ..categoryId = data['categoryId'] ?? ''
         ..categoryName = data['categoryName'] ?? ''
         ..createdBy = data['createdBy'] ?? ''
+        ..hasCustomThumbnail = data['hasCustomThumbnail'] ?? false
+        ..customThumbnail = data['customThumbnail'] ?? ''
         ..title = data['title'] ?? ''
         ..type = data['type'] ?? ''
         ..later = data['later'] ?? 'now'
@@ -104,6 +112,8 @@ abstract class Video implements Built<Video, VideoBuilder> {
         "categoryId": this.categoryId,
         "categoryName": this.categoryName,
         "createdBy": this.createdBy,
+        "hasCustomThumbnail": this.hasCustomThumbnail,
+        "customThumbnail": this.customThumbnail,
         "title": this.title,
         "type": this.type,
         "description": this.description,
@@ -119,6 +129,8 @@ abstract class Video implements Built<Video, VideoBuilder> {
         "categoryId": this.categoryId,
         "categoryName": this.categoryName,
         "createdBy": this.createdBy,
+        "hasCustomThumbnail": this.hasCustomThumbnail,
+        "customThumbnail": this.customThumbnail,
         "title": this.title,
         "type": this.type,
         "description": this.description,

@@ -7,11 +7,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
+import 'package:rounded_modal/rounded_modal.dart';
 import 'package:trenstop/i18n/translation.dart';
 import 'package:trenstop/managers/auth_manager.dart';
 import 'package:trenstop/managers/snapshot.dart';
 import 'package:trenstop/managers/storage_manager.dart';
 import 'package:trenstop/managers/video_manager.dart';
+import 'package:trenstop/misc/image_utils.dart';
 import 'package:trenstop/misc/iuid.dart';
 import 'package:trenstop/misc/logger.dart';
 import 'package:trenstop/misc/palette.dart';
@@ -21,6 +23,7 @@ import 'package:trenstop/models/video.dart';
 import 'package:trenstop/pages/bloc_provider.dart';
 import 'package:trenstop/pages/videos/blocs/add_video_bloc.dart';
 import 'package:trenstop/widgets/add_photo.dart';
+import 'package:trenstop/widgets/modal_picker.dart';
 import 'package:trenstop/widgets/rounded_border.dart';
 import 'package:trenstop/widgets/rounded_button.dart';
 import 'package:trenstop/widgets/white_app_bar.dart';
@@ -58,6 +61,9 @@ class _AddVideoPageState extends State<AddVideoPage> {
   AddVideoBloc bloc;
 
   File videoFile;
+  File customThumbnailFile;
+
+  bool hasCustomThumbnail = false;
 
   bool _isLoading = false;
   String timePublish = "now";
@@ -160,13 +166,136 @@ class _AddVideoPageState extends State<AddVideoPage> {
     );
   }
 
+  _addCustomThumbnail() {
+    showRoundedModalBottomSheet(
+      context: context,
+      builder: (context) => ModalImagePicker(
+        pop: true,
+        onSelected: (file) async {
+          if (file != null) {
+            Logger.log(AddVideoPage.TAG,
+                message: "Received: $file from gallery!");
+
+            final snapshot = await ImageUtils.nativeResize(
+              file,
+              StorageManager.DEFAULT_SIZE,
+              centerCrop: false,
+            );
+
+            if (snapshot.success) {
+              setState(() {
+                customThumbnailFile = snapshot.data;
+              });
+            } else {
+              _showSnackBar(translation.errorCropPhoto);
+            }
+          }
+        },
+      ),
+    );
+  }
+
+  _removeCustomThumbnailImage() async {
+    setState(() {
+      customThumbnailFile = null;
+    });
+  }
+
+  _uploadCustomThumbnailWidget() {
+    return Column(
+      children: <Widget>[
+        Container(
+          child: CheckboxListTile(
+            onChanged: (value) {
+              setState(() {
+                hasCustomThumbnail = value;
+              });
+            },
+            title: Text("Upload Custom Thumnail"),
+            subtitle: Text(
+              "Note: Make sure image is in 16:9 ratio.",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            value: hasCustomThumbnail,
+          ),
+        ),
+        if (hasCustomThumbnail)
+          Container(
+            height: 150.0,
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 8.0),
+              child: Material(
+                borderRadius: BorderRadius.circular(8.0),
+                clipBehavior: Clip.antiAlias,
+                color: Colors.grey[300],
+                child: InkWell(
+                  onTap: _addCustomThumbnail,
+                  child: customThumbnailFile == null
+                      ? AddWidget(label: translation.thumbnailLabel)
+                      : Stack(
+                          children: <Widget>[
+                            SizedBox.expand(
+                              child: Image.file(
+                                customThumbnailFile,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: Container(
+                                margin: EdgeInsets.all(8.0),
+                                child: CircleAvatar(
+                                  backgroundColor: Colors.white,
+                                  child: IconButton(
+                                    icon:
+                                        Icon(Icons.close, color: Colors.black),
+                                    onPressed: () =>
+                                        _removeCustomThumbnailImage,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                ),
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+
   _addVideo() async {
+    if (hasCustomThumbnail && customThumbnailFile == null) {
+      _showSnackBar("Custom Thumbnail cannot be empty");
+      return;
+    }
+
     _updateLoading(true);
 
     FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
 
     User user = await _authManager.getUser(firebaseUser: firebaseUser);
     String videoId = IUID.string;
+
+    String customThumbUrl = "";
+
+    if (!widget.hideVideoUpload) {
+      if (customThumbnailFile != null) {
+        Snapshot thumbailImage =
+            await _storageManager.uploadCustomThumbnailVideo(
+                firebaseUser.uid, videoId, customThumbnailFile);
+        if (thumbailImage.error != null) {
+          _showSnackBar(thumbailImage.error);
+          return;
+        }
+        customThumbUrl = thumbailImage.data;
+      }
+    }
+
     Snapshot video;
     if (!widget.hideVideoUpload) {
       video = await _storageManager.uploadVideoVideo(
@@ -188,6 +317,8 @@ class _AddVideoPageState extends State<AddVideoPage> {
       ..description = _descriptionController.text
       ..type = widget.hideVideoUpload ? "Live" : "VOD"
       ..videoUrl = widget.hideVideoUpload ? "" : video.data
+      ..hasCustomThumbnail = widget.hideVideoUpload ? false : hasCustomThumbnail
+      ..customThumbnail = widget.hideVideoUpload ? "" : customThumbUrl
       ..createdDate = Timestamp.fromDate(DateTime.now())
       ..later = timePublish
       ..createdBy = user.displayName;
@@ -336,6 +467,8 @@ class _AddVideoPageState extends State<AddVideoPage> {
                       widget.hideVideoUpload
                           ? Container()
                           : _uploadVideoWidget(),
+                      if (!widget.hideVideoUpload)
+                        _uploadCustomThumbnailWidget(),
                       widget.hideVideoUpload
                           ? ListView(
                               primary: false,

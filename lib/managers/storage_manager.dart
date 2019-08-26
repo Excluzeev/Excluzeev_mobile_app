@@ -34,7 +34,7 @@ class StorageManager {
       FirebaseStorage(storageBucket: "gs://trenstop-public");
 
   FirebaseStorage _storageVideos =
-  FirebaseStorage(storageBucket: "gs://trenstop-videos");
+      FirebaseStorage(storageBucket: "gs://trenstop-videos");
 
   StorageUploadTask _uploadTask;
   StorageFileDownloadTask _downloadTask;
@@ -205,8 +205,7 @@ class StorageManager {
 
   StorageReference getChannelTrailerReference() =>
       _storage.ref().child("trailers");
-  StorageReference getVideosReference() =>
-      _storageVideos.ref().child("videos");
+  StorageReference getVideosReference() => _storageVideos.ref().child("videos");
 
   StorageReference getChannelsReference() => _storage.ref().child("channels");
 
@@ -331,13 +330,56 @@ class StorageManager {
     );
   }
 
+  Future<Snapshot<String>> uploadTrailerCustomThumbanil(
+      String userUid, String channelId, String trailerId, File image) async {
+    String error;
+    String url;
+
+    final reference = getChannelTrailerReference()
+        .child(channelId)
+        .child(trailerId)
+        .child('thumbnail');
+    StorageUploadTask uploadTasks;
+
+    if (image == null) {
+      error = "Received file is null";
+    } else {
+      _uploadTask = reference.putFile(
+        image,
+        StorageMetadata(
+          contentType: 'image/jpg',
+          customMetadata: <String, String>{'uid': userUid},
+        ),
+      );
+
+      final snapshot =
+          await _uploadTask.onComplete.catchError((exception, stacktrace) {
+        Logger.log(TAG,
+            message: "Couldn't upload file to Storage, error: $exception");
+        error = exception.toString();
+      });
+
+      if (snapshot != null) {
+        Logger.log(TAG,
+            message: "Snapshot returned: $snapshot, error: ${snapshot.error}");
+        final urlSnapshot = await getURL(reference);
+        if (urlSnapshot.success) {
+          url = urlSnapshot.data;
+        }
+      }
+    }
+
+    return Snapshot<String>(
+      data: url,
+      error: error,
+    );
+  }
+
   uploadVideoVideo(String uid, String videoId, File videoFile) async {
     String error;
     String url;
 
-    final reference = getVideosReference()
-        .child(videoId)
-        .child('original');
+    final reference = getVideosReference().child(videoId).child('original');
     StorageUploadTask uploadTasks;
 
     if (videoFile == null) {
@@ -372,7 +414,47 @@ class StorageManager {
       data: url,
       error: error,
     );
+  }
 
+  uploadCustomThumbnailVideo(String uid, String videoId, File image) async {
+    String error;
+    String url;
+
+    final reference = getVideosReference().child(videoId).child('thumbnail');
+    StorageUploadTask uploadTasks;
+
+    if (image == null) {
+      error = "Received file is null";
+    } else {
+      _uploadTask = reference.putFile(
+        image,
+        StorageMetadata(
+          contentType: 'image/jpg',
+          customMetadata: <String, String>{'uid': uid},
+        ),
+      );
+
+      final snapshot =
+          await _uploadTask.onComplete.catchError((exception, stacktrace) {
+        Logger.log(TAG,
+            message: "Couldn't upload file to Storage, error: $exception");
+        error = exception.toString();
+      });
+
+      if (snapshot != null) {
+        Logger.log(TAG,
+            message: "Snapshot returned: $snapshot, error: ${snapshot.error}");
+        final urlSnapshot = await getURL(reference);
+        if (urlSnapshot.success) {
+          url = urlSnapshot.data;
+        }
+      }
+    }
+
+    return Snapshot<String>(
+      data: url,
+      error: error,
+    );
   }
 
   deleteProfilePicture(String uid) async {

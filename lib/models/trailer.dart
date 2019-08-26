@@ -34,6 +34,12 @@ abstract class Trailer implements Built<Trailer, TrailerBuilder> {
   int get views;
 
   @nullable
+  bool get hasCustomThumbnail;
+
+  @nullable
+  String get customThumbnail;
+
+  @nullable
   String get originalUrl;
   @nullable
   String get playbackId;
@@ -68,6 +74,8 @@ abstract class Trailer implements Built<Trailer, TrailerBuilder> {
         ..channelType = data['channelType'] ?? ''
         ..createdBy = data['createdBy'] ?? ''
         ..title = data['title'] ?? ''
+        ..hasCustomThumbnail = data['hasCustomThumbnail'] ?? false
+        ..customThumbnail = data['customThumbnail'] ?? ''
         ..description = data['description'] ?? ''
         ..image =
             'https://image.mux.com/${data['playbackId']}/thumbnail.png?width=214&fit_mode=pad'
@@ -116,6 +124,8 @@ abstract class Trailer implements Built<Trailer, TrailerBuilder> {
         ..categoryName = data['categoryName'] ?? ''
         ..channelType = data['channelType'] ?? ''
         ..createdBy = data['createdBy'] ?? ''
+        ..hasCustomThumbnail = data['hasCustomThumbnail'] ?? false
+        ..customThumbnail = data['customThumbnail'] ?? ''
         ..title = data['title'] ?? ''
         ..description = data['description'] ?? ''
         ..image =
@@ -149,6 +159,8 @@ abstract class Trailer implements Built<Trailer, TrailerBuilder> {
         "categoryId": this.categoryId,
         "categoryName": this.categoryName,
         "createdBy": this.createdBy,
+        "hasCustomThumbnail": this.hasCustomThumbnail,
+        "customThumbnail": this.customThumbnail,
         "title": this.title,
         "description": this.description,
         "videoUrl": this.videoUrl,
