@@ -110,6 +110,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
 
     if (channelSnap.error == null) {
       channel = channelSnap.data;
+      print(channelSnap.data.toMap);
     }
     setState(() {});
   }

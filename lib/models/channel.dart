@@ -86,7 +86,7 @@ abstract class Channel implements Built<Channel, ChannelBuilder> {
         ..description = data['description'] ?? ''
         ..image = data['image'] ?? ''
         ..tiers = data['tiers'] != null ? listTiers : []
-        ..expiry = data['expiry'] != null ? data['expiry'].toDate() : null
+        ..expiry = data['expiry'] != null && data['expiry'].toString().isNotEmpty ? data['expiry'].toDate() : null
         ..coverImage = data['coverImage'] ?? ''
         ..createdDate = data['createdDate'] ?? null
         ..deleteOn = data['deleteOn'] != null ? data['deleteOn'].toDate() : null
