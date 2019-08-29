@@ -7,6 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_advanced_networkimage/provider.dart';
+import 'package:percent_indicator/circular_percent_indicator.dart';
+import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'package:trenstop/i18n/translation.dart';
 import 'package:trenstop/managers/auth_manager.dart';
 import 'package:trenstop/managers/channel_manager.dart';
@@ -387,6 +389,30 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
     );
   }
 
+  _buildProgressIndicator() {
+    if (channel != null) {
+      if ((trailer.channelType == "CrowdFunding")) {
+        double percent = (channel.currentFund / channel.targetFund);
+
+        print(percent);
+        return Container(
+          padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+          // width: MediaQuery.of(context).size.width,
+          child: LinearPercentIndicator(
+            lineHeight: 14.0,
+            percent: percent > 1 ? 1.0 : percent,
+            backgroundColor: Colors.grey[200],
+            progressColor: Palette.primary,
+          ),
+        );
+      } else {
+        return Container();
+      }
+    } else {
+      return Container();
+    }
+  }
+
   _donateButton() {
     if (_showSubscribe && channel != null) {
       if (trailer.channelType != "CrowdFunding") {
@@ -567,6 +593,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
                       neutral: trailer.neutral,
                     ),
                     Divider(),
+                    _buildProgressIndicator(),
                     Container(
                       width: MediaQuery.of(context).size.width,
                       padding: EdgeInsets.only(
