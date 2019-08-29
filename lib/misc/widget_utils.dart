@@ -275,9 +275,10 @@ class WidgetUtils {
 
   static void showPaymentScreen(
       BuildContext context, Trailer trailer, User user, bool isDonate,
-      {int price}) async {
+      {int price, String tierName = ""}) async {
     String tag = PaymentPage.TAG;
-    Widget page = PaymentPage(trailer, user, isDonate, price: price);
+    Widget page =
+        PaymentPage(trailer, user, isDonate, price: price, tierName: tierName);
 
     final route = CupertinoPageRoute<bool>(
       maintainState: true,

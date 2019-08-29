@@ -208,7 +208,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
     }
   }
 
-  _startSubscribe(bool isDonate, {int price}) async {
+  _startSubscribe(bool isDonate, {int price, String tierName = ""}) async {
     FirebaseUser firebaseUser = await FirebaseAuth.instance.currentUser();
 
     if (firebaseUser == null) {
@@ -253,7 +253,7 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
 
     User user = await _authManager.getUser(firebaseUser: firebaseUser);
     WidgetUtils.showPaymentScreen(context, trailer, user, isDonate,
-        price: price);
+        price: price, tierName: tierName);
   }
 
   @override
@@ -458,7 +458,8 @@ class _TrailerDetailPageState extends State<TrailerDetailPage>
                           ),
                           color: Palette.primary,
                           onPressed: () => _startSubscribe(true,
-                              price: int.parse(channel.tiers[i]['price'])),
+                              price: int.parse(channel.tiers[i]['price']),
+                              tierName: "Tier ${i + 1}"),
                         ),
                       ),
                     ],

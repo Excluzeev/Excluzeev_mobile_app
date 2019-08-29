@@ -21,8 +21,10 @@ class PaymentPage extends StatefulWidget {
   final User user;
   final bool isDonate;
   final int price;
+  final String tierName;
 
-  PaymentPage(this.trailer, this.user, this.isDonate, {this.price});
+  PaymentPage(this.trailer, this.user, this.isDonate,
+      {this.price, this.tierName = ""});
 
   @override
   _PaymentPageState createState() => _PaymentPageState();
@@ -84,6 +86,7 @@ class _PaymentPageState extends State<PaymentPage> {
     if (widget.isDonate) {
       body["donate"] = widget.price.toString();
       body["isDonate"] = true;
+      body['tierName'] = widget.tierName;
     }
 
     Logger.log(PaymentPage.TAG, message: "$body");
