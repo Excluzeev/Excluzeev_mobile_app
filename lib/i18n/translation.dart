@@ -309,11 +309,11 @@ class Translation {
         name: 'createNow',
       );
   String get trailerTitle => Intl.message(
-        "Add a trailer",
+        "Add a Preview",
         name: 'trailerTitle',
       );
   String get trailers => Intl.message(
-        "Trailers",
+        "Previews",
         name: 'trailers',
       );
   String get videoTitle => Intl.message(
@@ -341,7 +341,7 @@ class Translation {
         name: 'addVideo',
       );
   String get addTrailer => Intl.message(
-        "Add Trailer",
+        "Add Preview",
         name: 'addTrailer',
       );
 
@@ -350,7 +350,7 @@ class Translation {
         name: 'updateDescription',
       );
   String get errorLoadTrailers => Intl.message(
-        "Loading Trailer Filed",
+        "Loading Preview Filed",
         name: 'errorLoadTrailers',
       );
   String get errorLoadChannels => Intl.message(
@@ -358,7 +358,7 @@ class Translation {
         name: 'errorLoadChannels',
       );
   String get errorEmptyTrailers => Intl.message(
-        "No Trailers found",
+        "No Previews found",
         name: 'errorEmptyTrailers',
       );
   String get errorLoadVideos => Intl.message(
@@ -560,7 +560,7 @@ class Translation {
       Intl.message("Please select the reason", name: "reasonError");
 
   String get reportSuccessful =>
-      Intl.message("Trailer Reported succesfully.", name: "reportSuccessful");
+      Intl.message("Preview Reported succesfully.", name: "reportSuccessful");
 }
 
 class _TranslationDelegate extends LocalizationsDelegate<Translation> {

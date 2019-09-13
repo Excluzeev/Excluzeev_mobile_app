@@ -1,0 +1,4 @@
+fileignoreconfig:
+- filename: ios/Flutter/flutter_export_environment.sh
+  checksum: 7164aff7403e7bc9d400cc63f2178ec5a788fe399f900a0ee321d4c2625cbb82
+  ignore_detectors: []
