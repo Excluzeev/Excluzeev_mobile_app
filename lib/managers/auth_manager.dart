@@ -123,16 +123,19 @@ class AuthManager {
         .catchError(exceptionHandler)
         .then((providers) async {
       if (providers != null && (providers?.contains("password") ?? false)) {
-        firebaseUser = await _auth
+        AuthResult authResult = await _auth
             .signInWithEmailAndPassword(email: email, password: password)
             .catchError(exceptionHandler);
+        firebaseUser = authResult.user;
       } else {
-        if (isSignUp)
-          firebaseUser = await _auth
+        if (isSignUp) {
+          AuthResult authResult = await _auth
               .createUserWithEmailAndPassword(email: email, password: password)
               .catchError(exceptionHandler);
-        else
+          firebaseUser = authResult.user;
+        } else {
           error = translation.noAccountFound;
+        }
       }
     });
 

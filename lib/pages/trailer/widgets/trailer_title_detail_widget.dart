@@ -54,7 +54,8 @@ class TrailerTitleDetailWidget extends StatelessWidget {
                         height: 4.0,
                       ),
                       Text(
-                        "${trailer.views} views • $daysAgo",
+                        // ${trailer.views} views • 
+                        "$daysAgo",
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(

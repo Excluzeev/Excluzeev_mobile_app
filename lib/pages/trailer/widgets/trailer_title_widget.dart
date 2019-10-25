@@ -222,9 +222,10 @@ class _TrailerTitleWidgetState extends State<TrailerTitleWidget> {
                               fontSize: 12.0,
                             ),
                             children: <TextSpan>[
+                              // ${widget.trailer.views} views • 
                               TextSpan(
                                 text:
-                                    "${widget.trailer.views} views • $daysAgo",
+                                    "$daysAgo",
                                 style: Theme.of(context)
                                     .textTheme
                                     .caption

@@ -101,6 +101,7 @@ android {
 configurations.all {
     resolutionStrategy {
         force 'androidx.core:core:1.0.2'
+        force 'androidx.fragment:fragment:1.1.0'
         // force 'android.arch.lifecycle:viewmodel:1.1.1'
         // force 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0-rc01'
 //        force 'com.android.support:support-core-utils:28.0.0'
