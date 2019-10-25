@@ -48,7 +48,8 @@ class VideoTitleDetailWidget extends StatelessWidget {
                 height: 4.0,
               ),
               Text(
-                "${video.views} views • $daysAgo",
+                // ${video.views} views • 
+                "$daysAgo",
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(

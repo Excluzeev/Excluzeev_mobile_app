@@ -216,8 +216,9 @@ class _VideoTitleWidgetState extends State<VideoTitleWidget> {
                             ),
                             children: <TextSpan>[
                               TextSpan(
+                                //  • ${widget.video.views} views
                                 text:
-                                    " • ${widget.video.views} views • $daysAgo",
+                                    " • $daysAgo",
                                 style: Theme.of(context)
                                     .textTheme
                                     .caption
